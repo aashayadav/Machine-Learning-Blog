@@ -1,0 +1,66 @@
+[
+  {
+    "path": "posts/11-29-20_data_prep_&_description_AY/",
+    "title": "Data preparation and description",
+    "description": "Now we got our datasets, let's see how to prepare (join) them for analysis",
+    "author": [
+      {
+        "name": "Asha",
+        "url": {}
+      }
+    ],
+    "date": "2020-11-28",
+    "categories": [],
+    "preview": {},
+    "last_modified": "2020-11-29T02:16:53-08:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/11-29-20_ML_models_AY/",
+    "title": "Machine Learning models",
+    "description": "We will be fitting linear model, random forest, and gradient boosting.",
+    "author": [
+      {
+        "name": "Asha",
+        "url": {}
+      }
+    ],
+    "date": "2020-11-28",
+    "categories": [],
+    "preview": {},
+    "last_modified": "2020-11-29T02:24:06-08:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/11-28-20_datasets_AY/",
+    "title": "Datasets",
+    "description": "Let's talk about the datasets used in the project",
+    "author": [
+      {
+        "name": "Asha",
+        "url": {}
+      }
+    ],
+    "date": "2020-11-27",
+    "categories": [],
+    "preview": {},
+    "last_modified": "2020-11-29T01:02:37-08:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/11-28-20_welcome_AY/",
+    "title": "Hello!",
+    "description": "Welcome to our Machine Learning blog",
+    "author": [
+      {
+        "name": "AY, AG, and CI",
+        "url": {}
+      }
+    ],
+    "date": "2020-11-27",
+    "categories": [],
+    "preview": {},
+    "last_modified": "2020-11-29T00:47:02-08:00",
+    "input_file": {}
+  }
+]

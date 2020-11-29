@@ -1,0 +1,19 @@
+---
+title: "About"
+description: |
+  Some additional details about the blog
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+This blog was created as part of the class project for EDLD 654 in [Applied Machine Learning in Educational Data Science](https://uo-datasci-specialization.github.io/c4-ml-fall-2020/), taught by [Prof. Daniel Anderson](https://github.com/datalorax) and [Prof. Joseph Nese](https://education.uoregon.edu/people/faculty/jnese) at the University of Oregon. 
+
+The authors of the blog are doctoral students at the University of Oregon:
+
+[Asha Yadav](https://github.com/aashayadav), Special Education
+
+[Alejandra](https://github.com/Alegarisa), Prevention Science
+
+[Chris Ives](https://github.com/cives93), Special Education

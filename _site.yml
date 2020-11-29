@@ -1,0 +1,23 @@
+name: "Machine Learning Blog"
+title: "Machine Learning for Educational Data Science Blog"
+description: |
+  Machine Learning for Educational Data Science Blog
+output_dir: "docs"
+base_url: https://github.com/aashayadav 
+collections:
+  posts:
+    disqus: Machine Learning
+    share: [twitter, linkedin,facebook]
+    citations: false
+navbar:
+  right:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+    - icon: fa-github
+      href: https://github.com/aashayadav
+    - text: kaggle
+      href: https://www.kaggle.com/c/edld-654-fall-2020/overview
+output: distill::distill_article
+
