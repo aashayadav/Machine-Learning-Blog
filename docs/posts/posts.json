@@ -2,7 +2,7 @@
   {
     "path": "posts/11-29-20_data_prep_&_description_AY/",
     "title": "Data preparation and description",
-    "description": "Now we got our datasets, let's see how to prepare (join) them for analysis",
+    "description": "Now we got our datasets, let's see how to prepare (join) them for analysis.",
     "author": [
       {
         "name": "Asha",
@@ -12,7 +12,7 @@
     "date": "2020-11-28",
     "categories": [],
     "preview": {},
-    "last_modified": "2020-11-29T12:08:25-08:00",
+    "last_modified": "2020-11-29T12:13:30-08:00",
     "input_file": {}
   },
   {
