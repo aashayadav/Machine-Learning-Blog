@@ -3,7 +3,7 @@ title: "Machine Learning for Educational Data Science Blog"
 description: |
   Machine Learning for Educational Data Science Blog
 output_dir: "docs"
-base_url: https://github.com/aashayadav 
+base_url: https://github.com/aashayadav
 collections:
   posts:
     disqus: Machine Learning
