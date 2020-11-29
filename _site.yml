@@ -16,7 +16,7 @@ navbar:
     - text: "About"
       href: about.html
     - icon: fa-github
-      href: https://aashayadav.github.io/Machine-Learning-Blog/
+      href: https://github.com/aashayadav/Machine-Learning-Blog
     - text: kaggle
       href: https://www.kaggle.com/c/edld-654-fall-2020/overview
 output: distill::distill_article
