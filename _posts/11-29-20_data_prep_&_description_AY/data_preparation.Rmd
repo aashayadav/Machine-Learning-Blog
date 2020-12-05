@@ -24,6 +24,7 @@ library(baguette)
 library(future)
 library(here)
 library(rio)
+library(corrplot)
 library(skimr)
 
 ```
@@ -42,97 +43,33 @@ For the purpose of demonstration, we will be using 1% of the data with `sample_f
 After loading our five datasets, we joined them together to make one cohesive dataset, to be used for ML modeling. After joining, the dataset contains student-level variables (e.g. gender, ethnicity, enrollement in special education, etc.) as well as district-level variables ( school longitude and latitude, proportion of free and reduced lunch, etc.). All of these variables will be used in our ML models to predict student score in the statewide assessment. Here is the preview of our final dataset, ready to be used for ML modeling.
 
 ```{r}
-
-# Import statewide assessment dataset
-set.seed(100)
-
-d <- read_csv(here::here("data", "train.csv")) %>%
-select(-classification) %>% #remove variable
-sample_frac(.01) # Small fraction of data
+set.seed(3000)
 
 
-# Import fall membership report on ethinicity and do some basic cleaning
-  
-sheets <- readxl::excel_sheets(here::here("data", "fallmembershipreport_20192020.xlsx"))
+git <- "~/Documents/GitHub/EDLD-654-Final"
 
-ode_schools <- readxl::read_xlsx(here::here("data",
-"fallmembershipreport_20192020.xlsx"), sheet = sheets[4])
+data <- import(here("data", "train.csv")) %>%
+  select(-classification) %>%
+  mutate_if(is.character, factor) %>%
+  mutate(ncessch = as.double(ncessch)) 
 
-ethnicities <- ode_schools %>%
-select(attnd_schl_inst_id = `Attending School ID`,
-sch_name = `School Name`,
-contains("%")) %>%
-  janitor::clean_names()
-
-names(ethnicities) <- gsub("x2019_20_percent", "p", names(ethnicities))
-
-# Join ethinicity dataset with the main dataset which we are calling math (Statewide assessment datset).
-
-d <- left_join(d, ethnicities)
-
-# Import and tidy free reduced lunch dataset from NCES.
-
-frl<- import("https://nces.ed.gov/ccd/Data/zip/ccd_sch_033_1718_l_1a_083118.zip",
-            setclass = "tbl_df")  %>% 
-  janitor::clean_names()  %>% 
-  filter(st == "OR")  %>%
-  select(ncessch, lunch_program, student_count)  %>% 
-  mutate(student_count = replace_na(student_count, 0))  %>% 
-  pivot_wider(names_from = lunch_program,
-              values_from = student_count)  %>% 
-  janitor::clean_names()  %>% 
+bonus <- import(here("data", "bonus_data.csv")) %>%
+  mutate(pupil_tch_ratio = as.numeric(pupil_tch_ratio)) %>%
   mutate(ncessch = as.double(ncessch))
 
-# Import student counts for each school across grades.
-
-stu_counts <- import("https://github.com/datalorax/ach-gap-variability/raw/master/data/achievement-gaps-geocoded.csv",
-                     setclass = "tbl_df")  %>% 
-  filter(state == "OR" & year == 1718)  %>% 
-  count(ncessch, wt = n)  %>% 
-  mutate(ncessch = as.double(ncessch))
-
-# Join frl and stu_counts datasets
-
-frl <- left_join(frl, stu_counts)
-
-# Calculate proprottion free and reduced lunch in frl dataset
-
-frl_props <- frl %>%
-mutate(prop_fl = free_lunch_qualified/n,
-      prop_rl = reduced_price_lunch_qualified/n) %>%
-select(ncessch, prop_fl, prop_rl)
-
-# Join the frl_props and the main dataset (statewide assessment datase)
-
-d <- left_join(d, frl_props) 
-
-skim(d) %>%
-  select(-starts_with("numeric.p")) # remove quartiles
-
-# Import the bonus data that contains population level information for school ids and zip code.
-#bonus_data <- import(here::here("data", "bonus_data.csv"))
-
-
-# Join the bonus dataset and the math dataset
-
-#math <- left_join(math, bonus_data)
-
-#skim(math) %>%
- # select(-starts_with("numeric.p")) # remove quartiles
+## join data
+data <- data %>% 
+  left_join(bonus)
 
 ```
-## 3. Visualise relation between numeric variables.
 
-```{r, fig.width=10, fig.height=10}
 
-d %>% 
-  select(-contains("id"), -ncessch) %>% 
-  select_if(is.numeric) %>% 
-  select(score, everything()) %>% 
-  cor(use = "complete.obs") %>% 
-  corrplot::corrplot()
+```{r}
+
+#skim(data)
 
 ```
+
 
 
 

@@ -19,7 +19,7 @@
  <!--/radix_placeholder_import_source-->
 
   <!--radix_placeholder_meta_tags-->
-<title>Machine Learning for Educational Data Science Blog: Machine Learning models</title>
+<title>Machine Learning for Educational Data Science Blog: Machine learning models</title>
 
 <meta property="description" itemprop="description" content="We will be fitting linear model, random forest, and gradient boosting."/>
 
@@ -31,7 +31,7 @@
 <meta name="article:author" content="Asha"/>
 
 <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-<meta property="og:title" content="Machine Learning for Educational Data Science Blog: Machine Learning models"/>
+<meta property="og:title" content="Machine Learning for Educational Data Science Blog: Machine learning models"/>
 <meta property="og:type" content="article"/>
 <meta property="og:description" content="We will be fitting linear model, random forest, and gradient boosting."/>
 <meta property="og:url" content="https://github.com/aashayadav/posts/11-29-20_ML_models_AY/"/>
@@ -40,7 +40,7 @@
 
 <!--  https://dev.twitter.com/cards/types/summary -->
 <meta property="twitter:card" content="summary"/>
-<meta property="twitter:title" content="Machine Learning for Educational Data Science Blog: Machine Learning models"/>
+<meta property="twitter:title" content="Machine Learning for Educational Data Science Blog: Machine learning models"/>
 <meta property="twitter:description" content="We will be fitting linear model, random forest, and gradient boosting."/>
 <meta property="twitter:url" content="https://github.com/aashayadav/posts/11-29-20_ML_models_AY/"/>
 
@@ -48,7 +48,7 @@
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["Machine Learning models"]},{"type":"character","attributes":{},"value":["We will be fitting linear model, random forest, and gradient boosting."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Asha"]},{"type":"NULL"},{"type":"character","attributes":{},"value":["University of Oregon"]},{"type":"NULL"}]}]},{"type":"character","attributes":{},"value":["11-28-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["https://github.com/aashayadav/posts/11-29-20_ML_models_AY/"]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["Machine learning models"]},{"type":"character","attributes":{},"value":["We will be fitting linear model, random forest, and gradient boosting."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Asha"]},{"type":"NULL"},{"type":"character","attributes":{},"value":["University of Oregon"]},{"type":"NULL"}]}]},{"type":"character","attributes":{},"value":["11-28-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["https://github.com/aashayadav/posts/11-29-20_ML_models_AY/"]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1283,7 +1283,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Machine Learning models","description":"We will be fitting linear model, random forest, and gradient boosting.","authors":[{"author":"Asha","authorURL":"#","affiliation":"University of Oregon","affiliationURL":"#"}],"publishedDate":"2020-11-28T00:00:00.000-08:00","citationText":"Asha, 2020"}
+{"title":"Machine learning models","description":"We will be fitting linear model, random forest, and gradient boosting.","authors":[{"author":"Asha","authorURL":"#","affiliation":"University of Oregon","affiliationURL":"#"}],"publishedDate":"2020-11-28T00:00:00.000-08:00","citationText":"Asha, 2020"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1309,7 +1309,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>Machine Learning models</h1>
+<h1>Machine learning models</h1>
 <p><p>We will be fitting linear model, random forest, and gradient boosting.</p></p>
 </div>
 
@@ -1345,21 +1345,90 @@ document.addEventListener('DOMContentLoaded', function() {
 <h3 id="a.-splitting">1a. Splitting</h3>
 <p>We will split our dataset into training and testing set. The training data will be used to fit our model and tune its parameters, whereas the testing data will be used to evaluate our final model’s performance.</p>
 <p>We will use <code>initial_split()</code> function from the <code>rsample</code> package which creates a <code>split</code> object. The split object <code>d_split</code>, tells how many observations we have in our training and testing set (trainin set = 75% &amp; testing set = 25%).</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+set.seed(3000)
+# Create split object ining (75%) and testing (25%)
+
+data_split &lt;- initial_split(data, prop = 3/4) 
+
+data_split</code></pre>
+<pre><code>
+&lt;Analysis/Assess/Total&gt;
+&lt;1421/473/1894&gt;</code></pre>
+</div>
 <p>We will extract the training and testing set from the split object, <code>d_split</code> by using the <code>training()</code> and <code>testing()</code> functions.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Extract training and testing set
+set.seed(3000)
+
+data_train &lt;- training(data_split)
+
+data_test &lt;- testing(data_split)</code></pre>
+</div>
 <h3 id="b.-resampling">1b. Resampling</h3>
 <p>At some point, ML models require parameters tuning (adjustment). In order to prepare for tuning, we resample our data. Resampling reduces bias from over-fitting the data. There are several methods to resample the data and the two most effective and frequently used are 10-fold cross validation and bootstrapping. In our project, we’ll resample our data using <code>vfold_cv()</code>. This function outputs k-fold cross-validated versions of our training data, where <code>k = number of time we resample</code>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Resample the data with 10-fold cross validation.
+set.seed(3000)
+cv &lt;- vfold_cv(data_train)</code></pre>
+</div>
 <h2 id="pre-processing">2.Pre-processing</h2>
 <p>Preprocessing is a way of converting data from the raw form to a more usable form for the ML modeling purpose. The pre-processing involves defining roles of variables using role-specifying functions such as <code>all_numeric()</code>, <code>all_predictors()</code> as arguments to pre-processing steps. Pre-processing also involves steps such as imputation (<code>step_medianimpute</code>), rescaling (<code>step_scale</code>), standardizing (<code>step_normalize</code>), PCA (<code>step_pca</code>) and creating dummy variables (<code>step_dummy</code>). A full list of pre-processing can be found <a href="https://recipes.tidymodels.org/reference/index.html">here</a>.</p>
 <p>We will use <code>recipe()</code> function to indicate our outcome and predictor variables in our recipe. We will use <code>~.</code> to indicate that we are using all variables to predict the outcome variable <code>score</code>. All recipe takes from the data object at this point is the names and roles of the outcome and predictor variables. We will apply this recipe to specific dataset later. Therefore, when we print summary of object, <code>rec</code>, it shows numbers of predictor variables have been specified. It doen’t actually apply the predictors yet.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+set.seed(3000)
+
+rec &lt;- recipe(score ~., data_train) %&gt;%
+  step_mutate(tst_dt = as.numeric(lubridate::
+                                    mdy_hms(tst_dt))) %&gt;% # convert test variable to a date.
+  update_role(contains(&quot;id&quot;), ncessch, new_role = &quot;id vars&quot;) %&gt;% # declare ID variables
+  step_nzv(all_predictors(), freq_cut = 0, unique_cut = 0) %&gt;% # remove variables with zero variances
+  step_novel(all_nominal()) %&gt;% # prepares test data to handle previously unseen factor levels 
+  step_unknown(all_nominal()) %&gt;% # categorizes missing categorical data (NA&#39;s) as `unknown`
+  step_medianimpute(all_numeric(), -all_outcomes(), -has_role(&quot;id vars&quot;))  %&gt;% # replaces missing numeric observations with the median
+  step_dummy(all_nominal(), -has_role(&quot;id vars&quot;)) %&gt;% # dummy codes  categorical variables
+  step_nzv(all_predictors(), -starts_with(&quot;lang_cd&quot;))</code></pre>
+</div>
 <p>Extract the pre-processed dataset</p>
 <p>To extract the pre-processed dataset, we can <code>prep()</code> the recipe for our datset then <code>bake()</code> the prepped recipe to extract the pre-processed data.</p>
 <p>However, in <a href="https://workflows.tidymodels.org/">tidymodels</a> we can use <code>workflows()</code> where we don’t need to <code>prep()</code> or <code>bake()</code> the recipe.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+prep(rec) %&gt;%
+  bake(data_train)</code></pre>
+<pre><code>
+# A tibble: 1,421 x 26
+       id attnd_dist_inst~ attnd_schl_inst~ enrl_grd tst_dt
+    &lt;int&gt;            &lt;int&gt;            &lt;int&gt;    &lt;int&gt;  &lt;dbl&gt;
+ 1 207039             2043              390        3 1.52e9
+ 2 249314             2242             1139        5 1.53e9
+ 3 129823             2206             1038        5 1.53e9
+ 4  45014             1991              278        6 1.53e9
+ 5 211101             1976             3218        3 1.53e9
+ 6   6832             2087              579        6 1.53e9
+ 7 188408             1970              219        3 1.52e9
+ 8 105175             2142              770        6 1.53e9
+ 9 226880             2252             1208        4 1.53e9
+10   3436             2243             1176        5 1.53e9
+# ... with 1,411 more rows, and 21 more variables:
+#   partic_dist_inst_id &lt;int&gt;, partic_schl_inst_id &lt;int&gt;,
+#   ncessch &lt;dbl&gt;, lat &lt;dbl&gt;, lon &lt;dbl&gt;, st_schid &lt;int&gt;,
+#   mid_prop &lt;dbl&gt;, score &lt;int&gt;, gndr_M &lt;dbl&gt;, ethnic_cd_H &lt;dbl&gt;,
+#   ethnic_cd_W &lt;dbl&gt;, tst_bnch_X2B &lt;dbl&gt;, tst_bnch_X3B &lt;dbl&gt;,
+#   tst_bnch_G4 &lt;dbl&gt;, tst_bnch_G6 &lt;dbl&gt;, tst_bnch_G7 &lt;dbl&gt;,
+#   sp_ed_fg_Y &lt;dbl&gt;, tag_ed_fg_Y &lt;dbl&gt;, econ_dsvntg_Y &lt;dbl&gt;,
+#   ayp_lep_F &lt;dbl&gt;, ayp_lep_unknown &lt;dbl&gt;</code></pre>
+</div>
 <p>The next step is to specify our ML models, using the <code>parsnip</code> package. <code>parsnip</code>. To specify the model, there are four primary components: <code>model type</code>, <code>arguments</code>, <code>engine</code>, and <code>mode</code>.</p>
 <h2 id="linear-model">3. Linear model</h2>
 <h3 id="a.-specifying-the-linear-model">3a. Specifying the linear model</h3>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
-set.seed(100)
+set.seed(3000)
 # model with parsnip package
 mod_linear &lt;- linear_reg() %&gt;%
   set_engine(&quot;lm&quot;) %&gt;%  # engine for linear regression
@@ -1368,17 +1437,20 @@ mod_linear &lt;- linear_reg() %&gt;%
 <h3 id="b.-workflow">3b. Workflow</h3>
 <p>We will put the model and receipe together using <code>workflow</code>. In this case, we don’t need to <code>prep()</code> and <code>bake()</code> the recipe.</p>
 <div class="layout-chunk" data-layout="l-body">
-
+<pre class="r"><code>
+lm_wf &lt;- workflow() %&gt;% # set the workflow
+  add_recipe(rec) %&gt;% # add recipe
+  add_model(mod_linear) # add model</code></pre>
 </div>
 <h3 id="c.-fitting-the-linear-model">3c. Fitting the linear model</h3>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
-set.seed(100)
+set.seed(3000)
 
 # fitting the linear model
 mod_linear&lt;- tune::fit_resamples(
   lm_wf,        # workflow
-  resamples = cv_splits,
+  resamples = cv,
   metrics = yardstick::metric_set(rmse),
   control = tune::control_resamples(verbose = TRUE,
                                     save_pred = TRUE))</code></pre>
@@ -1386,7 +1458,7 @@ mod_linear&lt;- tune::fit_resamples(
 <h3 id="d.-collect-metrics">3d. Collect metrics</h3>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
-set.seed(100)
+set.seed(3000)
 
 mod_linear %&gt;%
   collect_metrics() %&gt;%
@@ -1395,7 +1467,14 @@ mod_linear %&gt;%
 # A tibble: 1 x 5
   .metric .estimator  mean     n std_err
   &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
-1 rmse    standard    90.8    10    3.38</code></pre>
+1 rmse    standard    96.0    10    2.70</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre><code>
+# A tibble: 1 x 5
+  .metric .estimator  mean     n std_err
+  &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+1 rmse    standard    96.0    10    2.70</code></pre>
 </div>
 <h2 id="random-forest">4. Random Forest</h2>
 <h2 id="gradient-boosting">5. Gradient Boosting</h2>
@@ -1410,10 +1489,10 @@ mod_linear %&gt;%
     </span>
     <span class="article-sharing">
       Share: &nbsp;
-      <a href="https://twitter.com/share?text=Machine%20Learning%20models&amp;url=https%3A%2F%2Fgithub.com%2Faashayadav%2Fposts%2F11-29-20_ML_models_AY%2F">
+      <a href="https://twitter.com/share?text=Machine%20learning%20models&amp;url=https%3A%2F%2Fgithub.com%2Faashayadav%2Fposts%2F11-29-20_ML_models_AY%2F">
         <i class="fab fa-twitter"></i>
       </a>
-      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fgithub.com%2Faashayadav%2Fposts%2F11-29-20_ML_models_AY%2F&amp;title=Machine%20Learning%20models">
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fgithub.com%2Faashayadav%2Fposts%2F11-29-20_ML_models_AY%2F&amp;title=Machine%20learning%20models">
         <i class="fab fa-linkedin"></i>
       </a>
       <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fgithub.com%2Faashayadav%2Fposts%2F11-29-20_ML_models_AY%2F">

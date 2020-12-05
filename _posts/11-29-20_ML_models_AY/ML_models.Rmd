@@ -1,5 +1,5 @@
 ---
-title: "Machine Learning models"
+title: "Machine learning models"
 description: |
     We will be fitting linear model, random forest, and gradient boosting.
 author:
@@ -32,82 +32,27 @@ library(rsample)
 
 ```{r, echo=FALSE, include=FALSE}
 
-# Import statewide assessment dataset
-set.seed(100)
-
-d <- read_csv(here::here("data", "train.csv")) %>%
-select(-classification) %>% #remove variable
-sample_frac(.01) # Small fraction of data
+# Reading 'train.csv' dataset
+set.seed(3000)
 
 
-# Import fall membership report on ethinicity and do some basic cleaning
-  
-sheets <- readxl::excel_sheets(here::here("data", "fallmembershipreport_20192020.xlsx"))
+git <- "~/Documents/GitHub/EDLD-654-Final"
 
-ode_schools <- readxl::read_xlsx(here::here("data",
-"fallmembershipreport_20192020.xlsx"), sheet = sheets[4])
+data <- import(here("data", "train.csv")) %>%
+  select(-classification) %>%
+  mutate_if(is.character, factor) %>%
+  mutate(ncessch = as.double(ncessch)) 
 
-ethnicities <- ode_schools %>%
-select(attnd_schl_inst_id = `Attending School ID`,
-sch_name = `School Name`,
-contains("%")) %>%
-  janitor::clean_names()
-
-names(ethnicities) <- gsub("x2019_20_percent", "p", names(ethnicities))
-
-# Join ethinicity dataset with the main dataset which we are calling math (Statewide assessment datset).
-
-d <- left_join(d, ethnicities)
-
-# Import and tidy free reduced lunch dataset from NCES.
-
-frl<- import("https://nces.ed.gov/ccd/Data/zip/ccd_sch_033_1718_l_1a_083118.zip",
-            setclass = "tbl_df")  %>% 
-  janitor::clean_names()  %>% 
-  filter(st == "OR")  %>%
-  select(ncessch, lunch_program, student_count)  %>% 
-  mutate(student_count = replace_na(student_count, 0))  %>% 
-  pivot_wider(names_from = lunch_program,
-              values_from = student_count)  %>% 
-  janitor::clean_names()  %>% 
+bonus <- import(here("data", "bonus_data.csv")) %>%
+  mutate(pupil_tch_ratio = as.numeric(pupil_tch_ratio)) %>%
   mutate(ncessch = as.double(ncessch))
 
-# Import student counts for each school across grades.
-
-stu_counts <- import("https://github.com/datalorax/ach-gap-variability/raw/master/data/achievement-gaps-geocoded.csv",
-                     setclass = "tbl_df")  %>% 
-  filter(state == "OR" & year == 1718)  %>% 
-  count(ncessch, wt = n)  %>% 
-  mutate(ncessch = as.double(ncessch))
-
-# Join frl and stu_counts datasets
-
-frl <- left_join(frl, stu_counts)
-
-# Calculate proprottion free and reduced lunch in frl dataset
-
-frl_props <- frl %>%
-mutate(prop_fl = free_lunch_qualified/n,
-      prop_rl = reduced_price_lunch_qualified/n) %>%
-select(ncessch, prop_fl, prop_rl)
-
-# Join the frl_props and the main dataset (statewide assessment datase)
-
-d <- left_join(d, frl_props) 
-
-skim(d) %>%
-  select(-starts_with("numeric.p")) # remove quartiles
-
-# Import the bonus data that contains population level information for school ids and zip code.
-#bonus_data <- import(here::here("data", "bonus_data.csv"))
+## join data
+data <- data %>% 
+  left_join(bonus) %>%
+  sample_frac(0.01)
 
 
-# Join the bonus dataset and the math dataset
-
-#math <- left_join(math, bonus_data)
-
-#skim(math) %>%
- # select(-starts_with("numeric.p")) # remove quartiles
 
 ```
 ## 1.Splitting and resampling
@@ -120,33 +65,33 @@ The training data will be used to fit our model and tune its parameters, whereas
 
 We will use `initial_split()` function from the `rsample` package which creates a `split` object. The split object `d_split`, tells how many observations we have in our training and testing set (trainin set = 75% & testing set = 25%).
 
-```{r, echo=TRUE, include=FALSE}
-set.seed(100)
+```{r, echo=TRUE}
+set.seed(3000)
 # Create split object ining (75%) and testing (25%)
 
-d_split <- initial_split(d, prop = 3/4) 
+data_split <- initial_split(data, prop = 3/4) 
 
-d_split
+data_split
 ```
 
 We will extract the training and testing set from the split object, `d_split` by using the `training()` and `testing()` functions.
 
-```{r, echo=TRUE, include=FALSE}
+```{r, echo=TRUE}
 # Extract training and testing set
-set.seed(100)
+set.seed(3000)
 
-d_train <- training(d_split)
+data_train <- training(data_split)
 
-d_test <- testing(d_split)
+data_test <- testing(data_split)
 ```
 
 ### 1b. Resampling
 At some point, ML models require parameters tuning (adjustment). In order to prepare for tuning, we resample our data. Resampling reduces bias from over-fitting the data. There are several methods to resample the data and the two most effective and frequently used are 10-fold cross validation and bootstrapping. In our project, we'll resample our data using `vfold_cv()`. This function outputs k-fold cross-validated versions of our training data, where `k = number of time we resample`. 
 
-```{r, echo=TRUE, include=FALSE}
+```{r, echo=TRUE}
 # Resample the data with 10-fold cross validation.
-set.seed(100)
-cv_splits <- vfold_cv(d_train)
+set.seed(3000)
+cv <- vfold_cv(data_train)
 
 ```
 
@@ -156,20 +101,21 @@ Preprocessing is a way of converting data from the raw form to a more usable for
 
 We will use `recipe()` function to indicate our outcome and predictor variables in our recipe. We will use `~.` to indicate that we are using all variables to predict the outcome variable `score`. All recipe takes from the data object at this point is the names and roles of the outcome and predictor variables. We will apply this recipe to specific dataset later. Therefore, when we print summary of object, `rec`, it shows numbers of predictor variables have been specified. It doen't actually apply the predictors yet.
 
-```{r, echo=TRUE, include=FALSE}
-set.seed(100)
+```{r, echo=TRUE}
+set.seed(3000)
 
-rec <- recipe(score ~ ., d_train) %>% 
+rec <- recipe(score ~., data_train) %>%
   step_mutate(tst_dt = as.numeric(lubridate::
-                                    mdy_hms(tst_dt))) %>% # convert `test date` variable to a date 
+                                    mdy_hms(tst_dt))) %>% # convert test variable to a date.
   update_role(contains("id"), ncessch, new_role = "id vars") %>% # declare ID variables
   step_nzv(all_predictors(), freq_cut = 0, unique_cut = 0) %>% # remove variables with zero variances
   step_novel(all_nominal()) %>% # prepares test data to handle previously unseen factor levels 
   step_unknown(all_nominal()) %>% # categorizes missing categorical data (NA's) as `unknown`
   step_medianimpute(all_numeric(), -all_outcomes(), -has_role("id vars"))  %>% # replaces missing numeric observations with the median
-  step_dummy(all_nominal(), -has_role("id vars")) %>% # dummy codes categorical variables
+  step_dummy(all_nominal(), -has_role("id vars")) %>% # dummy codes  categorical variables
   step_nzv(all_predictors(), -starts_with("lang_cd"))
-
+  
+ 
 ```
 
 Extract the pre-processed dataset
@@ -179,9 +125,9 @@ To extract the pre-processed dataset, we can `prep()` the recipe for our datset 
 However, in [tidymodels](https://workflows.tidymodels.org/) we can use `workflows()` where we don't need to `prep()` or `bake()` the recipe. 
 
 
-```{r, echo=TRUE, include=FALSE}
+```{r, echo=TRUE}
 prep(rec) %>%
-  bake(d_train)
+  bake(data_train)
 ```
 The next step is to specify our ML models, using the `parsnip` package. `parsnip`. To specify the model, there are four primary components: `model type`, `arguments`, `engine`, and `mode`. 
 
@@ -191,7 +137,7 @@ The next step is to specify our ML models, using the `parsnip` package. `parsnip
 
 ```{r, echo=TRUE}
 
-set.seed(100)
+set.seed(3000)
 # model with parsnip package
 mod_linear <- linear_reg() %>%
   set_engine("lm") %>%  # engine for linear regression
@@ -202,7 +148,7 @@ mod_linear <- linear_reg() %>%
 We will put the model and receipe together using `workflow`. In this case, we don't need to `prep()` and `bake()` the recipe.
 
 
-```{r}
+```{r, echo=TRUE}
 
 lm_wf <- workflow() %>% # set the workflow
   add_recipe(rec) %>% # add recipe
@@ -214,12 +160,12 @@ lm_wf <- workflow() %>% # set the workflow
 
 ```{r, echo=TRUE}
 
-set.seed(100)
+set.seed(3000)
 
 # fitting the linear model
 mod_linear<- tune::fit_resamples(
   lm_wf,        # workflow
-  resamples = cv_splits,
+  resamples = cv,
   metrics = yardstick::metric_set(rmse),
   control = tune::control_resamples(verbose = TRUE,
                                     save_pred = TRUE))
@@ -229,12 +175,15 @@ mod_linear<- tune::fit_resamples(
 
 ```{r, echo=TRUE}
 
-set.seed(100)
+set.seed(3000)
 
 mod_linear %>%
   collect_metrics() %>%
   filter(.metric == "rmse") 
 
+```
+```{r}
+show_best(mod_linear, metric = "rmse")
 ```
 
 ## 4. Random Forest
