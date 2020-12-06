@@ -33,7 +33,7 @@ The contributors of the blog are:
 
 [Asha Yadav](https://github.com/aashayadav)
 
-[Alejandra](https://github.com/Alegarisa)
+[Alejandra Garcia Isaza](https://github.com/Alegarisa)
 
 [Chris Ives](https://github.com/cives93)
 
