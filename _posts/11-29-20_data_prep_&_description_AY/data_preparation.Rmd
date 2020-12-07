@@ -1,7 +1,7 @@
 ---
-title: "Data preparation and description"
+title: "Data preparation and exploration"
 description: |
- Now we got our datasets, let's see how to prepare (join) them for analysis.
+ Here we joined our datasets and explored through visualization.
 author:
   - name: Asha
     url:
@@ -36,40 +36,120 @@ For the purpose of data loading and cleaning, we are using following packages in
 `{rio}`, and
 `{skimr}`
 
+
 ## 2. Joining the datasets
 
 For the purpose of demonstration, we will be using 1% of the data with `sample_frac()` to keep computing time low. All our datasets have `school ids` which we used as `key` to join the datasets.
 
-After loading our five datasets, we joined them together to make one cohesive dataset, to be used for ML modeling. After joining, the dataset contains student-level variables (e.g. gender, ethnicity, enrollement in special education, etc.) as well as district-level variables ( school longitude and latitude, proportion of free and reduced lunch, etc.). All of these variables will be used in our ML models to predict student score in the statewide assessment. Here is the preview of our final dataset, ready to be used for ML modeling.
+After loading our three datasets, we joined them together to make one cohesive dataset, to be used for ML modeling. After joining, the dataset contains student-level variables (e.g. gender, ethnicity, enrollement in special education, etc.) as well as district-level variables ( school longitude and latitude, proportion of free and reduced lunch, etc.). All of these variables will be used in our ML models to predict student score in the statewide assessment. Here is the preview of our final dataset, ready to be used for ML modeling.
 
-```{r}
+
+
+```{r, echo=FALSE}
 set.seed(3000)
 
-
-git <- "~/Documents/GitHub/EDLD-654-Final"
-
-data <- import(here("data", "train.csv")) %>%
+full_train <- import(here("data", "train.csv"), setclass = "tbl_df") %>%
   select(-classification) %>%
   mutate_if(is.character, factor) %>%
-  mutate(ncessch = as.double(ncessch)) 
+  mutate(ncessch = as.numeric(ncessch))
 
 bonus <- import(here("data", "bonus_data.csv")) %>%
   mutate(pupil_tch_ratio = as.numeric(pupil_tch_ratio)) %>%
   mutate(ncessch = as.double(ncessch))
 
-## join data
-data <- data %>% 
-  left_join(bonus)
+## joining data
+data <- left_join(full_train, bonus) %>%
+  sample_frac(0.01)
+
+skim(data) %>%
+  select(-starts_with("numeric.p")) #remove quartile
 
 ```
 
 
-```{r}
+## 3.Data Exploration
 
-#skim(data)
+Correlation: Figure 1 displays significant (`p < 0.05`) correlation between independent (predictors) numeric variables. `Red dots` show significant pearson's correlation coefficient between 0 to 1 and `white dots` show significant coefficient between -1 to 0. Blank spaces are not significant.
+
+```{r, fig.width=20, fig.height=18, echo=FALSE}
+
+data_corr <- data %>%
+  select(-contains("id"), -ncessch) %>% 
+  select_if(is.numeric) %>% 
+  select(score, everything()) %>%
+  cor(use = "complete.obs")
+
+# Function to calculate significant pearson's correlation
+
+cor.mtest <- function(mat, ...) {
+    mat <- as.matrix(mat)
+    n <- ncol(mat)
+    p.mat<- matrix(NA, n, n)
+    diag(p.mat) <- 0
+    for (i in 1:(n - 1)) {
+        for (j in (i + 1):n) {
+            tmp <- cor.test(mat[, i], mat[, j], ...)
+            p.mat[i, j] <- p.mat[j, i] <- tmp$p.value
+        }
+    }
+  colnames(p.mat) <- rownames(p.mat) <- colnames(mat)
+  p.mat
+}
+
+p.mat <- cor.mtest(data_corr)
+
+data_corr %>% 
+  corrplot::corrplot(method = "circle", type = "lower",
+                     col=c("white", "red"),
+                     bg="lightblue", p.mat = p.mat, 
+                     sig.level = 0.05, insig = "blank",
+                     tl.col="black", tl.srt=45,
+                     order = "hclust",
+                     title = "Figure 1: Corelation between numeric variables",
+                     mar=c(0,0,1,0))
+
 
 ```
+We looked if pupil-teacher ratio and score differ by county.
 
+```{r, fig.width=10, fig.height=10, echo=FALSE}
+
+
+ggplot(data, aes(pupil_tch_ratio, score)) +
+  geom_point(aes(color = county)) + 
+  scale_x_continuous("pupil_tch_ratio") +
+  scale_y_continuous("Score") +
+  theme_bw() + labs(title="Pupil-Teacher ratio by Score and County in Oregon") +
+  facet_wrap(~county) +
+  theme(legend.position = "none")
+
+```
+We explored adult qualification by economic disadvantage and grade.
+
+```{r, fig.width=10, fig.height=10, echo=FALSE}
+library(dplyr)
+
+data_factor1 <- data %>%
+  select(county, starts_with("percent_"), econ_dsvntg, 
+         enrl_grd) %>%
+  pivot_longer(6:14,
+               names_to = "Adult_Qualification",
+               values_to = "Percentage") %>%
+  group_by(county) %>%
+  drop_na()
+
+
+ggplot(data_factor1, aes(reorder(Adult_Qualification, Percentage),
+       Percentage)) +
+  geom_col(aes(fill = econ_dsvntg), position = "dodge") +
+  theme(axis.text.x = element_text(angle = 45, 
+                                   hjust = 1, size = 10)) +
+  coord_flip() +
+  scale_fill_manual(values=c("#CC6666","#66CC99")) +
+  labs(title = "Adult qualification by economic disadvantage & grade in Oregon") +
+  facet_wrap(~enrl_grd)
+  
+```
 
 
 

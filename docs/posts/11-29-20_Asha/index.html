@@ -19,41 +19,47 @@
  <!--/radix_placeholder_import_source-->
 
   <!--radix_placeholder_meta_tags-->
-<title>Machine Learning for Educational Data Science Blog: Random Forest</title>
+<title>Machine Learning for Educational Data Science Blog: Linear Regression and Penalized Regression Model (Lasso)</title>
 
-<meta property="description" itemprop="description" content="We will be fitting linear model, random forest, and gradient boosting."/>
+<meta property="description" itemprop="description" content="Our aim is to predict the score on statewide testing assessment using other variables in the dataset. Let&#39;s see how linear and lasso regression perform."/>
 
-<link rel="canonical" href="https://github.com/aashayadav/posts/11-29-20_Alejandra/"/>
+<link rel="canonical" href="https://github.com/aashayadav/posts/11-29-20_Asha/"/>
 
 <!--  https://schema.org/Article -->
 <meta property="article:published" itemprop="datePublished" content="2020-11-28"/>
 <meta property="article:created" itemprop="dateCreated" content="2020-11-28"/>
-<meta name="article:author" content="Alejandra"/>
+<meta name="article:author" content="Asha"/>
 
 <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-<meta property="og:title" content="Machine Learning for Educational Data Science Blog: Random Forest"/>
+<meta property="og:title" content="Machine Learning for Educational Data Science Blog: Linear Regression and Penalized Regression Model (Lasso)"/>
 <meta property="og:type" content="article"/>
-<meta property="og:description" content="We will be fitting linear model, random forest, and gradient boosting."/>
-<meta property="og:url" content="https://github.com/aashayadav/posts/11-29-20_Alejandra/"/>
+<meta property="og:description" content="Our aim is to predict the score on statewide testing assessment using other variables in the dataset. Let&#39;s see how linear and lasso regression perform."/>
+<meta property="og:url" content="https://github.com/aashayadav/posts/11-29-20_Asha/"/>
+<meta property="og:image" content="https://github.com/aashayadav/posts/11-29-20_Asha/Linear_model_files/figure-html5/unnamed-chunk-13-1.png"/>
+<meta property="og:image:width" content="1248"/>
+<meta property="og:image:height" content="768"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="Machine Learning for Educational Data Science Blog"/>
 
 <!--  https://dev.twitter.com/cards/types/summary -->
-<meta property="twitter:card" content="summary"/>
-<meta property="twitter:title" content="Machine Learning for Educational Data Science Blog: Random Forest"/>
-<meta property="twitter:description" content="We will be fitting linear model, random forest, and gradient boosting."/>
-<meta property="twitter:url" content="https://github.com/aashayadav/posts/11-29-20_Alejandra/"/>
+<meta property="twitter:card" content="summary_large_image"/>
+<meta property="twitter:title" content="Machine Learning for Educational Data Science Blog: Linear Regression and Penalized Regression Model (Lasso)"/>
+<meta property="twitter:description" content="Our aim is to predict the score on statewide testing assessment using other variables in the dataset. Let&#39;s see how linear and lasso regression perform."/>
+<meta property="twitter:url" content="https://github.com/aashayadav/posts/11-29-20_Asha/"/>
+<meta property="twitter:image" content="https://github.com/aashayadav/posts/11-29-20_Asha/Linear_model_files/figure-html5/unnamed-chunk-13-1.png"/>
+<meta property="twitter:image:width" content="1248"/>
+<meta property="twitter:image:height" content="768"/>
 
 <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["Random Forest"]},{"type":"character","attributes":{},"value":["We will be fitting linear model, random forest, and gradient boosting."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Alejandra"]},{"type":"NULL"},{"type":"character","attributes":{},"value":["University of Oregon"]},{"type":"NULL"}]}]},{"type":"character","attributes":{},"value":["11-28-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["https://github.com/aashayadav/posts/11-29-20_Alejandra/"]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["Linear Regression and Penalized Regression Model (Lasso)"]},{"type":"character","attributes":{},"value":["Our aim is to predict the score on statewide testing assessment using other variables in the dataset. Let's see how linear and lasso regression perform."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Asha"]},{"type":"NULL"},{"type":"character","attributes":{},"value":["University of Oregon"]},{"type":"NULL"}]}]},{"type":"character","attributes":{},"value":["11-28-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"character","attributes":{},"value":["https://github.com/aashayadav/posts/11-29-20_Asha/"]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["ML_models_files/bowser-1.9.3/bowser.min.js","ML_models_files/distill-2.2.21/template.v2.js","ML_models_files/jquery-1.11.3/jquery.min.js","ML_models_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["Linear_model_files/figure-html5/unnamed-chunk-13-1.png","Linear_model_files/figure-html5/unnamed-chunk-15-1.png"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 
@@ -1283,7 +1289,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Random Forest","description":"We will be fitting linear model, random forest, and gradient boosting.","authors":[{"author":"Alejandra","authorURL":"#","affiliation":"University of Oregon","affiliationURL":"#"}],"publishedDate":"2020-11-28T00:00:00.000-08:00","citationText":"Alejandra, 2020"}
+{"title":"Linear Regression and Penalized Regression Model (Lasso)","description":"Our aim is to predict the score on statewide testing assessment using other variables in the dataset. Let's see how linear and lasso regression perform.","authors":[{"author":"Asha","authorURL":"#","affiliation":"University of Oregon","affiliationURL":"#"}],"publishedDate":"2020-11-28T00:00:00.000-08:00","citationText":"Asha, 2020"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1309,35 +1315,327 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>Random Forest</h1>
-<p><p>We will be fitting linear model, random forest, and gradient boosting.</p></p>
+<h1>Linear Regression and Penalized Regression Model (Lasso)</h1>
+<p><p>Our aim is to predict the score on statewide testing assessment using other variables in the dataset. Let’s see how linear and lasso regression perform.</p></p>
 </div>
 
 <div class="d-byline">
-  Alejandra  (University of Oregon)
+  Asha  (University of Oregon)
   
 <br/>11-28-2020
 </div>
 
 <div class="d-article">
+<h3 class="d-toc-header">Table of Contents</h3>
+<nav class="d-toc" id="TOC">
+<ul>
+<li><a href="#splitting-and-resampling">1.Splitting and resampling</a><ul>
+<li><a href="#a.-splitting">1a. Splitting</a></li>
+<li><a href="#b.-resampling">1b. Resampling</a></li>
+</ul></li>
+<li><a href="#pre-processing">2.Pre-processing</a></li>
+<li><a href="#linear-model">3. Linear model</a></li>
+<li><a href="#lasso-regression-type-of-penalized-regression">4. Lasso Regression (Type of penalized Regression)</a></li>
+</ul>
+</nav>
+<hr class="d-toc-separator"/>
+<h2 id="splitting-and-resampling">1.Splitting and resampling</h2>
+<p>Data splitting and resampling is a method to ensure that predictive performance of ML model is unbiased.</p>
+<h3 id="a.-splitting">1a. Splitting</h3>
+<p>We will split our dataset into training and testing set. The training data will be used to fit our model and tune its parameters, whereas the testing data will be used to evaluate our final model’s performance.</p>
+<p>We will use <code>initial_split()</code> function from the <code>rsample</code> package which creates a <code>split</code> object. The split object <code>d_split</code>, tells how many observations we have in our training and testing set (trainin set = 75% &amp; testing set = 25%).</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+set.seed(3000)
+# Create split object specifying (75%) and testing (25%)
 
+data_split &lt;- initial_split(data, prop = 3/4) 
+
+data_split</code></pre>
+<pre><code>
+&lt;Analysis/Assess/Total&gt;
+&lt;1421/473/1894&gt;</code></pre>
+</div>
+<p>We will extract the training and testing set from the split object, <code>d_split</code> by using the <code>training()</code> and <code>testing()</code> functions.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Extract training and testing set
+set.seed(3000)
+
+data_train &lt;- training(data_split)  # Our training dataset has 1421 observations.
+
+data_test &lt;- testing(data_split)    # Our test dataset has 473 observations.</code></pre>
+</div>
+<h3 id="b.-resampling">1b. Resampling</h3>
+<p>At some point, ML models require parameters tuning (adjustment). In order to prepare for tuning, we resample our data. Resampling reduces bias from over-fitting the data. There are several methods to resample the data and the two most effective and frequently used are 10-fold cross validation and bootstrapping. In our project, we’ll resample our data using <code>vfold_cv()</code>. This function outputs k-fold cross-validated versions of our training data, where <code>k = number of time we resample</code>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Resample the data with 10-fold cross validation.
+set.seed(3000)
+cv &lt;- vfold_cv(data_train)</code></pre>
+</div>
+<h2 id="pre-processing">2.Pre-processing</h2>
+<p>Preprocessing is a way of converting data from the raw form to a more usable form for the ML modeling purpose. The pre-processing involves defining roles of variables using role-specifying functions such as <code>all_numeric()</code>, <code>all_predictors()</code> as arguments to pre-processing steps. Pre-processing also involves steps such as imputation (<code>step_medianimpute</code>), rescaling (<code>step_scale</code>), standardizing (<code>step_normalize</code>), PCA (<code>step_pca</code>) and creating dummy variables (<code>step_dummy</code>). A full list of pre-processing can be found <a href="https://recipes.tidymodels.org/reference/index.html">here</a>.</p>
+<p>We will use <code>recipe()</code> function to indicate our outcome and predictor variables in our recipe. We will use <code>~.</code> to indicate that we are using all variables to predict the outcome variable <code>score</code>. All recipe takes from the data object at this point is the names and roles of the outcome and predictor variables. We will apply this recipe to specific dataset later. Therefore, when we print summary of object, <code>rec</code>, it shows numbers of predictor variables have been specified. It doen’t actually apply the predictors yet. We will use same receipe throughout this post.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+set.seed(3000)
+
+rec &lt;- recipe(score ~ ., data_train) %&gt;% 
+  step_mutate(tst_dt = as.numeric(lubridate::
+                                    mdy_hms(tst_dt))) %&gt;% # convert `test date` variable to a date 
+  update_role(contains(&quot;id&quot;), ncessch, new_role = &quot;id vars&quot;) %&gt;% # declare ID variables
+  step_nzv(all_predictors(), freq_cut = 0, unique_cut = 0) %&gt;% # remove variables with zero variances
+  step_novel(all_nominal()) %&gt;% # prepares test data to handle previously unseen factor levels 
+  step_unknown(all_nominal()) %&gt;% # categorizes missing categorical data (NA&#39;s) as `unknown`
+  step_medianimpute(all_numeric(), -all_outcomes(), 
+                    -has_role(&quot;id vars&quot;))  %&gt;% # replaces missing numeric observations with the median
+  step_dummy(all_nominal(), -has_role(&quot;id vars&quot;)) %&gt;% # dummy codes categorical variables
+  step_nzv(all_predictors(), -starts_with(&quot;lang_cd&quot;))</code></pre>
+</div>
+<p>Extract the pre-processed dataset</p>
+<p>To extract the pre-processed dataset, we can <code>prep()</code> the recipe for our datset then <code>bake()</code> the prepped recipe to extract the pre-processed data.</p>
+<p>However, in <a href="https://workflows.tidymodels.org/">tidymodels</a> we can use <code>workflows()</code> where we don’t need to <code>prep()</code> or <code>bake()</code> the recipe.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+prep(rec) #%&gt;%</code></pre>
+<pre><code>
+Data Recipe
+
+Inputs:
+
+      role #variables
+   id vars          8
+   outcome          1
+ predictor         79
+
+Training data contained 1421 data points and 1421 incomplete rows. 
+
+Operations:
+
+Variable mutation for tst_dt [trained]
+Sparse, unbalanced variable filter removed calc_admn_cd, lang_cd [trained]
+Novel factor level assignment for gndr, ethnic_cd, ... [trained]
+Unknown factor level assignment for gndr, ethnic_cd, ... [trained]
+Median Imputation for enrl_grd, tst_dt, lat, lon, ... [trained]
+Dummy variables from gndr, ethnic_cd, tst_bnch, ... [trained]
+Sparse, unbalanced variable filter removed gndr_new, ... [trained]</code></pre>
+<pre class="r"><code>
+ # bake(data_train)   # We are using workflow so no need to bake.</code></pre>
+</div>
+<p>The next step is to specify our ML models, using the <code>parsnip</code> package. To specify the model, there are four primary components: <code>model type</code>, <code>arguments</code>, <code>engine</code>, and <code>mode</code>.</p>
+<h2 id="linear-model">3. Linear model</h2>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+set.seed(3000)
+
+# Specify the model
+
+mod_linear &lt;- linear_reg() %&gt;%
+  set_engine(&quot;lm&quot;) %&gt;%  # engine for linear regression
+  set_mode(&quot;regression&quot;)  # regression for continous outcome varaible.
+
+# Workflow
+lm_wf &lt;- workflow() %&gt;% # set the workflow
+  add_recipe(rec) %&gt;% # add recipe
+  add_model(mod_linear) # add model
+  
+
+# Fit the linear model
+mod_linear_fit&lt;- fit_resamples(
+  mod_linear,
+  preprocessor = rec,
+  resamples = cv,
+  metrics = metric_set(rmse),
+  control = control_resamples(verbose = TRUE,
+                                    save_pred = TRUE))</code></pre>
+</div>
+<p>Collect metrics on linear model</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+set.seed(3000)
+
+mod_linear_fit %&gt;%
+  collect_metrics() %&gt;%
+  filter(.metric == &quot;rmse&quot;) </code></pre>
+<pre><code>
+# A tibble: 1 x 5
+  .metric .estimator  mean     n std_err
+  &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+1 rmse    standard    96.3    10    2.49</code></pre>
+<pre class="r"><code>
+#RMSE = 96.28</code></pre>
+</div>
+<p>Our data has multiple variables and some of them are highly correlated. In case like this, linear model usually performs poorly. So let’s try other alternatives such as penalized regression. We will use the same recipe <code>(i.e. rec)</code> for all models in this post. We will use tune_grid() to perform a grid search for the best combination of tuned hyperparameters such penalty.</p>
+<h2 id="lasso-regression-type-of-penalized-regression">4. Lasso Regression (Type of penalized Regression)</h2>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Specify the model
+
+set.seed(3000)
+
+# specity lasso with random penalty value and set 1 for mixture.
+lasso_mod &lt;- linear_reg(penalty = 0.1, mixture = 1) %&gt;%
+  set_engine(&quot;glmnet&quot;) 
+
+wf_lasso &lt;- workflow() %&gt;%
+   add_recipe(rec)
+
+lasso_fit &lt;- wf_lasso %&gt;%
+  add_model(lasso_mod) %&gt;%
+  fit(data = data_train)
+
+
+lasso_fit %&gt;%
+  pull_workflow_fit() %&gt;%
+  tidy()</code></pre>
+<pre><code>
+# A tibble: 80 x 3
+   term        estimate penalty
+   &lt;chr&gt;          &lt;dbl&gt;   &lt;dbl&gt;
+ 1 (Intercept) -6.64e+3     0.1
+ 2 enrl_grd     2.74e+1     0.1
+ 3 tst_dt       4.49e-6     0.1
+ 4 lat         -6.14e-1     0.1
+ 5 lon         -3.36e+0     0.1
+ 6 ncesag       0.          0.1
+ 7 zip          1.65e-2     0.1
+ 8 total_n     -1.57e-3     0.1
+ 9 fr_lnch_n   -8.84e-2     0.1
+10 red_lnch_n   4.70e-1     0.1
+# ... with 70 more rows</code></pre>
+</div>
+<p>Tune Lasso parameters We will use resampling and tuning to figure out right regularization parameter ’penalty`</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Tuning lasso parameters
+
+set.seed(3000)
+
+tune_lasso &lt;- linear_reg(penalty = tune(), mixture = 1) %&gt;%
+  set_engine(&quot;glmnet&quot;)
+
+# Tune the lasso grid
+lambda_grid &lt;- grid_regular(penalty(), levels = 50)</code></pre>
+</div>
+<p>Tune the grid using workflow object</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+doParallel::registerDoParallel()
+
+set.seed(3000)
+lasso_grid &lt;- tune_grid(
+  wf_lasso %&gt;%
+    add_model(tune_lasso), 
+  resamples = cv,
+  grid = lambda_grid
+)</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Results
+
+lasso_grid %&gt;%
+  collect_metrics()</code></pre>
+<pre><code>
+# A tibble: 100 x 7
+    penalty .metric .estimator   mean     n std_err .config
+      &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;fct&gt;  
+ 1 1.00e-10 rmse    standard   95.9      10  2.50   Model01
+ 2 1.00e-10 rsq     standard    0.362    10  0.0169 Model01
+ 3 1.60e-10 rmse    standard   95.9      10  2.50   Model02
+ 4 1.60e-10 rsq     standard    0.362    10  0.0169 Model02
+ 5 2.56e-10 rmse    standard   95.9      10  2.50   Model03
+ 6 2.56e-10 rsq     standard    0.362    10  0.0169 Model03
+ 7 4.09e-10 rmse    standard   95.9      10  2.50   Model04
+ 8 4.09e-10 rsq     standard    0.362    10  0.0169 Model04
+ 9 6.55e-10 rmse    standard   95.9      10  2.50   Model05
+10 6.55e-10 rsq     standard    0.362    10  0.0169 Model05
+# ... with 90 more rows</code></pre>
+<pre class="r"><code>
+# RMSE = 95.94</code></pre>
+</div>
+<p>Visualize the performance Results look fine so let’s visualize the performance with the regularization parameters.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+options(scipen = 999)
+
+lasso_grid %&gt;%
+  collect_metrics() %&gt;%
+  ggplot(aes(penalty, mean, color = .metric)) +
+  geom_errorbar(aes(
+    ymin = mean - std_err,
+    ymax = mean + std_err
+  ),
+  alpha = 0.5
+  ) +
+  geom_line(size = 1.5) +
+  facet_wrap(~.metric, scales = &quot;free&quot;, nrow = 2) +
+  scale_x_log10() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="Linear_model_files/figure-html5/unnamed-chunk-13-1.png" width="624" /></p>
+</div>
+<p>For choosing our final parameters, let’s get the lowest RMSE. Once we have the lowest RMSE, we can finalize our workflow by updating with lowest RMSE.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+lowest_rmse &lt;- lasso_grid %&gt;%
+  select_best(&quot;rmse&quot;)
+
+final_lasso &lt;- finalize_workflow(
+  wf_lasso %&gt;% add_model(tune_lasso),
+  lowest_rmse
+)</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+library(vip)
+
+final_lasso %&gt;%
+  fit(data_train) %&gt;%
+  pull_workflow_fit() %&gt;%
+  vi(lambda = lowest_rmse$penalty) %&gt;%
+  mutate(
+    Importance = abs(Importance),
+    Variable = fct_reorder(Variable, Importance)
+  ) %&gt;%
+  ggplot(aes(x = Importance, y = Variable, fill = Sign)) +
+  geom_col() +
+  scale_x_continuous(expand = c(0, 0)) +
+  labs(y = NULL)</code></pre>
+<p><img src="Linear_model_files/figure-html5/unnamed-chunk-15-1.png" width="960" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+last_fit(
+  final_lasso,
+  data_split) %&gt;%
+  collect_metrics()</code></pre>
+<pre><code>
+# A tibble: 2 x 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard      90.0  
+2 rsq     standard       0.424</code></pre>
+<pre class="r"><code>
+# RMSE for full dataset = 89.95</code></pre>
+</div>
 <!--radix_placeholder_article_footer-->
 <div class="article-footer">
   <p class="social_footer">
     <span class="disqus-comments">
       <i class="fas fa-comments"></i>
       &nbsp;
-      <span class="disqus-comment-count" data-disqus-identifier="posts/11-29-20_Alejandra/">Comment on this article</span>
+      <span class="disqus-comment-count" data-disqus-identifier="posts/11-29-20_Asha/">Comment on this article</span>
     </span>
     <span class="article-sharing">
       Share: &nbsp;
-      <a href="https://twitter.com/share?text=Random%20Forest&amp;url=https%3A%2F%2Fgithub.com%2Faashayadav%2Fposts%2F11-29-20_Alejandra%2F">
+      <a href="https://twitter.com/share?text=Linear%20Regression%20and%20Penalized%20Regression%20Model%20%28Lasso%29&amp;url=https%3A%2F%2Fgithub.com%2Faashayadav%2Fposts%2F11-29-20_Asha%2F">
         <i class="fab fa-twitter"></i>
       </a>
-      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fgithub.com%2Faashayadav%2Fposts%2F11-29-20_Alejandra%2F&amp;title=Random%20Forest">
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fgithub.com%2Faashayadav%2Fposts%2F11-29-20_Asha%2F&amp;title=Linear%20Regression%20and%20Penalized%20Regression%20Model%20%28Lasso%29">
         <i class="fab fa-linkedin"></i>
       </a>
-      <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fgithub.com%2Faashayadav%2Fposts%2F11-29-20_Alejandra%2F">
+      <a href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=https%3A%2F%2Fgithub.com%2Faashayadav%2Fposts%2F11-29-20_Asha%2F">
         <i class="fab fa-facebook"></i>
       </a>
     </span>
@@ -1346,8 +1644,8 @@ document.addEventListener('DOMContentLoaded', function() {
   <div id="disqus_thread" class="hidden"></div>
   <script>
 var disqus_config = function () {
-  this.page.url = 'https://github.com/aashayadav/posts/11-29-20_Alejandra/';
-  this.page.identifier = 'posts/11-29-20_Alejandra/';
+  this.page.url = 'https://github.com/aashayadav/posts/11-29-20_Asha/';
+  this.page.identifier = 'posts/11-29-20_Asha/';
 };
 (function() {
   var d = document, s = d.createElement('script');

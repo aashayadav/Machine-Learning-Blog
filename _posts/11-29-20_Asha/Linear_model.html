@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Linear Regression and Penalized Regression Model (Lasso)</title>
+  
+  <meta property="description" itemprop="description" content="Our aim is to predict the score on statewide testing assessment using other variables in the dataset. Let&#39;s see how linear and lasso regression perform."/>
+  
+  
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2020-11-28"/>
+  <meta property="article:created" itemprop="dateCreated" content="2020-11-28"/>
+  <meta name="article:author" content="Asha"/>
+  
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Linear Regression and Penalized Regression Model (Lasso)"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="Our aim is to predict the score on statewide testing assessment using other variables in the dataset. Let&#39;s see how linear and lasso regression perform."/>
+  <meta property="og:locale" content="en_US"/>
+  
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="Linear Regression and Penalized Regression Model (Lasso)"/>
+  <meta property="twitter:description" content="Our aim is to predict the score on statewide testing assessment using other variables in the dataset. Let&#39;s see how linear and lasso regression perform."/>
+  
+  <!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Linear Regression and Penalized Regression Model (Lasso)"]},{"type":"character","attributes":{},"value":["Our aim is to predict the score on statewide testing assessment using other variables in the dataset. Let's see how linear and lasso regression perform.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Asha"]},{"type":"NULL"},{"type":"character","attributes":{},"value":["University of Oregon"]},{"type":"NULL"}]}]},{"type":"character","attributes":{},"value":["11-28-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["Linear_model_files/figure-html5/unnamed-chunk-13-1.png","Linear_model_files/figure-html5/unnamed-chunk-15-1.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+  
+  <style type="text/css">
+  
+  body {
+    background-color: white;
+  }
+  
+  .pandoc-table {
+    width: 100%;
+  }
+  
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+  
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+  
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+  
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+  
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+  
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+  
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .shaded .shaded-content {
+    background: white;
+  }
+  
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+  
+  .hidden {
+    display: none !important;
+  }
+  
+  d-article {
+    padding-bottom: 30px;
+  }
+  
+  d-appendix {
+    padding-top: 30px;
+  }
+  
+  d-article>p>img {
+    width: 100%;
+  }
+  
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+  
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+  
+  /* CSS for table of contents */
+  
+  .d-toc {
+    color: rgba(0,0,0,0.8);
+    font-size: 0.8em;
+    line-height: 1em;
+  }
+  
+  .d-toc-header {
+    font-size: 0.6rem;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 1.3em;
+  }
+  
+  .d-toc a {
+    border-bottom: none;
+  }
+  
+  .d-toc ul {
+    padding-left: 0;
+  }
+  
+  .d-toc li>ul {
+    padding-top: 0.8em;
+    padding-left: 16px;
+    margin-bottom: 0.6em;
+  }
+  
+  .d-toc ul,
+  .d-toc li {
+    list-style-type: none;
+  }
+  
+  .d-toc li {
+    margin-bottom: 0.9em;
+  }
+  
+  .d-toc-separator {
+    margin-top: 20px;
+    margin-bottom: 2em;
+  }
+  
+  .d-article-with-toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  
+  
+  
+  /* Tweak code blocks (note that this CSS is repeated above in an injection
+     into the d-code shadow dom) */
+  
+  d-code {
+    overflow-x: auto !important;
+  }
+  
+  pre.d-code code.d-code {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+  
+  pre.text-output {
+  
+    font-size: 12px;
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+  
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+  
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+  
+  @media(min-width: 768px) {
+  
+  d-code {
+    overflow-x: visible !important;
+  }
+  
+  pre.d-code code.d-code  {
+      padding-left: 18px;
+      font-size: 14px;
+  }
+  pre.text-output {
+    font-size: 14px;
+  }
+  }
+  
+  /* Figure */
+  
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+  
+  .figure img {
+    width: 100%;
+  }
+  
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+  
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+  
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+  
+  
+  
+  /* Tweak 1000px media break to show more text */
+  
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+  
+    .grid {
+      grid-column-gap: 16px;
+    }
+  
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+  
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+  
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+  
+  
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+  
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  
+  
+  /* Social footer */
+  
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+  
+  .disqus-comments {
+    margin-right: 30px;
+  }
+  
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+  
+  #disqus_thread {
+    margin-top: 30px;
+  }
+  
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+  
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+  
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+  
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+  
+  
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+  
+  
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+  
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+  
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+  
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+  
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+  
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+  
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+  
+  
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+  
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+  
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+  
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+  
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+  
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+  
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+  
+  </style>
+  
+  <script type="application/javascript">
+  
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+  
+  // show body when load is complete
+  function on_load_complete() {
+  
+    // set body to visible
+    document.body.style.visibility = 'visible';
+  
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+  
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+  
+  function init_distill() {
+  
+    init_common();
+  
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+  
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+  
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+  
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+  
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+  
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+  
+    // create d-bibliography
+    var bibliography = $('<d-bibliography></d-bibliography>');
+    $('#distill-bibliography').wrap(bibliography);
+  
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+  
+    // replace citations with <d-cite>
+    $('.citation').each(function(i, val) {
+      appendix = true;
+      var cites = $(this).attr('data-cites').split(" ");
+      var dt_cite = $('<d-cite></d-cite>');
+      dt_cite.attr('key', cites.join());
+      $(this).replaceWith(dt_cite);
+    });
+    // remove refs
+    $('#refs').remove();
+  
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+  
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-toc a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+  
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+  
+    // replace code blocks with d-code
+    $('pre>code').each(function(i, val) {
+      var code = $(this);
+      var pre = code.parent();
+      var clz = "";
+      var language = pre.attr('class');
+      if (language) {
+        // map unknown languages to "clike" (without this they just dissapear)
+        if ($.inArray(language, ["bash", "clike", "css", "go", "html",
+                                 "javascript", "js", "julia", "lua", "markdown",
+                                 "markup", "mathml", "python", "svg", "xml"]) == -1)
+          language = "clike";
+        language = ' language="' + language + '"';
+        var dt_code = $('<d-code block' + language + clz + '></d-code>');
+        dt_code.text(code.text());
+        pre.replaceWith(dt_code);
+      } else {
+        code.addClass('text-output').unwrap().changeElementType('pre');
+      }
+    });
+  
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+  
+      // capture layout
+      var layout = $(this).attr('data-layout');
+  
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('d-code, pre.text-output, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+  
+  
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+  
+    // load distill framework
+    load_distill_framework();
+  
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+  
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+  
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+  
+      // table of contents
+      if (have_authors) // adjust border if we are in authors
+        $('.d-toc').parent().addClass('d-article-with-toc');
+  
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+  
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+  
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+  
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+  
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+  
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+  
+      // inject pre code styles (can't do this with a global stylesheet b/c a shadow root is used)
+      $('d-code').each(function(i, val) {
+        var style = document.createElement('style');
+        style.innerHTML = 'pre code { padding-left: 10px; font-size: 12px; border-left: 2px solid rgba(0,0,0,0.1); } ' +
+                          '@media(min-width: 768px) { pre code { padding-left: 18px; font-size: 14px; } }';
+        if (this.shadowRoot)
+          this.shadowRoot.appendChild(style);
+      });
+  
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+  
+      // clear polling timer
+      clearInterval(tid);
+  
+      // show body now that everything is ready
+      on_load_complete();
+    }
+  
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+  
+  }
+  
+  function init_downlevel() {
+  
+    init_common();
+  
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+  
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+  
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+  
+    // remove toc
+    $('.d-toc-header').remove();
+    $('.d-toc').remove();
+    $('.d-toc-separator').remove();
+  
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+  
+  
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+  
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+  
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+  
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+  
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+  
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+  
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+  
+    $('body').addClass('downlevel');
+  
+    on_load_complete();
+  }
+  
+  
+  function init_common() {
+  
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+  
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+  
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+  
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+  
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+  
+      }
+    });
+  
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+  
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+      });
+    }
+  
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+  
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+  
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+  
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+  
+  </script>
+  
+  <!--/radix_placeholder_distill-->
+  <script src="Linear_model_files/jquery-1.11.3/jquery.min.js"></script>
+  <script src="Linear_model_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="Linear_model_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="Linear_model_files/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Linear Regression and Penalized Regression Model (Lasso)","description":"Our aim is to predict the score on statewide testing assessment using other variables in the dataset. Let's see how linear and lasso regression perform.","authors":[{"author":"Asha","authorURL":"#","affiliation":"University of Oregon","affiliationURL":"#"}],"publishedDate":"2020-11-28T00:00:00.000-08:00","citationText":"Asha, 2020"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Linear Regression and Penalized Regression Model (Lasso)</h1>
+<p><p>Our aim is to predict the score on statewide testing assessment using other variables in the dataset. Let’s see how linear and lasso regression perform.</p></p>
+</div>
+
+<div class="d-byline">
+  Asha  (University of Oregon)
+  
+<br/>11-28-2020
+</div>
+
+<div class="d-article">
+<h3 class="d-toc-header">Table of Contents</h3>
+<nav class="d-toc" id="TOC">
+<ul>
+<li><a href="#splitting-and-resampling">1.Splitting and resampling</a><ul>
+<li><a href="#a.-splitting">1a. Splitting</a></li>
+<li><a href="#b.-resampling">1b. Resampling</a></li>
+</ul></li>
+<li><a href="#pre-processing">2.Pre-processing</a></li>
+<li><a href="#linear-model">3. Linear model</a></li>
+<li><a href="#lasso-regression-type-of-penalized-regression">4. Lasso Regression (Type of penalized Regression)</a></li>
+</ul>
+</nav>
+<hr class="d-toc-separator"/>
+<h2 id="splitting-and-resampling">1.Splitting and resampling</h2>
+<p>Data splitting and resampling is a method to ensure that predictive performance of ML model is unbiased.</p>
+<h3 id="a.-splitting">1a. Splitting</h3>
+<p>We will split our dataset into training and testing set. The training data will be used to fit our model and tune its parameters, whereas the testing data will be used to evaluate our final model’s performance.</p>
+<p>We will use <code>initial_split()</code> function from the <code>rsample</code> package which creates a <code>split</code> object. The split object <code>d_split</code>, tells how many observations we have in our training and testing set (trainin set = 75% &amp; testing set = 25%).</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+set.seed(3000)
+# Create split object specifying (75%) and testing (25%)
+
+data_split &lt;- initial_split(data, prop = 3/4) 
+
+data_split</code></pre>
+<pre><code>
+&lt;Analysis/Assess/Total&gt;
+&lt;1421/473/1894&gt;</code></pre>
+</div>
+<p>We will extract the training and testing set from the split object, <code>d_split</code> by using the <code>training()</code> and <code>testing()</code> functions.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Extract training and testing set
+set.seed(3000)
+
+data_train &lt;- training(data_split)  # Our training dataset has 1421 observations.
+
+data_test &lt;- testing(data_split)    # Our test dataset has 473 observations.</code></pre>
+</div>
+<h3 id="b.-resampling">1b. Resampling</h3>
+<p>At some point, ML models require parameters tuning (adjustment). In order to prepare for tuning, we resample our data. Resampling reduces bias from over-fitting the data. There are several methods to resample the data and the two most effective and frequently used are 10-fold cross validation and bootstrapping. In our project, we’ll resample our data using <code>vfold_cv()</code>. This function outputs k-fold cross-validated versions of our training data, where <code>k = number of time we resample</code>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Resample the data with 10-fold cross validation.
+set.seed(3000)
+cv &lt;- vfold_cv(data_train)</code></pre>
+</div>
+<h2 id="pre-processing">2.Pre-processing</h2>
+<p>Preprocessing is a way of converting data from the raw form to a more usable form for the ML modeling purpose. The pre-processing involves defining roles of variables using role-specifying functions such as <code>all_numeric()</code>, <code>all_predictors()</code> as arguments to pre-processing steps. Pre-processing also involves steps such as imputation (<code>step_medianimpute</code>), rescaling (<code>step_scale</code>), standardizing (<code>step_normalize</code>), PCA (<code>step_pca</code>) and creating dummy variables (<code>step_dummy</code>). A full list of pre-processing can be found <a href="https://recipes.tidymodels.org/reference/index.html">here</a>.</p>
+<p>We will use <code>recipe()</code> function to indicate our outcome and predictor variables in our recipe. We will use <code>~.</code> to indicate that we are using all variables to predict the outcome variable <code>score</code>. All recipe takes from the data object at this point is the names and roles of the outcome and predictor variables. We will apply this recipe to specific dataset later. Therefore, when we print summary of object, <code>rec</code>, it shows numbers of predictor variables have been specified. It doen’t actually apply the predictors yet. We will use same receipe throughout this post.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+set.seed(3000)
+
+rec &lt;- recipe(score ~ ., data_train) %&gt;% 
+  step_mutate(tst_dt = as.numeric(lubridate::
+                                    mdy_hms(tst_dt))) %&gt;% # convert `test date` variable to a date 
+  update_role(contains(&quot;id&quot;), ncessch, new_role = &quot;id vars&quot;) %&gt;% # declare ID variables
+  step_nzv(all_predictors(), freq_cut = 0, unique_cut = 0) %&gt;% # remove variables with zero variances
+  step_novel(all_nominal()) %&gt;% # prepares test data to handle previously unseen factor levels 
+  step_unknown(all_nominal()) %&gt;% # categorizes missing categorical data (NA&#39;s) as `unknown`
+  step_medianimpute(all_numeric(), -all_outcomes(), 
+                    -has_role(&quot;id vars&quot;))  %&gt;% # replaces missing numeric observations with the median
+  step_dummy(all_nominal(), -has_role(&quot;id vars&quot;)) %&gt;% # dummy codes categorical variables
+  step_nzv(all_predictors(), -starts_with(&quot;lang_cd&quot;))</code></pre>
+</div>
+<p>Extract the pre-processed dataset</p>
+<p>To extract the pre-processed dataset, we can <code>prep()</code> the recipe for our datset then <code>bake()</code> the prepped recipe to extract the pre-processed data.</p>
+<p>However, in <a href="https://workflows.tidymodels.org/">tidymodels</a> we can use <code>workflows()</code> where we don’t need to <code>prep()</code> or <code>bake()</code> the recipe.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+prep(rec) #%&gt;%</code></pre>
+<pre><code>
+Data Recipe
+
+Inputs:
+
+      role #variables
+   id vars          8
+   outcome          1
+ predictor         79
+
+Training data contained 1421 data points and 1421 incomplete rows. 
+
+Operations:
+
+Variable mutation for tst_dt [trained]
+Sparse, unbalanced variable filter removed calc_admn_cd, lang_cd [trained]
+Novel factor level assignment for gndr, ethnic_cd, ... [trained]
+Unknown factor level assignment for gndr, ethnic_cd, ... [trained]
+Median Imputation for enrl_grd, tst_dt, lat, lon, ... [trained]
+Dummy variables from gndr, ethnic_cd, tst_bnch, ... [trained]
+Sparse, unbalanced variable filter removed gndr_new, ... [trained]</code></pre>
+<pre class="r"><code>
+ # bake(data_train)   # We are using workflow so no need to bake.</code></pre>
+</div>
+<p>The next step is to specify our ML models, using the <code>parsnip</code> package. To specify the model, there are four primary components: <code>model type</code>, <code>arguments</code>, <code>engine</code>, and <code>mode</code>.</p>
+<h2 id="linear-model">3. Linear model</h2>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+set.seed(3000)
+
+# Specify the model
+
+mod_linear &lt;- linear_reg() %&gt;%
+  set_engine(&quot;lm&quot;) %&gt;%  # engine for linear regression
+  set_mode(&quot;regression&quot;)  # regression for continous outcome varaible.
+
+# Workflow
+lm_wf &lt;- workflow() %&gt;% # set the workflow
+  add_recipe(rec) %&gt;% # add recipe
+  add_model(mod_linear) # add model
+  
+
+# Fit the linear model
+mod_linear_fit&lt;- fit_resamples(
+  mod_linear,
+  preprocessor = rec,
+  resamples = cv,
+  metrics = metric_set(rmse),
+  control = control_resamples(verbose = TRUE,
+                                    save_pred = TRUE))</code></pre>
+</div>
+<p>Collect metrics on linear model</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+set.seed(3000)
+
+mod_linear_fit %&gt;%
+  collect_metrics() %&gt;%
+  filter(.metric == &quot;rmse&quot;) </code></pre>
+<pre><code>
+# A tibble: 1 x 5
+  .metric .estimator  mean     n std_err
+  &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+1 rmse    standard    96.3    10    2.49</code></pre>
+<pre class="r"><code>
+#RMSE = 96.28</code></pre>
+</div>
+<p>Our data has multiple variables and some of them are highly correlated. In case like this, linear model usually performs poorly. So let’s try other alternatives such as penalized regression. We will use the same recipe <code>(i.e. rec)</code> for all models in this post. We will use tune_grid() to perform a grid search for the best combination of tuned hyperparameters such penalty.</p>
+<h2 id="lasso-regression-type-of-penalized-regression">4. Lasso Regression (Type of penalized Regression)</h2>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Specify the model
+
+set.seed(3000)
+
+# specity lasso with random penalty value and set 1 for mixture.
+lasso_mod &lt;- linear_reg(penalty = 0.1, mixture = 1) %&gt;%
+  set_engine(&quot;glmnet&quot;) 
+
+wf_lasso &lt;- workflow() %&gt;%
+   add_recipe(rec)
+
+lasso_fit &lt;- wf_lasso %&gt;%
+  add_model(lasso_mod) %&gt;%
+  fit(data = data_train)
+
+
+lasso_fit %&gt;%
+  pull_workflow_fit() %&gt;%
+  tidy()</code></pre>
+<pre><code>
+# A tibble: 80 x 3
+   term        estimate penalty
+   &lt;chr&gt;          &lt;dbl&gt;   &lt;dbl&gt;
+ 1 (Intercept) -6.64e+3     0.1
+ 2 enrl_grd     2.74e+1     0.1
+ 3 tst_dt       4.49e-6     0.1
+ 4 lat         -6.14e-1     0.1
+ 5 lon         -3.36e+0     0.1
+ 6 ncesag       0.          0.1
+ 7 zip          1.65e-2     0.1
+ 8 total_n     -1.57e-3     0.1
+ 9 fr_lnch_n   -8.84e-2     0.1
+10 red_lnch_n   4.70e-1     0.1
+# ... with 70 more rows</code></pre>
+</div>
+<p>Tune Lasso parameters We will use resampling and tuning to figure out right regularization parameter ’penalty`</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Tuning lasso parameters
+
+set.seed(3000)
+
+tune_lasso &lt;- linear_reg(penalty = tune(), mixture = 1) %&gt;%
+  set_engine(&quot;glmnet&quot;)
+
+# Tune the lasso grid
+lambda_grid &lt;- grid_regular(penalty(), levels = 50)</code></pre>
+</div>
+<p>Tune the grid using workflow object</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+doParallel::registerDoParallel()
+
+set.seed(3000)
+lasso_grid &lt;- tune_grid(
+  wf_lasso %&gt;%
+    add_model(tune_lasso), 
+  resamples = cv,
+  grid = lambda_grid
+)</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Results
+
+lasso_grid %&gt;%
+  collect_metrics()</code></pre>
+<pre><code>
+# A tibble: 100 x 7
+    penalty .metric .estimator   mean     n std_err .config
+      &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;fct&gt;  
+ 1 1.00e-10 rmse    standard   95.9      10  2.50   Model01
+ 2 1.00e-10 rsq     standard    0.362    10  0.0169 Model01
+ 3 1.60e-10 rmse    standard   95.9      10  2.50   Model02
+ 4 1.60e-10 rsq     standard    0.362    10  0.0169 Model02
+ 5 2.56e-10 rmse    standard   95.9      10  2.50   Model03
+ 6 2.56e-10 rsq     standard    0.362    10  0.0169 Model03
+ 7 4.09e-10 rmse    standard   95.9      10  2.50   Model04
+ 8 4.09e-10 rsq     standard    0.362    10  0.0169 Model04
+ 9 6.55e-10 rmse    standard   95.9      10  2.50   Model05
+10 6.55e-10 rsq     standard    0.362    10  0.0169 Model05
+# ... with 90 more rows</code></pre>
+<pre class="r"><code>
+# RMSE = 95.94</code></pre>
+</div>
+<p>Visualize the performance Results look fine so let’s visualize the performance with the regularization parameters.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+options(scipen = 999)
+
+lasso_grid %&gt;%
+  collect_metrics() %&gt;%
+  ggplot(aes(penalty, mean, color = .metric)) +
+  geom_errorbar(aes(
+    ymin = mean - std_err,
+    ymax = mean + std_err
+  ),
+  alpha = 0.5
+  ) +
+  geom_line(size = 1.5) +
+  facet_wrap(~.metric, scales = &quot;free&quot;, nrow = 2) +
+  scale_x_log10() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="Linear_model_files/figure-html5/unnamed-chunk-13-1.png" width="624" /></p>
+</div>
+<p>For choosing our final parameters, let’s get the lowest RMSE. Once we have the lowest RMSE, we can finalize our workflow by updating with lowest RMSE.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+lowest_rmse &lt;- lasso_grid %&gt;%
+  select_best(&quot;rmse&quot;)
+
+final_lasso &lt;- finalize_workflow(
+  wf_lasso %&gt;% add_model(tune_lasso),
+  lowest_rmse
+)</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+library(vip)
+
+final_lasso %&gt;%
+  fit(data_train) %&gt;%
+  pull_workflow_fit() %&gt;%
+  vi(lambda = lowest_rmse$penalty) %&gt;%
+  mutate(
+    Importance = abs(Importance),
+    Variable = fct_reorder(Variable, Importance)
+  ) %&gt;%
+  ggplot(aes(x = Importance, y = Variable, fill = Sign)) +
+  geom_col() +
+  scale_x_continuous(expand = c(0, 0)) +
+  labs(y = NULL)</code></pre>
+<p><img src="Linear_model_files/figure-html5/unnamed-chunk-15-1.png" width="960" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+last_fit(
+  final_lasso,
+  data_split) %&gt;%
+  collect_metrics()</code></pre>
+<pre><code>
+# A tibble: 2 x 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard      90.0  
+2 rsq     standard       0.424</code></pre>
+<pre class="r"><code>
+# RMSE for full dataset = 89.95</code></pre>
+</div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

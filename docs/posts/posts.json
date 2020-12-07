@@ -1,26 +1,60 @@
 [
   {
-    "path": "posts/11-29-20_data_prep_&_description_AY/",
-    "title": "Data preparation and description",
-    "description": "Now we got our datasets, let's see how to prepare (join) them for analysis.",
-    "author": [
-      {
-        "name": "Asha",
-        "url": {}
-      }
-    ],
-    "date": "2020-11-28",
-    "categories": [],
-    "preview": {},
-    "last_modified": "2020-11-30T16:58:32-08:00",
-    "input_file": {}
-  },
-  {
-    "path": "posts/11-29-20_ML_models_AY/",
-    "title": "Machine learning models",
+    "path": "posts/11-29-20_Alejandra/",
+    "title": "Random Forest",
     "description": "We will be fitting linear model, random forest, and gradient boosting.",
     "author": [
       {
+        "name": "Alejandra",
+        "url": {}
+      }
+    ],
+    "date": "2020-11-28",
+    "categories": [],
+    "preview": {},
+    "last_modified": "2020-12-04T18:07:18-08:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/11-29-20_Asha/",
+    "title": "Linear Regression and Penalized Regression Model (Lasso)",
+    "description": "Our aim is to predict the score on statewide testing assessment using other variables in the dataset. Let's see how linear and lasso regression perform.",
+    "author": [
+      {
+        "name": "Asha",
+        "url": {}
+      }
+    ],
+    "date": "2020-11-28",
+    "categories": [],
+    "preview": "posts/11-29-20_Asha/Linear_model_files/figure-html5/unnamed-chunk-13-1.png",
+    "last_modified": "2020-12-07T13:48:40-08:00",
+    "input_file": {},
+    "preview_width": 1248,
+    "preview_height": 768
+  },
+  {
+    "path": "posts/11-29-20_Chris/",
+    "title": "XG Boost",
+    "description": "Here is our XG boost model!",
+    "author": [
+      {
+        "name": "Chris Ives",
+        "url": {}
+      }
+    ],
+    "date": "2020-11-28",
+    "categories": [],
+    "preview": {},
+    "last_modified": "2020-12-06T15:42:44-08:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/11-29-20_data_prep_&_description_AY/",
+    "title": "Data preparation and exploration",
+    "description": "Here we joined our datasets and explored through visualization.",
+    "author": [
+      {
         "name": "Asha",
         "url": {}
       }
@@ -28,25 +62,8 @@
     "date": "2020-11-28",
     "categories": [],
     "preview": {},
-    "last_modified": "2020-11-30T15:20:59-08:00",
+    "last_modified": "2020-12-07T03:15:41-08:00",
     "input_file": {}
-  },
-  {
-    "path": "posts/11-29-20_Alejandra/",
-    "title": "Random Forest Model",
-    "description": "This is how fitting a Random Forest model went for me!",
-    "author": [
-      {
-        "name": "Alejandra Garcia Isaza",
-        "url": {}
-      }
-    ],
-    "date": "2020-11-28",
-    "categories": [],
-    "contents": "\r\n\r\nContents\r\nLet’s dive in on the model fitting process!\r\nFirst round of tuning\r\n\r\nTo complete this project, I chose to run a Random Forest model. I decided to go with the Out-of-bag (OOB) samples to conduct model fitting and model assessment due to its relatively low run time.\r\nInitially I was only working locally on my computer with only 5% of the sample. Overall, my model tunning process was taking between 15 and 25 minutes each round of tunning, but unfortunately my R session froze several times and I could not finish the model tuning process.\r\nAt this point, Daniel suggested I use HPC via the Open On Demand interface. As always, I was too afraid to try something new, but Daniel patiently showed me how to work with the new interface and explained for the 97th time what was the difference between the train and test files we have been working with all term long. I think I finally got it! I’m glad it only took me ten weeks 😬 to understand this.\r\nI followed the same steps we have been following all term long, reading in the data, sampling a fraction of the data (note that I used 50% of the data because I was working with HPC), and joining with other datasets. Here I joined a dataset we called “bonus” that inludes variables from different datasets. To learn more about this dataset and its variables, please go to <<<< link to page >>>>>.\r\nA huge shout-out to Chris Ives for taking the time to find and process the bonus datasets we are using here.\r\n\r\n\r\nset.seed(3000)\r\n\r\nfull_train <- import(here(\"data\", \"train.csv\"), setclass = \"tbl_df\") %>%\r\n  select(-classification) %>%\r\n  mutate_if(is.character, factor) %>%\r\n  mutate(ncessch = as.double(ncessch)) %>%\r\n  sample_frac(0.5)\r\n\r\nbonus <- import(here(\"data\", \"bonus_data.csv\")) %>%\r\n  mutate(pupil_tch_ratio = as.numeric(pupil_tch_ratio)) %>%\r\n  mutate(ncessch = as.double(ncessch))\r\n\r\n## joining data\r\ndata <- left_join(full_train, bonus)\r\n\r\n\r\n\r\nHere I created the initial split and the train and test objects for model fitting and assessment. Notice that I did not create a cross-validation resample because I will be using only the OOB samples.\r\n\r\n\r\nset.seed(3000)\r\ndata_split <- initial_split(data)\r\n\r\nset.seed(3000)\r\ndata_train <- training(data_split)\r\ndata_test <- testing(data_split)\r\n\r\n\r\n\r\nI created a recipe following the recommended preprocessing steps for a Random Forest model. I found this guide that Joe shared with our group very useful.\r\nThis recipe is pretty straightforward, the only thing that I think is worth highlighting is that we took the liberty to assume that most of the students’ home language was English; that is why we specified this code lang_cd = case_when(lang_cd == \"S\" ~ \"S\", TRUE ~ \"E\"). I took extra care not to lose the Spanish speaking students in the lang_cd variable to the step_nzv() near-zero variance variable removal due to the role of language in academic achievement.\r\nIn this model, we had one outcome score, 77 predictors and XX Id variables.\r\n\r\n\r\nrec <- recipe(score ~ ., data_train) %>%\r\n  step_mutate(tst_dt = lubridate::mdy_hms(tst_dt),\r\n              lang_cd = case_when(lang_cd == \"S\" ~ \"S\", TRUE ~ \"E\"),\r\n              pupil_tch_ratio = as.numeric(pupil_tch_ratio)) %>% \r\n  update_role(contains(\"id\"), ncessch, ncesag, sch_name, new_role = \"id_vars\") %>%\r\n  step_zv(all_predictors(), -starts_with(\"lang_cd\")) %>%\r\n  step_medianimpute(all_numeric(), -all_outcomes(), -has_role(\"id_vars\")) %>%\r\n  step_novel(all_nominal()) %>%\r\n  step_unknown(all_nominal()) %>% \r\n  step_dummy(all_nominal()) %>%\r\n  step_nzv(all_predictors(), -starts_with(\"lang_cd\"))\r\n\r\n\r\n\r\nLet’s dive in on the model fitting process!\r\nFirst, I wanted to develop a baseline model using the default hypermarameters. I focused only on three hyperparameters: predictors mtry = floor(p/3), in this model, around 26 predictors; number of treestrees = 500, and minimun node size min_n = 5.\r\nThe rmse for the default model was 88.80 Fitting the default model took less than 3 minutes!!\r\n\r\n\r\n# default model\r\nrf_def <- rand_forest() %>%\r\n  set_engine(\"ranger\",\r\n             num.threads = 8,\r\n             importance = \"permutation\",\r\n             verbose = TRUE) %>%\r\n  set_mode(\"regression\")\r\n\r\n# workflow for default model\r\nrf_def_wkflw <- workflow() %>% \r\n  add_model(rf_def) %>% \r\n  add_recipe(rec)\r\n\r\n# fitting the default model\r\nrf_def_fit <- fit(\r\n  rf_def_wkflw,\r\n  data_train)\r\n\r\n\r\n\r\nFirst round of tuning\r\nRandom forest models are know to have good out-of-the-box performance, however, I wanted to tune at least 2 hyperparameters to evaluate how much lower the rmse could be.\r\nI decided not to spend time tuning for number number of trees as the literature suggests that growing p * 10 trees is pretty safe. The number of trees needs to be large enough to stabilize the error rate, for this model I could have used 770 trees, but I went for 1000 trees just to be extra safe.\r\nTo tune for mtry and min_n, I followed what Boehmke & Greenwell (2020) suggest in the chapter focused on random forest models in the book Hands-On Machine Learning with R\r\n“Start with five evenly spaced values of mtry across the range 2 – p centered at the recommended default” (Boehmke & Greenwell, 2020)\r\n“When adjusting node size start with three values between 1–10 and adjust depending on impact to accuracy and run time.”\r\n\r\n   Var1 Var2\r\n1     2    1\r\n2    14    1\r\n3    26    1\r\n4    38    1\r\n5    50    1\r\n6     2    4\r\n7    14    4\r\n8    26    4\r\n9    38    4\r\n10   50    4\r\n11    2    7\r\n12   14    7\r\n13   26    7\r\n14   38    7\r\n15   50    7\r\n16    2   10\r\n17   14   10\r\n18   26   10\r\n19   38   10\r\n20   50   10\r\n\r\nBelow is a function that Daniel helped me build. This is an all-in-one function that builds the model, updates the default model workflow with the new hyperparameters, fits the models with the selected hyperparameters, and outputs a table with the tuned hyperparaemters and the corresponding rmse value. It’s pretty neat!\r\n\r\n\r\nhyp_rf_search <- function(mtry_val, min_n_val, wf) {\r\n  mod <- rand_forest() %>% \r\n    set_engine(\"ranger\",\r\n               num.threads = 8,\r\n               importance = \"permutation\",\r\n               verbose = TRUE) %>% \r\n    set_mode(\"regression\") %>% \r\n    set_args(mtry = {{mtry_val}},\r\n             min_n = {{min_n_val}},\r\n             trees = 1000)\r\n  \r\n  wf <- wf %>% \r\n    update_model(mod)\r\n  \r\n  rmse <- fit(wf, data_train) %>% \r\n    extract_rmse()\r\n  \r\n  tibble(mtry = mtry_val, min_n = min_n_val, rmse = rmse, workflow = list(wf))\r\n}\r\n\r\n\r\nmtry_results_1 <- map2_df(grd$Var1, grd$Var2, ~hyp_rf_search(.x, .y, rf_def_wkflw))\r\n\r\n\r\n\r\nNeed to create a folder with Rds files.\r\nThese are my results rmse = 88.5 (50% of data) with mtry = 14, min_n = 10, trees = 1000\r\n\r\n\r\n\r\nRunning this first round of tuning took an hour and forty minutes and the increase relative to the default model was not substantial, only 3 decimal points. Nonetheless, I went for another round of tuning, just to see what could happen.\r\nLooking at the plot, I could see that…\r\n\r\n\r\n\r\nSo I went for the following values to tune…\r\nI used the same all-in-one function shown above.\r\n\r\n   Var1 Var2\r\n1    14    7\r\n2    17    7\r\n3    20    7\r\n4    23    7\r\n5    26    7\r\n6    14    9\r\n7    17    9\r\n8    20    9\r\n9    23    9\r\n10   26    9\r\n11   14   11\r\n12   17   11\r\n13   20   11\r\n14   23   11\r\n15   26   11\r\n16   14   13\r\n17   17   13\r\n18   20   13\r\n19   23   13\r\n20   26   13\r\n21   14   15\r\n22   17   15\r\n23   20   15\r\n24   23   15\r\n25   26   15\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nAfter 2 additional hours, I was convinced that continue to tune was not worth it so I decided to stop and finalize the model with mtry = 14 and min_n = 15\r\n\r\n\r\nfinal_mod <- rand_forest() %>%\r\n  set_engine(\"ranger\",\r\n             num.threads = 8,\r\n             importance = \"permutation\",\r\n             verbose = TRUE) %>%\r\n  set_mode(\"regression\") %>%\r\n  set_args(mtry = 14,\r\n           min_n = 15,\r\n           trees = 1000)\r\n\r\nfinal_wkfl <-  workflow() %>%\r\n  add_model(final_mod) %>%\r\n  add_recipe(rec)\r\n\r\n\r\n\r\nNot sure which one of the final fit models to include: the one that uses data_train or the one that uses data_split??\r\n\r\n\r\n\r\n",
-    "preview": {},
-    "last_modified": "2020-12-05T21:19:10-08:00",
-    "input_file": "rf_models.utf8.md"
   },
   {
     "path": "posts/11-29-20_Chris/",
@@ -70,7 +87,7 @@
   {
     "path": "posts/11-28-20_datasets_AY/",
     "title": "Datasets",
-    "description": "Let's talk about the datasets used in the project",
+    "description": "Here is the preview of datasets used in our final project.",
     "author": [
       {
         "name": "Asha",
@@ -80,7 +97,7 @@
     "date": "2020-11-27",
     "categories": [],
     "preview": {},
-    "last_modified": "2020-11-29T01:02:37-08:00",
+    "last_modified": "2020-12-06T15:41:48-08:00",
     "input_file": {}
   },
   {
