@@ -1,7 +1,7 @@
 ---
 title: "Datasets"
 description: |
- Let's talk about the datasets used in the project
+ Here is the preview of datasets used in our final project.
 author:
   - name: Asha
     url:
@@ -30,9 +30,10 @@ library(rio)
 library(skimr)
 ```
 ## 1. Introduction
-For this project, we collected and joined five structured datasets. Datasets are selected on the basis of variables that were correlated with the outcome variable. In our datasets, our outcome variable is children's score on the statewide assessment. Please see below for more information on each dataset.   
+For this project, we collected and joined three structured datasets and one supplemental small dataset only for XG boost model. Datasets are selected on the basis of variables that were correlated with the outcome variable. In our datasets, our outcome variable is children's score on the statewide assessment. Please see below for more information on each dataset.   
 
-## 2. Statewide testing data
+
+## 2. Statewide testing data (Original dataset)
 Students in every state across the nation are tested annually in reading and math in grades 3-8. Dataset used in the project are simulated from an actual statewide testing administration across the state of Oregon and the overall distribution are highly similar. Our continous outcome variable is `score` which is also presented in categorical form as `classification`. For the project, our models are run to predict the continous `score` variable. Our data contains other variables of interest (predictors) such as `gender`, `ethnicity`, `economic disadvange`, and `location`. In our simulated dataset, `school ids` are real which we used as key to join other datasets. Here is the preview of our statewide testing dataset. 
 
 ```{r, echo=FALSE}
@@ -44,44 +45,7 @@ skim(d) %>%
     select(-starts_with("numeric.p")) # remove quartile
 ```
 
-## 3. National Center for Educational Statistics (NCES)
-Our second dataset is obtained from the [NCES](https://nces.ed.gov/) website. NCES dataset contains data on the number of students eligible for different free/reduced lunch categories for every school in the United States. We filtered for the state of Oregon and rearranged the dataset. We counted the number of students for each school across grades and calculated proportion of children eligible for free/reduced lunch. We joined this dataset with the [Statewide testing dataset](2. Statewide testing data). Here is the preview of our NCES dataset.
-
-```{r, echo=FALSE}
-
-frl<- import("https://nces.ed.gov/ccd/Data/zip/ccd_sch_033_1718_l_1a_083118.zip",
-            setclass = "tbl_df")  %>% 
-  janitor::clean_names()  %>% 
-  filter(st == "OR")  %>%
-  select(ncessch, lunch_program, student_count)  %>% 
-  mutate(student_count = replace_na(student_count, 0))  %>% 
-  pivot_wider(names_from = lunch_program,
-              values_from = student_count)  %>% 
-  janitor::clean_names()  %>% 
-  mutate(ncessch = as.double(ncessch))
-
-skim(frl) %>%
-    select(-starts_with("numeric.p")) #remove quartile
-
-```
-
-## 4. Student count dataset
-Student count dataset was provided by the course instructor, [Prof. Daniel Anderson](https://education.uoregon.edu/people/faculty/daniela) which was used in his research in [School Achievement Gap Variability](https://github.com/datalorax/ach-gap-variability). Student count dataset contains data on school-level achievement gaps for the academic year by grade and content area and longitude and latitude values for schools in Oregon. Here is the preview of the dataset.
-
-```{r}
-stu_counts <- import("https://github.com/datalorax/ach-gap-variability/raw/master/data/achievement-gaps-geocoded.csv",
-                     setclass = "tbl_df")  %>% 
-  filter(state == "OR" & year == 1718)  %>% 
-  count(ncessch, wt = n)  %>% 
-  mutate(ncessch = as.double(ncessch))
-
-
-skim(stu_counts)  # remove quartile
-
-
-```
-
-## 5. Fall membership report data
+## 3. Fall membership report data
 [The Oregon Department for Education (ODE)](https://www.oregon.gov/ode/reports-and-data/students/Pages/Student-Enrollment-Reports.aspx) publicly releases student enrollment reports detailing the number of K-12 students who are enrolled on the first school day in October of each year.This report is known as `Fall membership report` which contains data on race/ethinicity percentages for schools in Oregon. Here is the preview of our data.
 
 ```{r, echo=FALSE}
@@ -109,9 +73,9 @@ skimr::skim(ethnicities) %>%
 
 ```
 
-## 6. Zipcode level data (bonus)
+## 4. Bonus Dataset
 
-We retrieved another dataset that contains k-12 population-level data as per zip code such as `teacher-pupil ratio`, percentage of people with `high school`, `no diploma`, and `higher education`.  
+We retrieved another dataset that contains k-12 data collected by `zip code`, `NCES school IDs`, `State school IDs`, and `county level`. It contains variables that are not present in the statewide testing dataset such as `teacher-pupil ratio`, percentage of people with `high school`, `no diploma`, and `higher education`. These variables may have effect on our outcome variable (`score`). Please see below preview other variables present in the dataset.
 
 ```{r}
 bonus_data <- import(here::here("data", "bonus_data.csv"))
@@ -119,4 +83,9 @@ skim(bonus_data) %>%
   select(-starts_with("numeric.p")) #remove quartile
 
 ```
+
+## 5. Supplemental small dataset
+
+Supplemental small dataset contains high school dropout rates and out-of-school suspension rates by state districts IDs. This dataset has been used only in XG boost model. For details, please check the [post]()
+
 

@@ -9,34 +9,43 @@
     <generator>Distill</generator>
     <lastBuildDate>Sat, 28 Nov 2020 00:00:00 +0000</lastBuildDate>
     <item>
-      <title>Data preparation and description</title>
+      <title>Random Forest</title>
+      <dc:creator>Alejandra</dc:creator>
+      <link>https://github.com/aashayadav/posts/11-29-20_Alejandra</link>
+      <description>We will be fitting linear model, random forest, and gradient boosting.</description>
+      <guid>https://github.com/aashayadav/posts/11-29-20_Alejandra</guid>
+      <pubDate>Sat, 28 Nov 2020 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Linear Regression and Penalized Regression Model (Lasso)</title>
+      <dc:creator>Asha</dc:creator>
+      <link>https://github.com/aashayadav/posts/11-29-20_Asha</link>
+      <description>Our aim is to predict the score on statewide testing assessment using other variables in the dataset. Let's see how linear and lasso regression perform.</description>
+      <guid>https://github.com/aashayadav/posts/11-29-20_Asha</guid>
+      <pubDate>Sat, 28 Nov 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://github.com/aashayadav/posts/11-29-20_Asha/Linear_model_files/figure-html5/unnamed-chunk-13-1.png" medium="image" type="image/png" width="1248" height="768"/>
+    </item>
+    <item>
+      <title>XG Boost</title>
+      <dc:creator>Chris Ives</dc:creator>
+      <link>https://github.com/aashayadav/posts/11-29-20_Chris</link>
+      <description>Here is our XG boost model!</description>
+      <guid>https://github.com/aashayadav/posts/11-29-20_Chris</guid>
+      <pubDate>Sat, 28 Nov 2020 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Data preparation and exploration</title>
       <dc:creator>Asha</dc:creator>
       <link>https://github.com/aashayadav/posts/11-29-20_data_prep_&amp;_description_AY</link>
-      <description>Now we got our datasets, let's see how to prepare (join) them for analysis.</description>
+      <description>Here we joined our datasets and explored through visualization.</description>
       <guid>https://github.com/aashayadav/posts/11-29-20_data_prep_&amp;_description_AY</guid>
-      <pubDate>Sat, 28 Nov 2020 00:00:00 +0000</pubDate>
-    </item>
-    <item>
-      <title>Machine learning models</title>
-      <dc:creator>Asha</dc:creator>
-      <link>https://github.com/aashayadav/posts/11-29-20_ML_models_AY</link>
-      <description>We will be fitting linear model, random forest, and gradient boosting.</description>
-      <guid>https://github.com/aashayadav/posts/11-29-20_ML_models_AY</guid>
-      <pubDate>Sat, 28 Nov 2020 00:00:00 +0000</pubDate>
-    </item>
-    <item>
-      <title>Random Forest Model</title>
-      <dc:creator>Alejandra Garcia Isaza</dc:creator>
-      <link>https://github.com/aashayadav/posts/11-29-20_Alejandra</link>
-      <description>This is how fitting a Random Forest model went for me!</description>
-      <guid>https://github.com/aashayadav/posts/11-29-20_Alejandra</guid>
       <pubDate>Sat, 28 Nov 2020 00:00:00 +0000</pubDate>
     </item>
     <item>
       <title>Datasets</title>
       <dc:creator>Asha</dc:creator>
       <link>https://github.com/aashayadav/posts/11-28-20_datasets_AY</link>
-      <description>Let's talk about the datasets used in the project</description>
+      <description>Here is the preview of datasets used in our final project.</description>
       <guid>https://github.com/aashayadav/posts/11-28-20_datasets_AY</guid>
       <pubDate>Fri, 27 Nov 2020 00:00:00 +0000</pubDate>
     </item>
