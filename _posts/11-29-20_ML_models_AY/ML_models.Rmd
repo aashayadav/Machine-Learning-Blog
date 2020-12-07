@@ -1,7 +1,7 @@
 ---
-title: "Machine learning models"
+title: "Linear Regression and Penalized Regression Model (Lasso)"
 description: |
-    We will be fitting linear model, random forest, and gradient boosting.
+    Our aim is to predict the score on statewide testing assessment using other variables in the dataset. Let's see how linear and lasso regression perform.
 author:
   - name: Asha
     url:
@@ -26,6 +26,8 @@ library(here)
 library(rio)
 library(skimr)
 library(rsample)
+#install.packages("caret")
+library(caret)
 
 ```
 
@@ -66,23 +68,24 @@ The training data will be used to fit our model and tune its parameters, whereas
 We will use `initial_split()` function from the `rsample` package which creates a `split` object. The split object `d_split`, tells how many observations we have in our training and testing set (trainin set = 75% & testing set = 25%).
 
 ```{r, echo=TRUE}
+
 set.seed(3000)
-# Create split object ining (75%) and testing (25%)
+# Create split object specifying (75%) and testing (25%)
 
 data_split <- initial_split(data, prop = 3/4) 
 
 data_split
-```
 
+```
 We will extract the training and testing set from the split object, `d_split` by using the `training()` and `testing()` functions.
 
 ```{r, echo=TRUE}
 # Extract training and testing set
 set.seed(3000)
 
-data_train <- training(data_split)
+data_train <- training(data_split)  # Our training dataset has 1421 observations.
 
-data_test <- testing(data_split)
+data_test <- testing(data_split)    # Our test dataset has 473 observations.
 ```
 
 ### 1b. Resampling
@@ -99,24 +102,27 @@ cv <- vfold_cv(data_train)
 
 Preprocessing is a way of converting data from the raw form to a more usable form for the ML modeling purpose. The pre-processing involves defining roles of variables using role-specifying functions such as `all_numeric()`, `all_predictors()` as arguments to pre-processing steps. Pre-processing also involves steps such as imputation (`step_medianimpute`), rescaling (`step_scale`), standardizing (`step_normalize`), PCA (`step_pca`) and creating dummy variables (`step_dummy`). A full list of pre-processing can be found [here](https://recipes.tidymodels.org/reference/index.html).
 
-We will use `recipe()` function to indicate our outcome and predictor variables in our recipe. We will use `~.` to indicate that we are using all variables to predict the outcome variable `score`. All recipe takes from the data object at this point is the names and roles of the outcome and predictor variables. We will apply this recipe to specific dataset later. Therefore, when we print summary of object, `rec`, it shows numbers of predictor variables have been specified. It doen't actually apply the predictors yet.
+We will use `recipe()` function to indicate our outcome and predictor variables in our recipe. We will use `~.` to indicate that we are using all variables to predict the outcome variable `score`. All recipe takes from the data object at this point is the names and roles of the outcome and predictor variables. We will apply this recipe to specific dataset later. Therefore, when we print summary of object, `rec`, it shows numbers of predictor variables have been specified. It doen't actually apply the predictors yet. We will use same receipe throughout this post. 
 
 ```{r, echo=TRUE}
 set.seed(3000)
 
-rec <- recipe(score ~., data_train) %>%
+rec <- recipe(score ~ ., data_train) %>% 
   step_mutate(tst_dt = as.numeric(lubridate::
-                                    mdy_hms(tst_dt))) %>% # convert test variable to a date.
+                                    mdy_hms(tst_dt))) %>% # convert `test date` variable to a date 
   update_role(contains("id"), ncessch, new_role = "id vars") %>% # declare ID variables
   step_nzv(all_predictors(), freq_cut = 0, unique_cut = 0) %>% # remove variables with zero variances
   step_novel(all_nominal()) %>% # prepares test data to handle previously unseen factor levels 
   step_unknown(all_nominal()) %>% # categorizes missing categorical data (NA's) as `unknown`
-  step_medianimpute(all_numeric(), -all_outcomes(), -has_role("id vars"))  %>% # replaces missing numeric observations with the median
-  step_dummy(all_nominal(), -has_role("id vars")) %>% # dummy codes  categorical variables
+  step_medianimpute(all_numeric(), -all_outcomes(), 
+                    -has_role("id vars"))  %>% # replaces missing numeric observations with the median
+  step_dummy(all_nominal(), -has_role("id vars")) %>% # dummy codes categorical variables
   step_nzv(all_predictors(), -starts_with("lang_cd"))
+  
   
  
 ```
+
 
 Extract the pre-processed dataset
 
@@ -126,68 +132,54 @@ However, in [tidymodels](https://workflows.tidymodels.org/) we can use `workflow
 
 
 ```{r, echo=TRUE}
-prep(rec) %>%
-  bake(data_train)
+prep(rec) #%>%
+ # bake(data_train)   # We are using workflow so no need to bake.
 ```
-The next step is to specify our ML models, using the `parsnip` package. `parsnip`. To specify the model, there are four primary components: `model type`, `arguments`, `engine`, and `mode`. 
+
+The next step is to specify our ML models, using the `parsnip` package. To specify the model, there are four primary components: `model type`, `arguments`, `engine`, and `mode`. 
 
 ## 3. Linear model
 
-### 3a. Specifying the linear model
 
 ```{r, echo=TRUE}
 
 set.seed(3000)
-# model with parsnip package
+
+# Specify the model
+
 mod_linear <- linear_reg() %>%
   set_engine("lm") %>%  # engine for linear regression
   set_mode("regression")  # regression for continous outcome varaible.
-```
 
-### 3b. Workflow
-We will put the model and receipe together using `workflow`. In this case, we don't need to `prep()` and `bake()` the recipe.
-
-
-```{r, echo=TRUE}
-
+# Workflow
 lm_wf <- workflow() %>% # set the workflow
   add_recipe(rec) %>% # add recipe
   add_model(mod_linear) # add model
   
-```
 
-### 3c. Fitting the linear model
-
-```{r, echo=TRUE}
-
-set.seed(3000)
-
-# fitting the linear model
-mod_linear<- tune::fit_resamples(
-  lm_wf,        # workflow
+# Fit the linear model
+mod_linear_fit<- fit_resamples(
+  mod_linear,
+  preprocessor = rec,
   resamples = cv,
-  metrics = yardstick::metric_set(rmse),
-  control = tune::control_resamples(verbose = TRUE,
+  metrics = metric_set(rmse),
+  control = control_resamples(verbose = TRUE,
                                     save_pred = TRUE))
+
+
+
 ```
 
-### 3d. Collect metrics
+Collect metrics on linear model
 
 ```{r, echo=TRUE}
 
 set.seed(3000)
 
-mod_linear %>%
+mod_linear_fit %>%
   collect_metrics() %>%
   filter(.metric == "rmse") 
 
+#RMSE = 96.28
+
 ```
-```{r}
-show_best(mod_linear, metric = "rmse")
-```
-
-## 4. Random Forest
-
-## 5. Gradient Boosting
-
-## 6. Evaluate metrics
