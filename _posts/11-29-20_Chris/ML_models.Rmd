@@ -60,23 +60,31 @@ Data was merged from three files:
 * "Bonus Dataset" with additional variables collected by zip code, NCES school IDs, state school IDs, and county levels
 
 * Supplemental small dataset of high school dropout rates and out-of-school suspension rates by state district IDs
+  + Dropout Rate Data Source:
+  https://www.oregon.gov/ode/reports-and-data/students/Pages/Dropout-Rates.aspx
+  + Suspension Rate Data Source:
+  https://www.oregon.gov/ode/students-and-family/healthsafety/Pages/School-Discipline,-Bullying,-Restraint-and-Seclusion.aspx
 
 Importantly, the bonus data includes the variables described in the original data description page, as well as the following:
 
-* District Finance Data:
-  + Total revenue (rev_total)
-  + Total local revenue (rev_local_total)
-  + Total state revenue (rev_state_total)
-  + Total federal revenue (rev_fed_total)
-  + Total expenditures (exp_total)
-  + Total current expenditures for elementary and secondary education (exp_current_elsec_total)
-  + Total current expenditures for instruction (exp_current_instruction_total)
-  + Total current expenditures for support services (exp_current_supp_serve_total)
-  + Total capital outlay expenditures (outlay_capital_total)
-  + Total salary amount (salaries_total)
-  + Total employee benefits in dollars (benefits_employee_total)
-  + Number of students for which the reporting local education agency is financially responsible (enrollment_fall_responsible)
+* 2016-2017 District Finance Data:
+  + Total revenue (`rev_total`)
+  + Total local revenue (`rev_local_total`)
+  + Total state revenue (`rev_state_total`)
+  + Total federal revenue (`rev_fed_total`)
+  + Total expenditures (`exp_total`)
+  + Total current expenditures for elementary and secondary education (`exp_current_elsec_total`)
+  + Total current expenditures for instruction (`exp_current_instruction_total`)
+  + Total current expenditures for support services (`exp_current_supp_serve_total`)
+  + Total capital outlay expenditures (`outlay_capital_total`)
+  + Total salary amount (`salaries_total`)
+  + Total employee benefits in dollars (`benefits_employee_total`)
+  + Number of students for which the reporting local education agency is financially responsible (`enrollment_fall_responsible`)
 
+District financial data was obtained using the `educationdata` R package.
+  
+Lastly, district finance data was included in both its raw form, and transformed by dividing each revenue and expenditure value by the number of students the LEA was financially responsible for (e.g., `exp_total`/`enrollment_fall_responsible`)
+  
 # Recipe
 ``` {r echo = TRUE}
 ```{r, echo=TRUE, include=TRUE, eval = FALSE}
@@ -95,7 +103,6 @@ rec <- recipe(score ~ ., train) %>%
               lat = round(lat, 2),
               lon = round(lon, 2),
               median_income = log(median_income),
-              median_rent = log(median_rent),
               frl_prop = fr_lnch_prop + red_lnch_prop,
               schl_perf = case_when(sch_percent_level_1 + sch_percent_level_2 > sch_percent_level_3 + sch_percent_level_4 ~ 1,
                                     TRUE ~ 0),
@@ -120,9 +127,24 @@ train_y = data.matrix(baked_train[, 73])
 ```
 
 ## Recipe Notes
-* Pupil/Teacher ratio is binned and treated as a factor to remove noise. Ratio and binned variable are left as variables.
+* Pupil/Teacher ratio (`pupil_tch_ratio`) is binned and treated as a factor to remove noise (`pupil_tch_rate`). Both ratio and binned version of the variable remain in the data.
 * ID variables are removed
-# Tuning Gamma
+* Latitude (`lat`) and longitude (`lon`) are rounded to two decimal places to reduce noise and limit precision to within 2/3 of a mile.
+* Median income is log transformed, as the variations in income level are expected to have greater effect near the poverty threshold and less effect in higher income brackets. 
+* Free lunch proportions and reduced lunch proportions are collapsed into a single variable `frl_prop` given their expected similar effects.
+  + Free lunch proportions (`fr_lnch_prop`) and reduced lunch proportions (`red_lnch_prop`) are removed from the data set in lieu of their combined proportion. 
+* A dummy coded school-level variable (`schl_perf`) is created that denotes whether the percentage of students reaching proficiency on the EOY state test exceeds the percentage of students that fall below proficiency standards.
+* Zero variance predictors are removed
+* Missing data is median imputed
+* Explicit interaction is specified between the student-level special education flag and the per-student district expenditures for special services. Th effect of special education status is expected to vary depending on the funding available and potential quality of the district's special services.
+* Explicit interaction is specified for the effect of Spanish language code (`lang_cd`) and percentage of Hispanic/Latino students at the school (`p_hispanic_latino`). The justification is that Spanish-speaking students are expected to receive less effective supports in schools in which they are a greater minority.
+* Near-zero variance predictors are removed
+
+# Tuning Hyperparameters
+
+Because the loss reduction (gamma) and maximum tree depth are highly dependent on one another, two approaches were taken to tune the initial model. One approach involved first tuning loss reduction, followed by tree depth and hessian weights. The other involved tuning tree complexity and hessian weights without any severe loss reduction regularization, and then pruning it back by tuning gamma.
+
+## Tuning Gamma First
 ```{r, echo=TRUE, include=TRUE, eval = FALSE}
 
 baked_train <- prep(rec) %>% 
@@ -151,7 +173,7 @@ gamma_mods <- map(grid$loss_reduction, ~{
 })
 ```
 
-## Gamma Tuning Results
+### Tuning Results
 ``` {r echo = FALSE, fig.width = 8}
 gamma_mods <- readRDS("gamma_mods.rds")
 
@@ -165,20 +187,54 @@ mod_res <- cbind(gamma_res, gamma_params) %>%
   select(-silent, -objective, -nthread)
 
 print(round(mod_res, 4))
+ggplot(mod_res, aes(x = gamma, y = test_rmse_mean)) +
+  geom_line()
 ```
 
+As indicated in the results, a gamma of 10 produced the best fit the to test folds. A gamma of 50 was considered as a potential alternative given its lower RMSE SD; however, 50 was considered too extreme of a regularization setting.
 
-# Tree Parameter Tuning
-## Create Grid
+A follow-up gamma tuning process was conducted with a narrowed range of 5 to 15 and is reported below.
+
+`grid <- expand.grid(loss_reduction = seq(5, 15, 1))`
+
+``` {r echo = FALSE, fig.width = 8}
+
+gamma_mods_fine <- readRDS("gamma_mods_fine.rds")
+
+gamma_res <- map_df(gamma_mods_fine,
+                    ~.x$evaluation_log[.x$best_iteration, ])
+gamma_params <- map_df(gamma_mods_fine,
+                       ~.x$params)
+
+mod_res <- cbind(gamma_res, gamma_params) %>% 
+  arrange(test_rmse_mean) %>%
+  select(-silent, -objective, -nthread)
+
+print(round(mod_res, 4))
+
+ggplot(mod_res, aes(x = gamma, y = test_rmse_mean)) +
+  geom_line()
+```
+
+After second round of tuning, a gamma value of 12 produced the best fit.
+
+**Best `gamma` value = 12**
+
+**RMSE/SD to beat = 82.6085/0.5934**
+
+## Follow-up Tree-Parameter Tuning
+
+
+### Create Grid
 ``` {r eval = TRUE, echo = TRUE}
 # Set learning rate, tune tree specific parameters
-grid <- grid_max_entropy(min_n(c(0, 50)), # min_child_weight
+grid <- grid_max_entropy(min_n(c(4, 12)), # min_child_weight
                          tree_depth(), # max_depth
                          size = 30)
 head(grid)
 ```
 
-## Update Model Specification
+### Update Model Specification
 ``` {r echo = TRUE, eval = FALSE}
 tree_mods <- map2(grid$min_n, grid$tree_depth, ~{
   xgb.cv(
@@ -191,16 +247,16 @@ tree_mods <- map2(grid$min_n, grid$tree_depth, ~{
     verbose = 1,
     params = list( 
       eta = 0.1,
-      gamma = 10,
-        max_depth = .x,
-      min_child_weight = .y,
+      gamma = 12, 
+      min_child_weight = .x,
+      max_depth = .y,
       nthread = 24
     ) 
   )  
 }) 
 ```
 
-## Tree Parameter results
+### Tuning Results
 ``` {r echo = FALSE, fig.width = 8}
 tree_mods <- readRDS("tree_mods.rds")
 
@@ -213,11 +269,37 @@ mod_res <- cbind(tree_res, tree_params) %>%
   arrange(test_rmse_mean) %>%
   select(-silent, -objective, -nthread, -eta, -gamma)
 
+plotly::plot_ly(mod_res, x = ~min_child_weight, y = ~max_depth, z = ~test_rmse_mean, marker = list(size = 5),
+                color = ~test_rmse_mean)
+
 print(round(mod_res, 4))
 ```
 
 
-# Tune Stochastic Parameters
+## Tuning Tree Parameters First
+### Update Model Specification
+``` {r echo = TRUE, eval = FALSE}
+tree_mods <- map2(grid$min_n, grid$tree_depth, ~{
+  xgb.cv(
+    data = train_x,
+    label = train_y,
+    nrounds = 5000,
+    objective = "reg:squarederror",
+    early_stopping_rounds = 50, 
+    nfold = 10,
+    verbose = 1,
+    params = list( 
+      eta = 0.1,
+      gamma = 12,
+      min_child_weight = .x,
+      max_depth = .y,
+      nthread = 24
+    ) 
+  )  
+}) 
+```
+
+## Tune Stochastic Parameters
 ``` {r eval = FALSE}
 
 # Dials package requires column sampling (mtry) and subsampling (sample_size) to be expressed as raw numbers rather than intervals
@@ -258,20 +340,51 @@ sample_mods <- map2(grid$mtry, grid$sample_size, ~{
 
 
 ## Stochastic Parameter Results
+
+``
 #### (Top 10 results shown)
-``` {r echo = FALSE, eval = FALSE}
+``` {r echo = FALSE, eval = TRUE}
 sample_mods <- readRDS("sample_mods.rds")
 
 sample_res <- map_df(sample_mods,
                     ~.x$evaluation_log[.x$best_iteration, ])
 sample_params <- map_df(sample_mods,
                        ~.x$params)
-names(mod_res)
+
 mod_res <- cbind(sample_res, sample_params) %>% 
   arrange(test_rmse_mean) %>%
-  select(-silent, -objective, -nthread, -eta, -gamma, -max_depth, -min_child_weight)
+  select(-silent, -objective, -nthread, -eta, -max_depth, -min_child_weight)
 
-head(mod_res, 10)
+plotly::plot_ly(mod_res, x = ~colsample_bytree, y = ~subsample, z = ~test_rmse_mean, marker = list(size = 5),
+                color = ~test_rmse_mean)
+
+
+print(head(mod_res, 10), abbr = TRUE)
 ```
 
+## Retune Learning Rate
+``` {r eval = FALSE}
+r <- seq(0.0001, 0.1, length.out = 20)
+
+lr_mods <- map(lr, function(learn_rate) {
+  xgb.cv(
+    data = train_x,
+    label = train_y,
+    nrounds = 5000,
+    objective = "reg:squarederror",
+    early_stopping_rounds = 50,
+    nfold = 10,
+    verbose = 0,
+    params = list(
+      eta = learn_rate,
+      max_depth = 6,
+      min_child_weight = 10,
+      colsample_bytree = 
+      subsample =
+      nthread = 24
+    )
+  )
+})
+```
+## Final Fit Statistics
 
