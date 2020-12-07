@@ -102,14 +102,20 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta property="og:type" content="article"/>
 <meta property="og:description" content="We will be fitting linear model, random forest, and gradient boosting."/>
 <meta property="og:url" content="https://github.com/aashayadav/posts/11-29-20_Chris/"/>
+<meta property="og:image" content="https://github.com/aashayadav/posts/11-29-20_Chris/ML_models_files/figure-html5/unnamed-chunk-5-1.png"/>
+<meta property="og:image:width" content="1536"/>
+<meta property="og:image:height" content="768"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="Machine Learning for Educational Data Science Blog"/>
 
 <!--  https://dev.twitter.com/cards/types/summary -->
-<meta property="twitter:card" content="summary"/>
+<meta property="twitter:card" content="summary_large_image"/>
 <meta property="twitter:title" content="Machine Learning for Educational Data Science Blog: XG Boost"/>
 <meta property="twitter:description" content="We will be fitting linear model, random forest, and gradient boosting."/>
 <meta property="twitter:url" content="https://github.com/aashayadav/posts/11-29-20_Chris/"/>
+<meta property="twitter:image" content="https://github.com/aashayadav/posts/11-29-20_Chris/ML_models_files/figure-html5/unnamed-chunk-5-1.png"/>
+<meta property="twitter:image:width" content="1536"/>
+<meta property="twitter:image:height" content="768"/>
 
 <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
@@ -120,7 +126,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["data/bonus_data_v2.csv","data/disc_drop.csv","data/train.csv","ML_models_files/anchor-4.2.2/anchor.min.js","ML_models_files/bowser-1.9.3/bowser.min.js","ML_models_files/distill-2.2.21/template.v2.js","ML_models_files/jquery-1.11.3/jquery.min.js","ML_models_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["data/bonus_data_v2.csv","data/disc_drop.csv","data/train.csv","ML_models_files/anchor-4.2.2/anchor.min.js","ML_models_files/bowser-1.9.3/bowser.min.js","ML_models_files/distill-2.2.21/template.v2.js","ML_models_files/figure-html5/unnamed-chunk-5-1.png","ML_models_files/figure-html5/unnamed-chunk-6-1.png","ML_models_files/jquery-1.11.3/jquery.min.js","ML_models_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2000,7 +2006,14 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <!--/radix_placeholder_distill-->
+  <script src="../../site_libs/htmlwidgets-1.5.2/htmlwidgets.js"></script>
+  <script src="../../site_libs/plotly-binding-4.9.2.1/plotly.js"></script>
+  <script src="../../site_libs/typedarray-0.1/typedarray.min.js"></script>
   <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <link href="../../site_libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+  <script src="../../site_libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+  <link href="../../site_libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+  <script src="../../site_libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
   <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
   <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
   <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
@@ -2063,16 +2076,24 @@ document.addEventListener('DOMContentLoaded', function() {
 <li><a href="#data-import">Data Import</a></li>
 <li><a href="#recipe">Recipe</a><ul>
 <li><a href="#recipe-notes">Recipe Notes</a></li>
-<li><a href="#gamma-tuning-results">Gamma Tuning Results</a></li>
 </ul></li>
-<li><a href="#tree-parameter-tuning">Tree Parameter Tuning</a><ul>
+<li><a href="#tuning-hyperparameters">Tuning Hyperparameters</a><ul>
+<li><a href="#tuning-gamma-first">Tuning Gamma First</a><ul>
+<li><a href="#tuning-results">Tuning Results</a></li>
+</ul></li>
+<li><a href="#follow-up-tree-parameter-tuning">Follow-up Tree-Parameter Tuning</a><ul>
 <li><a href="#create-grid">Create Grid</a></li>
 <li><a href="#update-model-specification">Update Model Specification</a></li>
-<li><a href="#tree-parameter-results">Tree Parameter results</a></li>
+<li><a href="#tuning-results-1">Tuning Results</a></li>
 </ul></li>
-<li><a href="#tune-stochastic-parameters">Tune Stochastic Parameters</a><ul>
+<li><a href="#tuning-tree-parameters-first">Tuning Tree Parameters First</a><ul>
 <li><a href="#update-model-specification-1">Update Model Specification</a></li>
+</ul></li>
+<li><a href="#tune-stochastic-parameters">Tune Stochastic Parameters</a></li>
+<li><a href="#update-model-specification-2">Update Model Specification</a></li>
 <li><a href="#stochastic-parameter-results">Stochastic Parameter Results</a></li>
+<li><a href="#retune-learning-rate">Retune Learning Rate</a></li>
+<li><a href="#final-fit-statistics">Final Fit Statistics</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -2104,26 +2125,32 @@ document.addEventListener('DOMContentLoaded', function() {
 <ul>
 <li><p>Original Competition Training Dataset</p></li>
 <li><p>“Bonus Dataset” with additional variables collected by zip code, NCES school IDs, state school IDs, and county levels</p></li>
-<li><p>Supplemental small dataset of high school dropout rates and out-of-school suspension rates by state district IDs</p></li>
+<li><p>Supplemental small dataset of high school dropout rates and out-of-school suspension rates by state district IDs</p>
+<ul>
+<li>Dropout Rate Data Source: <a href="https://www.oregon.gov/ode/reports-and-data/students/Pages/Dropout-Rates.aspx" class="uri">https://www.oregon.gov/ode/reports-and-data/students/Pages/Dropout-Rates.aspx</a></li>
+<li>Suspension Rate Data Source: <a href="https://www.oregon.gov/ode/students-and-family/healthsafety/Pages/School-Discipline,-Bullying,-Restraint-and-Seclusion.aspx" class="uri">https://www.oregon.gov/ode/students-and-family/healthsafety/Pages/School-Discipline,-Bullying,-Restraint-and-Seclusion.aspx</a></li>
+</ul></li>
 </ul>
 <p>Importantly, the bonus data includes the variables described in the original data description page, as well as the following:</p>
 <ul>
-<li>District Finance Data:
+<li>2016-2017 District Finance Data:
 <ul>
-<li>Total revenue (rev_total)</li>
-<li>Total local revenue (rev_local_total)</li>
-<li>Total state revenue (rev_state_total)</li>
-<li>Total federal revenue (rev_fed_total)</li>
-<li>Total expenditures (exp_total)</li>
-<li>Total current expenditures for elementary and secondary education (exp_current_elsec_total)</li>
-<li>Total current expenditures for instruction (exp_current_instruction_total)</li>
-<li>Total current expenditures for support services (exp_current_supp_serve_total)</li>
-<li>Total capital outlay expenditures (outlay_capital_total)</li>
-<li>Total salary amount (salaries_total)</li>
-<li>Total employee benefits in dollars (benefits_employee_total)</li>
-<li>Number of students for which the reporting local education agency is financially responsible (enrollment_fall_responsible)</li>
+<li>Total revenue (<code>rev_total</code>)</li>
+<li>Total local revenue (<code>rev_local_total</code>)</li>
+<li>Total state revenue (<code>rev_state_total</code>)</li>
+<li>Total federal revenue (<code>rev_fed_total</code>)</li>
+<li>Total expenditures (<code>exp_total</code>)</li>
+<li>Total current expenditures for elementary and secondary education (<code>exp_current_elsec_total</code>)</li>
+<li>Total current expenditures for instruction (<code>exp_current_instruction_total</code>)</li>
+<li>Total current expenditures for support services (<code>exp_current_supp_serve_total</code>)</li>
+<li>Total capital outlay expenditures (<code>outlay_capital_total</code>)</li>
+<li>Total salary amount (<code>salaries_total</code>)</li>
+<li>Total employee benefits in dollars (<code>benefits_employee_total</code>)</li>
+<li>Number of students for which the reporting local education agency is financially responsible (<code>enrollment_fall_responsible</code>)</li>
 </ul></li>
 </ul>
+<p>District financial data was obtained using the <code>educationdata</code> R package.</p>
+<p>Lastly, district finance data was included in both its raw form, and transformed by dividing each revenue and expenditure value by the number of students the LEA was financially responsible for (e.g., <code>exp_total</code>/<code>enrollment_fall_responsible</code>)</p>
 <h1 id="recipe">Recipe</h1>
 <div class="layout-chunk" data-layout="l-body">
 
@@ -2145,7 +2172,6 @@ document.addEventListener('DOMContentLoaded', function() {
               lat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>lat</span>, <span class='fl'>2</span><span class='op'>)</span>,
               lon <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>lon</span>, <span class='fl'>2</span><span class='op'>)</span>,
               median_income <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>median_income</span><span class='op'>)</span>,
-              median_rent <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>median_rent</span><span class='op'>)</span>,
               frl_prop <span class='op'>=</span> <span class='va'>fr_lnch_prop</span> <span class='op'>+</span> <span class='va'>red_lnch_prop</span>,
               schl_perf <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span><span class='va'>sch_percent_level_1</span> <span class='op'>+</span> <span class='va'>sch_percent_level_2</span> <span class='op'>&gt;</span> <span class='va'>sch_percent_level_3</span> <span class='op'>+</span> <span class='va'>sch_percent_level_4</span> <span class='op'>~</span> <span class='fl'>1</span>,
                                     <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fl'>0</span><span class='op'>)</span>,
@@ -2171,20 +2197,54 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 <h2 id="recipe-notes">Recipe Notes</h2>
 <ul>
-<li>Pupil/Teacher ratio is binned and treated as a factor to remove noise. Ratio and binned variable are left as variables.</li>
-<li>ID variables are removed # Tuning Gamma
+<li>Pupil/Teacher ratio (<code>pupil_tch_ratio</code>) is binned and treated as a factor to remove noise (<code>pupil_tch_rate</code>). Both ratio and binned version of the variable remain in the data.</li>
+<li>ID variables are removed</li>
+<li>Latitude (<code>lat</code>) and longitude (<code>lon</code>) are rounded to two decimal places to reduce noise and limit precision to within 2/3 of a mile.</li>
+<li>Median income is log transformed, as the variations in income level are expected to have greater effect near the poverty threshold and less effect in higher income brackets.</li>
+<li>Free lunch proportions and reduced lunch proportions are collapsed into a single variable <code>frl_prop</code> given their expected similar effects.
+<ul>
+<li>Free lunch proportions (<code>fr_lnch_prop</code>) and reduced lunch proportions (<code>red_lnch_prop</code>) are removed from the data set in lieu of their combined proportion.</li>
+</ul></li>
+<li>A dummy coded school-level variable (<code>schl_perf</code>) is created that denotes whether the percentage of students reaching proficiency on the EOY state test exceeds the percentage of students that fall below proficiency standards.</li>
+<li>Zero variance predictors are removed</li>
+<li>Missing data is median imputed</li>
+<li>Explicit interaction is specified between the student-level special education flag and the per-student district expenditures for special services. Th effect of special education status is expected to vary depending on the funding available and potential quality of the district’s special services.</li>
+<li>Explicit interaction is specified for the effect of Spanish language code (<code>lang_cd</code>) and percentage of Hispanic/Latino students at the school (<code>p_hispanic_latino</code>). The justification is that Spanish-speaking students are expected to receive less effective supports in schools in which they are a greater minority.</li>
+<li>Near-zero variance predictors are removed</li>
+</ul>
+<h1 id="tuning-hyperparameters">Tuning Hyperparameters</h1>
+<p>Because the loss reduction (gamma) and maximum tree depth are highly dependent on one another, two approaches were taken to tune the initial model. One approach involved first tuning loss reduction, followed by tree depth and hessian weights. The other involved tuning tree complexity and hessian weights without any severe loss reduction regularization, and then pruning it back by tuning gamma.</p>
+<h2 id="tuning-gamma-first">Tuning Gamma First</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre>
-<code><span class="va">baked_train</span> <span class="op">&lt;-</span> <span class="fu">prep</span><span class="op">(</span><span class="va">rec</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">bake</span><span class="op">(</span><span class="va">train</span><span class="op">)</span></li>
-</ul>
-<p><span class="va">train_x</span> <span class="op">=</span> <span class="fu"><a href='https://rdrr.io/r/base/data.matrix.html'>data.matrix</a></span><span class="op">(</span><span class="va">baked_train</span><span class="op">[</span>, <span class="op">-</span><span class="fl">73</span><span class='op'>]</span><span class="op">)</span> <span class="va">train_y</span> <span class="op">=</span> <span class="fu"><a href='https://rdrr.io/r/base/data.matrix.html'>data.matrix</a></span><span class="op">(</span><span class="va">baked_train</span><span class="op">[</span>, <span class="fl">73</span><span class='op'>]</span><span class="op">)</span></p>
-<p><span class="va">grid</span> <span class="op">&lt;-</span> <span class="fu"><a href='https://rdrr.io/r/base/expand.grid.html'>expand.grid</a></span><span class="op">(</span>loss_reduction <span class="op">=</span> <span class="fu"><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">80</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></p>
-<span class="va">gamma_mods</span> <span class="op">&lt;-</span> <span class="fu">map</span><span class="op">(</span><span class="va">grid</span><span class="op">$</span><span class="va">loss_reduction</span>, <span class="op">~</span><span class="op">{</span> <span class="fu">xgb.cv</span><span class="op">(</span> data <span class="op">=</span> <span class="va">train_x</span>, label <span class="op">=</span> <span class="va">train_y</span>, nrounds <span class="op">=</span> <span class="fl">10000</span>, objective <span class="op">=</span> <span class="st">“reg:squarederror”</span>, early_stopping_rounds <span class="op">=</span> <span class="fl">50</span>, nfold <span class="op">=</span> <span class="fl">10</span>, verbose <span class="op">=</span> <span class="fl">1</span>, params <span class="op">=</span> <span class="fu"><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class="op">(</span> eta <span class="op">=</span> <span class="fl">0.1</span>, gamma <span class="op">=</span> <span class="va">.x</span>, nthread <span class="op">=</span> <span class="fl">24</span> <span class="op">)</span> <span class="op">)</span> <span class="op">}</span><span class="op">)</span> </code>
-</pre>
+<pre><code><span class='va'>baked_train</span> <span class='op'>&lt;-</span> <span class='fu'>prep</span><span class='op'>(</span><span class='va'>rec</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>bake</span><span class='op'>(</span><span class='va'>train</span><span class='op'>)</span>
+
+<span class='va'>train_x</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.matrix.html'>data.matrix</a></span><span class='op'>(</span><span class='va'>baked_train</span><span class='op'>[</span>, <span class='op'>-</span><span class='fl'>73</span><span class='op'>]</span><span class='op'>)</span>
+<span class='va'>train_y</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.matrix.html'>data.matrix</a></span><span class='op'>(</span><span class='va'>baked_train</span><span class='op'>[</span>, <span class='fl'>73</span><span class='op'>]</span><span class='op'>)</span>
+
+<span class='va'>grid</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/expand.grid.html'>expand.grid</a></span><span class='op'>(</span>loss_reduction <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>80</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>gamma_mods</span> <span class='op'>&lt;-</span> <span class='fu'>map</span><span class='op'>(</span><span class='va'>grid</span><span class='op'>$</span><span class='va'>loss_reduction</span>, <span class='op'>~</span><span class='op'>{</span>
+  <span class='fu'>xgb.cv</span><span class='op'>(</span>
+    data <span class='op'>=</span> <span class='va'>train_x</span>,
+    label <span class='op'>=</span> <span class='va'>train_y</span>,
+    nrounds <span class='op'>=</span> <span class='fl'>10000</span>,
+    objective <span class='op'>=</span> <span class='st'>"reg:squarederror"</span>,
+    early_stopping_rounds <span class='op'>=</span> <span class='fl'>50</span>,
+    nfold <span class='op'>=</span> <span class='fl'>10</span>,
+    verbose <span class='op'>=</span> <span class='fl'>1</span>,
+    params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+      eta <span class='op'>=</span> <span class='fl'>0.1</span>,
+      gamma <span class='op'>=</span> <span class='va'>.x</span>,
+      nthread <span class='op'>=</span> <span class='fl'>24</span>
+    <span class='op'>)</span>
+  <span class='op'>)</span>
+<span class='op'>}</span><span class='op'>)</span>
+</code></pre>
 </div>
 </div>
-<h2 id="gamma-tuning-results">Gamma Tuning Results</h2>
+<h3 id="tuning-results">Tuning Results</h3>
 <div class="layout-chunk" data-layout="l-body">
 <pre><code>    iter train_rmse_mean train_rmse_std test_rmse_mean test_rmse_std
  1:  452         77.0087         0.0983        82.6056        0.6781
@@ -2222,13 +2282,47 @@ document.addEventListener('DOMContentLoaded', function() {
 15: 0.1    65
 16: 0.1     0
 17: 0.1    75</code></pre>
+<p><img src="ML_models_files/figure-html5/unnamed-chunk-5-1.png" width="768" /></p>
 </div>
-<h1 id="tree-parameter-tuning">Tree Parameter Tuning</h1>
-<h2 id="create-grid">Create Grid</h2>
+<p>As indicated in the results, a gamma of 10 produced the best fit the to test folds. A gamma of 50 was considered as a potential alternative given its lower RMSE SD; however, 50 was considered too extreme of a regularization setting.</p>
+<p>A follow-up gamma tuning process was conducted with a narrowed range of 5 to 15 and is reported below.</p>
+<p><code>grid &lt;- expand.grid(loss_reduction = seq(5, 15, 1))</code></p>
+<div class="layout-chunk" data-layout="l-body">
+<pre><code>    iter train_rmse_mean train_rmse_std test_rmse_mean test_rmse_std
+ 1:  426         77.1033         0.0673        82.6085        0.5934
+ 2:  440         76.9364         0.0804        82.6233        0.6727
+ 3:  411         77.2343         0.0918        82.6301        0.5782
+ 4:  470         76.7071         0.0412        82.6407        0.4116
+ 5:  452         76.8494         0.0946        82.6417        0.5207
+ 6:  497         76.4667         0.0793        82.6423        0.3931
+ 7:  478         76.6126         0.0703        82.6454        0.3906
+ 8:  427         77.0770         0.0583        82.6646        0.5045
+ 9:  389         77.4035         0.1140        82.6658        0.6899
+10:  381         77.5321         0.0441        82.6747        0.4971
+11:  394         77.3753         0.0697        82.6947        0.5472
+    eta gamma
+ 1: 0.1    12
+ 2: 0.1    13
+ 3: 0.1    15
+ 4: 0.1    14
+ 5: 0.1    11
+ 6: 0.1     9
+ 7: 0.1     6
+ 8: 0.1     8
+ 9: 0.1     7
+10: 0.1     5
+11: 0.1    10</code></pre>
+<p><img src="ML_models_files/figure-html5/unnamed-chunk-6-1.png" width="768" /></p>
+</div>
+<p>After second round of tuning, a gamma value of 12 produced the best fit.</p>
+<p><strong>Best <code>gamma</code> value = 12</strong></p>
+<p><strong>RMSE/SD to beat = 82.6085/0.5934</strong></p>
+<h2 id="follow-up-tree-parameter-tuning">Follow-up Tree-Parameter Tuning</h2>
+<h3 id="create-grid">Create Grid</h3>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre><code><span class='co'># Set learning rate, tune tree specific parameters</span>
-<span class='va'>grid</span> <span class='op'>&lt;-</span> <span class='fu'>grid_max_entropy</span><span class='op'>(</span><span class='fu'>min_n</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>, <span class='co'># min_child_weight</span>
+<span class='va'>grid</span> <span class='op'>&lt;-</span> <span class='fu'>grid_max_entropy</span><span class='op'>(</span><span class='fu'>min_n</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4</span>, <span class='fl'>12</span><span class='op'>)</span><span class='op'>)</span>, <span class='co'># min_child_weight</span>
                          <span class='fu'>tree_depth</span><span class='op'>(</span><span class='op'>)</span>, <span class='co'># max_depth</span>
                          size <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>grid</span><span class='op'>)</span>
@@ -2237,14 +2331,14 @@ document.addEventListener('DOMContentLoaded', function() {
 <pre><code># A tibble: 6 x 2
   min_n tree_depth
   &lt;int&gt;      &lt;int&gt;
-1    49         10
-2    29         11
-3    12          5
-4    17         10
-5    37          1
-6    42         13</code></pre>
+1     8         10
+2     7         10
+3     7         15
+4    10          5
+5    12          9
+6    10         11</code></pre>
 </div>
-<h2 id="update-model-specification">Update Model Specification</h2>
+<h3 id="update-model-specification">Update Model Specification</h3>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre><code><span class='va'>tree_mods</span> <span class='op'>&lt;-</span> <span class='fu'>map2</span><span class='op'>(</span><span class='va'>grid</span><span class='op'>$</span><span class='va'>min_n</span>, <span class='va'>grid</span><span class='op'>$</span><span class='va'>tree_depth</span>, <span class='op'>~</span><span class='op'>{</span>
@@ -2258,9 +2352,9 @@ document.addEventListener('DOMContentLoaded', function() {
     verbose <span class='op'>=</span> <span class='fl'>1</span>,
     params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span> 
       eta <span class='op'>=</span> <span class='fl'>0.1</span>,
-      gamma <span class='op'>=</span> <span class='fl'>10</span>,
-        max_depth <span class='op'>=</span> <span class='va'>.x</span>,
-      min_child_weight <span class='op'>=</span> <span class='va'>.y</span>,
+      gamma <span class='op'>=</span> <span class='fl'>12</span>, 
+      min_child_weight <span class='op'>=</span> <span class='va'>.x</span>,
+      max_depth <span class='op'>=</span> <span class='va'>.y</span>,
       nthread <span class='op'>=</span> <span class='fl'>24</span>
     <span class='op'>)</span> 
   <span class='op'>)</span>  
@@ -2268,8 +2362,10 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 </div>
 </div>
-<h2 id="tree-parameter-results">Tree Parameter results</h2>
+<h3 id="tuning-results-1">Tuning Results</h3>
 <div class="layout-chunk" data-layout="l-body">
+<div id="htmlwidget-3107cbb73a86a59bb1c3" style="width:768px;height:384px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3107cbb73a86a59bb1c3">{"x":{"visdat":{"5dc46d906bfc":["function () ","plotlyVisDat"]},"cur_data":"5dc46d906bfc","attrs":{"5dc46d906bfc":{"x":{},"y":{},"z":{},"marker":{"size":5},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"min_child_weight"},"yaxis":{"title":"max_depth"},"zaxis":{"title":"test_rmse_mean"}},"hovermode":"closest","showlegend":false,"legend":{"yanchor":"top","y":0.5}},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[15,10,12,2,7,4,7,4,9,14,10,5,12,15,1,3,7,9,13,14,13,7,9,5,6,7,2,2,2,2],"y":[7,6,6,5,4,3,12,12,15,17,21,18,23,25,17,19,22,26,34,38,46,28,40,27,35,49,27,33,43,49],"z":[82.5138854,82.5260468,82.5867472,82.6038711,82.6386328,82.6866509,82.9198134,83.0705093,83.2934946,83.3909638,84.0744431,84.1086517,84.2383599,84.273793,84.5543496,84.6911759,84.732769,84.98723,85.0051866,85.0241614,85.364856,85.6355408,85.8088257,86.0549699,86.6076196,86.7726464,87.6313399,88.7169029,89.294117,89.3834976],"marker":{"colorbar":{"title":"test_rmse_mean","ticklen":2},"cmin":82.5138854,"cmax":89.3834976,"colorscale":[["0","rgba(68,1,84,1)"],["0.0416666666666674","rgba(70,19,97,1)"],["0.0833333333333326","rgba(72,32,111,1)"],["0.125","rgba(71,45,122,1)"],["0.166666666666667","rgba(68,58,128,1)"],["0.208333333333333","rgba(64,70,135,1)"],["0.25","rgba(60,82,138,1)"],["0.291666666666667","rgba(56,93,140,1)"],["0.333333333333333","rgba(49,104,142,1)"],["0.375","rgba(46,114,142,1)"],["0.416666666666667","rgba(42,123,142,1)"],["0.458333333333333","rgba(38,133,141,1)"],["0.5","rgba(37,144,140,1)"],["0.541666666666667","rgba(33,154,138,1)"],["0.583333333333333","rgba(39,164,133,1)"],["0.625","rgba(47,174,127,1)"],["0.666666666666667","rgba(53,183,121,1)"],["0.708333333333333","rgba(79,191,110,1)"],["0.75","rgba(98,199,98,1)"],["0.791666666666667","rgba(119,207,85,1)"],["0.833333333333333","rgba(147,214,70,1)"],["0.875","rgba(172,220,52,1)"],["0.916666666666667","rgba(199,225,42,1)"],["0.958333333333333","rgba(226,228,40,1)"],["1","rgba(253,231,37,1)"]],"showscale":false,"color":[82.5138854,82.5260468,82.5867472,82.6038711,82.6386328,82.6866509,82.9198134,83.0705093,83.2934946,83.3909638,84.0744431,84.1086517,84.2383599,84.273793,84.5543496,84.6911759,84.732769,84.98723,85.0051866,85.0241614,85.364856,85.6355408,85.8088257,86.0549699,86.6076196,86.7726464,87.6313399,88.7169029,89.294117,89.3834976],"size":5,"line":{"colorbar":{"title":"","ticklen":2},"cmin":82.5138854,"cmax":89.3834976,"colorscale":[["0","rgba(68,1,84,1)"],["0.0416666666666674","rgba(70,19,97,1)"],["0.0833333333333326","rgba(72,32,111,1)"],["0.125","rgba(71,45,122,1)"],["0.166666666666667","rgba(68,58,128,1)"],["0.208333333333333","rgba(64,70,135,1)"],["0.25","rgba(60,82,138,1)"],["0.291666666666667","rgba(56,93,140,1)"],["0.333333333333333","rgba(49,104,142,1)"],["0.375","rgba(46,114,142,1)"],["0.416666666666667","rgba(42,123,142,1)"],["0.458333333333333","rgba(38,133,141,1)"],["0.5","rgba(37,144,140,1)"],["0.541666666666667","rgba(33,154,138,1)"],["0.583333333333333","rgba(39,164,133,1)"],["0.625","rgba(47,174,127,1)"],["0.666666666666667","rgba(53,183,121,1)"],["0.708333333333333","rgba(79,191,110,1)"],["0.75","rgba(98,199,98,1)"],["0.791666666666667","rgba(119,207,85,1)"],["0.833333333333333","rgba(147,214,70,1)"],["0.875","rgba(172,220,52,1)"],["0.916666666666667","rgba(199,225,42,1)"],["0.958333333333333","rgba(226,228,40,1)"],["1","rgba(253,231,37,1)"]],"showscale":false,"color":[82.5138854,82.5260468,82.5867472,82.6038711,82.6386328,82.6866509,82.9198134,83.0705093,83.2934946,83.3909638,84.0744431,84.1086517,84.2383599,84.273793,84.5543496,84.6911759,84.732769,84.98723,85.0051866,85.0241614,85.364856,85.6355408,85.8088257,86.0549699,86.6076196,86.7726464,87.6313399,88.7169029,89.294117,89.3834976]}},"type":"scatter3d","mode":"markers","frame":null},{"x":[1,15],"y":[3,49],"type":"scatter3d","mode":"markers","opacity":0,"hoverinfo":"none","showlegend":false,"marker":{"colorbar":{"title":"test_rmse_mean","ticklen":2,"len":0.5,"lenmode":"fraction","y":1,"yanchor":"top"},"cmin":82.5138854,"cmax":89.3834976,"colorscale":[["0","rgba(68,1,84,1)"],["0.0416666666666674","rgba(70,19,97,1)"],["0.0833333333333326","rgba(72,32,111,1)"],["0.125","rgba(71,45,122,1)"],["0.166666666666667","rgba(68,58,128,1)"],["0.208333333333333","rgba(64,70,135,1)"],["0.25","rgba(60,82,138,1)"],["0.291666666666667","rgba(56,93,140,1)"],["0.333333333333333","rgba(49,104,142,1)"],["0.375","rgba(46,114,142,1)"],["0.416666666666667","rgba(42,123,142,1)"],["0.458333333333333","rgba(38,133,141,1)"],["0.5","rgba(37,144,140,1)"],["0.541666666666667","rgba(33,154,138,1)"],["0.583333333333333","rgba(39,164,133,1)"],["0.625","rgba(47,174,127,1)"],["0.666666666666667","rgba(53,183,121,1)"],["0.708333333333333","rgba(79,191,110,1)"],["0.75","rgba(98,199,98,1)"],["0.791666666666667","rgba(119,207,85,1)"],["0.833333333333333","rgba(147,214,70,1)"],["0.875","rgba(172,220,52,1)"],["0.916666666666667","rgba(199,225,42,1)"],["0.958333333333333","rgba(226,228,40,1)"],["1","rgba(253,231,37,1)"]],"showscale":true,"color":[82.5138854,89.3834976],"line":{"color":"rgba(255,127,14,1)"}},"z":[82.5138854,89.3834976],"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <pre><code>    iter train_rmse_mean train_rmse_std test_rmse_mean test_rmse_std
  1:  308         77.0365         0.1108        82.5139        0.7964
  2:  515         76.9397         0.0765        82.5260        0.5813
@@ -2335,20 +2431,73 @@ document.addEventListener('DOMContentLoaded', function() {
 30:        49                2
     max_depth min_child_weight</code></pre>
 </div>
-<h1 id="tune-stochastic-parameters">Tune Stochastic Parameters</h1>
+<h2 id="tuning-tree-parameters-first">Tuning Tree Parameters First</h2>
+<h3 id="update-model-specification-1">Update Model Specification</h3>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='va'>tree_mods</span> <span class='op'>&lt;-</span> <span class='fu'>map2</span><span class='op'>(</span><span class='va'>grid</span><span class='op'>$</span><span class='va'>min_n</span>, <span class='va'>grid</span><span class='op'>$</span><span class='va'>tree_depth</span>, <span class='op'>~</span><span class='op'>{</span>
+  <span class='fu'>xgb.cv</span><span class='op'>(</span>
+    data <span class='op'>=</span> <span class='va'>train_x</span>,
+    label <span class='op'>=</span> <span class='va'>train_y</span>,
+    nrounds <span class='op'>=</span> <span class='fl'>5000</span>,
+    objective <span class='op'>=</span> <span class='st'>"reg:squarederror"</span>,
+    early_stopping_rounds <span class='op'>=</span> <span class='fl'>50</span>, 
+    nfold <span class='op'>=</span> <span class='fl'>10</span>,
+    verbose <span class='op'>=</span> <span class='fl'>1</span>,
+    params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span> 
+      eta <span class='op'>=</span> <span class='fl'>0.1</span>,
+      gamma <span class='op'>=</span> <span class='fl'>12</span>,
+      min_child_weight <span class='op'>=</span> <span class='va'>.x</span>,
+      max_depth <span class='op'>=</span> <span class='va'>.y</span>,
+      nthread <span class='op'>=</span> <span class='fl'>24</span>
+    <span class='op'>)</span> 
+  <span class='op'>)</span>  
+<span class='op'>}</span><span class='op'>)</span> 
+</code></pre>
+</div>
+</div>
+<h2 id="tune-stochastic-parameters">Tune Stochastic Parameters</h2>
 <div class="layout-chunk" data-layout="l-body">
 
 </div>
-<h2 id="update-model-specification-1">Update Model Specification</h2>
+<h2 id="update-model-specification-2">Update Model Specification</h2>
 <div class="layout-chunk" data-layout="l-body">
 
 </div>
 <h2 id="stochastic-parameter-results">Stochastic Parameter Results</h2>
-<h4 id="top-10-results-shown">(Top 10 results shown)</h4>
+`` #### (Top 10 results shown)
+<div class="layout-chunk" data-layout="l-body">
+<div id="htmlwidget-0d62defcb74540ecd600" style="width:624px;height:384px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0d62defcb74540ecd600">{"x":{"visdat":{"5dc4362341b3":["function () ","plotlyVisDat"]},"cur_data":"5dc4362341b3","attrs":{"5dc4362341b3":{"x":{},"y":{},"z":{},"marker":{"size":5},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"colsample_bytree"},"yaxis":{"title":"subsample"},"zaxis":{"title":"test_rmse_mean"}},"hovermode":"closest","showlegend":false,"legend":{"yanchor":"top","y":0.5}},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[0.643243243243243,0.886486486486487,0.356756756756757,0.751351351351351,0.421621621621622,0.756756756756757,0.454054054054054,0.891891891891892,0.805405405405405,0.891891891891892,0.567567567567568,0.691891891891892,0.864864864864865,0.556756756756757,0.421621621621622,0.313513513513514,0.67027027027027,0.508108108108108,0.794594594594595,0.513513513513513,0.762162162162162,0.664864864864865,0.324324324324324,0.886486486486487,0.4,0.67027027027027,0.740540540540541,0.556756756756757,0.827027027027027,0.335135135135135],"y":[0.98505666220877,0.91243049201098,0.917512493841064,0.868226930386429,0.942289012458647,0.974153586260294,0.872830294925037,0.851671711128317,0.771908214260576,0.804406278595059,0.956120222425565,0.798514816639685,0.716815654254945,0.852016611529528,0.801266981065672,0.841106496797353,0.690722883085803,0.64112057436475,0.626106848736538,0.73756598859717,0.70436404589287,0.644907439994369,0.729935947068347,0.592320686985289,0.646653058351517,0.52976701625959,0.568508481734356,0.554332371366228,0.514704019145492,0.51115647216161],"z":[82.5534562,82.5561036,82.5606972,82.5677865,82.5727196,82.5801781,82.5874306,82.5982963,82.6037588,82.6083703,82.6088395,82.6315796,82.6377098,82.6384231,82.6609697,82.676905,82.689785,82.6956908,82.6972443,82.6985976,82.7052276,82.7057792,82.7076554,82.7604758,82.7659401,82.798848,82.7992514,82.8034859,82.8283028,82.8689894],"marker":{"colorbar":{"title":"test_rmse_mean","ticklen":2},"cmin":82.5534562,"cmax":82.8689894,"colorscale":[["0","rgba(68,1,84,1)"],["0.0416666666666667","rgba(70,19,97,1)"],["0.0833333333333333","rgba(72,32,111,1)"],["0.125","rgba(71,45,122,1)"],["0.166666666666667","rgba(68,58,128,1)"],["0.208333333333333","rgba(64,70,135,1)"],["0.25","rgba(60,82,138,1)"],["0.291666666666667","rgba(56,93,140,1)"],["0.333333333333333","rgba(49,104,142,1)"],["0.375","rgba(46,114,142,1)"],["0.416666666666667","rgba(42,123,142,1)"],["0.458333333333333","rgba(38,133,141,1)"],["0.5","rgba(37,144,140,1)"],["0.541666666666667","rgba(33,154,138,1)"],["0.583333333333333","rgba(39,164,133,1)"],["0.625","rgba(47,174,127,1)"],["0.666666666666667","rgba(53,183,121,1)"],["0.708333333333333","rgba(79,191,110,1)"],["0.75","rgba(98,199,98,1)"],["0.791666666666667","rgba(119,207,85,1)"],["0.833333333333333","rgba(147,214,70,1)"],["0.875","rgba(172,220,52,1)"],["0.916666666666667","rgba(199,225,42,1)"],["0.958333333333333","rgba(226,228,40,1)"],["1","rgba(253,231,37,1)"]],"showscale":false,"color":[82.5534562,82.5561036,82.5606972,82.5677865,82.5727196,82.5801781,82.5874306,82.5982963,82.6037588,82.6083703,82.6088395,82.6315796,82.6377098,82.6384231,82.6609697,82.676905,82.689785,82.6956908,82.6972443,82.6985976,82.7052276,82.7057792,82.7076554,82.7604758,82.7659401,82.798848,82.7992514,82.8034859,82.8283028,82.8689894],"size":5,"line":{"colorbar":{"title":"","ticklen":2},"cmin":82.5534562,"cmax":82.8689894,"colorscale":[["0","rgba(68,1,84,1)"],["0.0416666666666667","rgba(70,19,97,1)"],["0.0833333333333333","rgba(72,32,111,1)"],["0.125","rgba(71,45,122,1)"],["0.166666666666667","rgba(68,58,128,1)"],["0.208333333333333","rgba(64,70,135,1)"],["0.25","rgba(60,82,138,1)"],["0.291666666666667","rgba(56,93,140,1)"],["0.333333333333333","rgba(49,104,142,1)"],["0.375","rgba(46,114,142,1)"],["0.416666666666667","rgba(42,123,142,1)"],["0.458333333333333","rgba(38,133,141,1)"],["0.5","rgba(37,144,140,1)"],["0.541666666666667","rgba(33,154,138,1)"],["0.583333333333333","rgba(39,164,133,1)"],["0.625","rgba(47,174,127,1)"],["0.666666666666667","rgba(53,183,121,1)"],["0.708333333333333","rgba(79,191,110,1)"],["0.75","rgba(98,199,98,1)"],["0.791666666666667","rgba(119,207,85,1)"],["0.833333333333333","rgba(147,214,70,1)"],["0.875","rgba(172,220,52,1)"],["0.916666666666667","rgba(199,225,42,1)"],["0.958333333333333","rgba(226,228,40,1)"],["1","rgba(253,231,37,1)"]],"showscale":false,"color":[82.5534562,82.5561036,82.5606972,82.5677865,82.5727196,82.5801781,82.5874306,82.5982963,82.6037588,82.6083703,82.6088395,82.6315796,82.6377098,82.6384231,82.6609697,82.676905,82.689785,82.6956908,82.6972443,82.6985976,82.7052276,82.7057792,82.7076554,82.7604758,82.7659401,82.798848,82.7992514,82.8034859,82.8283028,82.8689894]}},"type":"scatter3d","mode":"markers","frame":null},{"x":[0.313513513513514,0.891891891891892],"y":[0.51115647216161,0.98505666220877],"type":"scatter3d","mode":"markers","opacity":0,"hoverinfo":"none","showlegend":false,"marker":{"colorbar":{"title":"test_rmse_mean","ticklen":2,"len":0.5,"lenmode":"fraction","y":1,"yanchor":"top"},"cmin":82.5534562,"cmax":82.8689894,"colorscale":[["0","rgba(68,1,84,1)"],["0.0416666666666667","rgba(70,19,97,1)"],["0.0833333333333333","rgba(72,32,111,1)"],["0.125","rgba(71,45,122,1)"],["0.166666666666667","rgba(68,58,128,1)"],["0.208333333333333","rgba(64,70,135,1)"],["0.25","rgba(60,82,138,1)"],["0.291666666666667","rgba(56,93,140,1)"],["0.333333333333333","rgba(49,104,142,1)"],["0.375","rgba(46,114,142,1)"],["0.416666666666667","rgba(42,123,142,1)"],["0.458333333333333","rgba(38,133,141,1)"],["0.5","rgba(37,144,140,1)"],["0.541666666666667","rgba(33,154,138,1)"],["0.583333333333333","rgba(39,164,133,1)"],["0.625","rgba(47,174,127,1)"],["0.666666666666667","rgba(53,183,121,1)"],["0.708333333333333","rgba(79,191,110,1)"],["0.75","rgba(98,199,98,1)"],["0.791666666666667","rgba(119,207,85,1)"],["0.833333333333333","rgba(147,214,70,1)"],["0.875","rgba(172,220,52,1)"],["0.916666666666667","rgba(199,225,42,1)"],["0.958333333333333","rgba(226,228,40,1)"],["1","rgba(253,231,37,1)"]],"showscale":true,"color":[82.5534562,82.8689894],"line":{"color":"rgba(255,127,14,1)"}},"z":[82.5534562,82.8689894],"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<pre><code>    iter train_rmse_mean train_rmse_std test_rmse_mean test_rmse_std
+ 1:  477        77.34670     0.09624726       82.55346     0.5357044
+ 2:  409        77.59206     0.09019289       82.55610     0.5839695
+ 3:  511        77.50587     0.07439461       82.56070     0.5872140
+ 4:  435        77.50257     0.06786992       82.56779     0.6541752
+ 5:  432        77.93361     0.07199536       82.57272     0.5910682
+ 6:  451        77.41958     0.07225770       82.58018     0.5463407
+ 7:  438        77.86621     0.09569565       82.58743     0.4851545
+ 8:  409        77.62566     0.06778519       82.59830     0.5790606
+ 9:  395        77.90076     0.09472367       82.60376     0.6282980
+10:  354        78.12057     0.07055603       82.60837     0.5912351
+    colsample_bytree subsample
+ 1:        0.6432432 0.9850567
+ 2:        0.8864865 0.9124305
+ 3:        0.3567568 0.9175125
+ 4:        0.7513514 0.8682269
+ 5:        0.4216216 0.9422890
+ 6:        0.7567568 0.9741536
+ 7:        0.4540541 0.8728303
+ 8:        0.8918919 0.8516717
+ 9:        0.8054054 0.7719082
+10:        0.8918919 0.8044063</code></pre>
+</div>
+<h2 id="retune-learning-rate">Retune Learning Rate</h2>
 <div class="layout-chunk" data-layout="l-body">
 
 </div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h2 id="final-fit-statistics">Final Fit Statistics</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <div class="article-footer">
   <p class="social_footer">
