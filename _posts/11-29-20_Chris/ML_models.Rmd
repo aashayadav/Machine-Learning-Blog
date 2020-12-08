@@ -1,7 +1,7 @@
 ---
 title: "XG Boost"
 description: |
-    Here is our XG boost model!
+    Tuning process and final model summary
 author:
   - name: Chris Ives
     url:
@@ -142,7 +142,7 @@ train_y = data.matrix(baked_train[, 73])
 
 # Tuning Hyperparameters
 
-Because the loss reduction (gamma) and maximum tree depth are highly dependent on one another, two approaches were taken to tune the initial model. One approach involved first tuning loss reduction, followed by tree depth and hessian weights. The other involved tuning tree complexity and hessian weights without any severe loss reduction regularization, and then pruning it back by tuning gamma.
+Because the loss reduction (gamma) and maximum tree depth are highly dependent on one another, two approaches were taken to tune the initial model. One approach involved first tuning loss reduction, followed by tree depth and hessian weights. The other involved tuning tree complexity and hessian weights without any severe loss reduction regularization, and then pruning it back by tuning gamma. All tuning was done using the full training dataset.
 
 ## Approach #1: Tuning Gamma First
 ```{r, echo=TRUE, include=TRUE, eval = FALSE}
@@ -172,8 +172,6 @@ gamma_mods <- map(grid$loss_reduction, ~{
   )
 })
 ```
-
-___
 
 ### Tuning Results
 ``` {r echo = FALSE, fig.width = 8}
@@ -332,7 +330,9 @@ plotly::plot_ly(mod_res, x = ~min_child_weight, y = ~max_depth, z = ~test_rmse_m
 print(head(round(mod_res, 4), 10))
 ```
 
-Without any `gamma` specification, the 
+Without any `gamma` specification, the best `min_child_weight` value was 31 and the best `max_depth` was 6. They will be retained for the `gamma` tuning process.
+
+**RMSE/SD = 82.5124/0.6930**
 
 ### Followup Gamma Tuning
 ``` {r echo = FALSE, fig.width = 8}
@@ -486,8 +486,6 @@ Best value of `colsample_bytree` = .892
 Best value of `subsample` = .927
 
 
-
-
 **Updated model summary:**
 
 * `gamma` = 12
@@ -605,5 +603,15 @@ Metrics::rmse(results$Actual, results$Predicted)
 After tuning hyperparameters, reducing the learning rate, and determining the number of trees, the final RMSE on the test split is **78.86593**. This was only slightly higher than the RMSE calculated during the final fit to the training data, which was **77.51970**.
 
 This model was submitted 20 minutes late to the Kaggle competition, but received a RMSE of **81.65183** on the 30% test set for the public leaderboard, and an RMSE of **82.07486** for the private leaderboard.
+
+### Feature Importance Plot of Final Model (Top 35)
+``` {r eval = TRUE, echo = FALSE}
+
+model <- readRDS("blog_model.Rds")
+importance <- xgboost::xgb.importance(model = model)
+importance <- importance[1:35,]
+xgboost::xgb.ggplot.importance(importance)
+
+```
 
 
