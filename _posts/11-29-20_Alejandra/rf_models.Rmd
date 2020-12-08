@@ -36,7 +36,7 @@ At this point, Daniel suggested I use HPC via the Open On Demand interface. As a
 
 # Prep work
 
-I followed the same steps we have been following all term long, reading in the data, sampling a fraction of the data (note that I used 50% of the data because I was working with HPC), and joining with other datasets. Here I joined a dataset we called "bonus" that inludes variables from different datasets. To learn more about this dataset and its variables, please go to <<<< link to page >>>>>.
+I followed the same steps we have been following all term long, reading in the data, sampling a fraction of the data (note that I used 50% of the data because I was working with HPC), and joining with other datasets. Here I joined a dataset we called "bonus" that inlcudes variables from different datasets. To learn more about this dataset and its variables, please go [here](https://aashayadav.github.io/Machine-Learning-Blog/posts/11-28-20_datasets_AY/)
 
 A huge shout-out to [Chris Ives](https://github.com/cives93) for taking the time to find and process the bonus datasets we are using here. 
 
@@ -209,7 +209,7 @@ table1 %>%
 
 # Second round of tuning
 
-On the second round of tuning I chose a range of numbers between the two `mtry` values that produced the lowest rmse values, 14 and 26 (the recommended default). In addition, I chose a range of numbers that included the best two `min_n` values, 7 and 10, but also a few more numbers higher than ten to check if, as I intuited, higher values of `min_n` increased the perfomance of the models. 
+On the second round of tuning I chose a range of numbers between the two `mtry` values that produced the lowest rmse values, 14 and 26 (the recommended default). In addition, I chose a range of numbers that included the best two `min_n` values, 7 and 10, but also a few more numbers higher than ten to check if, as I intuited, higher values of `min_n` increased the performance of the models. 
 
 For this round of tuning, I created a regular grid with 25 different combinations of `mtry` and `min_n`
 
@@ -257,7 +257,7 @@ table2 %>%
 
 # Conclusion
 
-Taking it all together, the default model was without a doubt the one that had the higher cost/benefit return, it only took around three minutes to fit! Whereas each round of tuning took arond two hours, with very little return (imo). I guess that the person who said that random forest models have great out-of-the-box performance was not joking! 
+Taking it all together, the default model was without a doubt the one that had the higher cost/benefit return, it only took around three minutes to fit! Whereas each round of tuning took around two hours, with very little return (imo). I guess that the person who said that random forest models have great out-of-the-box performance was not joking! 
 
 ## Final fit
 
@@ -333,5 +333,5 @@ DT::datatable(preds)
 
 ![](files/fit_2_submit.png)
 
-I was gladly suprised to find that the model performed better than expected! 🥳
+I was gladly surprised to find that the model performed better than expected! 🥳
 
