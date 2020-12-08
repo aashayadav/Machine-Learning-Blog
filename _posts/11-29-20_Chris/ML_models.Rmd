@@ -1,7 +1,7 @@
 ---
 title: "XG Boost"
 description: |
-    Here is our XG boost model!
+    Tuning process and final model summary
 author:
   - name: Chris Ives
     url:
@@ -142,9 +142,9 @@ train_y = data.matrix(baked_train[, 73])
 
 # Tuning Hyperparameters
 
-Because the loss reduction (gamma) and maximum tree depth are highly dependent on one another, two approaches were taken to tune the initial model. One approach involved first tuning loss reduction, followed by tree depth and hessian weights. The other involved tuning tree complexity and hessian weights without any severe loss reduction regularization, and then pruning it back by tuning gamma.
+Because the loss reduction (gamma) and maximum tree depth are highly dependent on one another, two approaches were taken to tune the initial model. One approach involved first tuning loss reduction, followed by tree depth and hessian weights. The other involved tuning tree complexity and hessian weights without any severe loss reduction regularization, and then pruning it back by tuning gamma. All tuning was done using the full training dataset.
 
-## Tuning Gamma First
+## Approach #1: Tuning Gamma First
 ```{r, echo=TRUE, include=TRUE, eval = FALSE}
 
 baked_train <- prep(rec) %>% 
@@ -186,7 +186,8 @@ mod_res <- cbind(gamma_res, gamma_params) %>%
   arrange(test_rmse_mean) %>%
   select(-silent, -objective, -nthread)
 
-print(round(mod_res, 4))
+print(head(round(mod_res, 4), 10))
+
 ggplot(mod_res, aes(x = gamma, y = test_rmse_mean)) +
   geom_line()
 ```
@@ -210,7 +211,7 @@ mod_res <- cbind(gamma_res, gamma_params) %>%
   arrange(test_rmse_mean) %>%
   select(-silent, -objective, -nthread)
 
-print(round(mod_res, 4))
+print(head(round(mod_res, 4), 10))
 
 ggplot(mod_res, aes(x = gamma, y = test_rmse_mean)) +
   geom_line()
@@ -223,8 +224,6 @@ After second round of tuning, a gamma value of 12 produced the best fit.
 **RMSE/SD to beat = 82.6085/0.5934**
 
 ## Follow-up Tree-Parameter Tuning
-
-
 ### Create Grid
 ``` {r eval = TRUE, echo = TRUE}
 # Set learning rate, tune tree specific parameters
@@ -234,7 +233,8 @@ grid <- grid_max_entropy(min_n(c(4, 12)), # min_child_weight
 head(grid)
 ```
 
-### Update Model Specification
+### Specify Model
+
 ``` {r echo = TRUE, eval = FALSE}
 tree_mods <- map2(grid$min_n, grid$tree_depth, ~{
   xgb.cv(
@@ -257,27 +257,40 @@ tree_mods <- map2(grid$min_n, grid$tree_depth, ~{
 ```
 
 ### Tuning Results
-``` {r echo = FALSE, fig.width = 8}
-tree_mods <- readRDS("tree_mods.rds")
+``` {r echo = FALSE, fig.width = 10}
+tree_mods_g12 <- readRDS("tree_mods_1206_g12.rds")
 
-tree_res <- map_df(tree_mods,
+tree_res_g12 <- map_df(tree_mods_g12,
                     ~.x$evaluation_log[.x$best_iteration, ])
-tree_params <- map_df(tree_mods,
+tree_params_g12 <- map_df(tree_mods_g12,
                        ~.x$params)
 
-mod_res <- cbind(tree_res, tree_params) %>% 
+mod_res_g12 <- cbind(tree_res_g12, tree_params_g12) %>% 
   arrange(test_rmse_mean) %>%
   select(-silent, -objective, -nthread, -eta, -gamma)
 
-plotly::plot_ly(mod_res, x = ~min_child_weight, y = ~max_depth, z = ~test_rmse_mean, marker = list(size = 5),
+plotly::plot_ly(mod_res_g12, x = ~min_child_weight, y = ~max_depth, z = ~test_rmse_mean, marker = list(size = 5),
                 color = ~test_rmse_mean)
 
-print(round(mod_res, 4))
+
+print(head(round(mod_res, 4), 10))
 ```
 
+A `min_child_weight` of **42** and `max_depth` of **9** demonstrate the best fit to the test folds and have a low SD relative to other hyperparameter tunings.
 
-## Tuning Tree Parameters First
-### Update Model Specification
+Tuning Summary:
+
+* `gamma` = 12
+
+* `min_child_weight` = 42
+
+* `max_depth` = 9
+
+**Final RMSE/SD to beat: 82.5145/0.4865**
+
+
+## Approach #2: Tuning Tree Parameters First
+### Specify Model
 ``` {r echo = TRUE, eval = FALSE}
 tree_mods <- map2(grid$min_n, grid$tree_depth, ~{
   xgb.cv(
@@ -290,7 +303,6 @@ tree_mods <- map2(grid$min_n, grid$tree_depth, ~{
     verbose = 1,
     params = list( 
       eta = 0.1,
-      gamma = 12,
       min_child_weight = .x,
       max_depth = .y,
       nthread = 24
@@ -299,7 +311,95 @@ tree_mods <- map2(grid$min_n, grid$tree_depth, ~{
 }) 
 ```
 
+### Tuning Results
+``` {r echo = FALSE, fig.width = 8}
+tree_mods <- readRDS("tree_mods_1206.rds")
+
+tree_res <- map_df(tree_mods,
+                    ~.x$evaluation_log[.x$best_iteration, ])
+tree_params <- map_df(tree_mods,
+                       ~.x$params)
+
+mod_res <- cbind(tree_res, tree_params) %>% 
+  arrange(test_rmse_mean) %>%
+  select(-silent, -objective, -nthread, -eta)
+
+plotly::plot_ly(mod_res, x = ~min_child_weight, y = ~max_depth, z = ~test_rmse_mean, marker = list(size = 5),
+                color = ~test_rmse_mean)
+
+print(head(round(mod_res, 4), 10))
+```
+
+Without any `gamma` specification, the best `min_child_weight` value was 31 and the best `max_depth` was 6. They will be retained for the `gamma` tuning process.
+
+**RMSE/SD = 82.5124/0.6930**
+
+### Followup Gamma Tuning
+``` {r echo = FALSE, fig.width = 8}
+
+gamma_mods_tg <- readRDS("gamma_mods_tg.rds")
+
+gamma_res_tg <- map_df(gamma_mods_tg,
+                    ~.x$evaluation_log[.x$best_iteration, ])
+gamma_params_tg <- map_df(gamma_mods_tg,
+                       ~.x$params)
+
+mod_res <- cbind(gamma_res_tg, gamma_params_tg) %>% 
+  arrange(test_rmse_mean) %>%
+  select(-silent, -objective, -nthread)
+
+print(head(round(mod_res, 4), 10))
+
+ggplot(mod_res, aes(x = gamma, y = test_rmse_mean)) +
+  geom_line()
+```
+
+The best RMSE was obtained with a gamma value of 5. Thus a narrower grid search was conducted around this value.
+
+### Fine Tuning Gamma
+``` {r echo = FALSE, fig.width = 8}
+
+gamma_mods_tg <- readRDS("gamma_mods_tg_fine.rds")
+
+gamma_res_tg <- map_df(gamma_mods_tg,
+                    ~.x$evaluation_log[.x$best_iteration, ])
+gamma_params_tg <- map_df(gamma_mods_tg,
+                       ~.x$params)
+
+mod_res <- cbind(gamma_res_tg, gamma_params_tg) %>% 
+  arrange(test_rmse_mean) %>%
+  select(-silent, -objective, -nthread)
+
+print(head(round(mod_res, 4), 10))
+
+ggplot(mod_res, aes(x = gamma, y = test_rmse_mean)) +
+  geom_line()
+```
+
+After fine tuning gamma, the best RMSE was obtained using a value of 1. However, RMSE values did not appear to converge towards a particular value, as illustrated in the plot. Consequently, some caution is warranted for these hyperparameter values.
+
+**Best RMSE/SD = 82.5199/0.5321**
+
+## Evaluating Approaches
+
+Approach #1: RMSE/SD = 82.5145/0.4865
+Approach #2: RMSE/SD = 82.5199/0.5321
+
+Tuning gamma first, followed by the tree hyperparameters yielded better RMSE during the cross validations. Thus, the hyperparameter values generated through the first tuning approach were retained.
+
+**Updated model summary:**
+
+* `gamma` = 12
+
+* `max_depth` = 6
+
+* `min_child_weight` = 10
+
+
 ## Tune Stochastic Parameters
+
+After tuning loss reduction and the tree hyperparameters, the stochastic parameters were tuned to identify the best subsampling of columns and cases. 
+
 ``` {r eval = FALSE}
 
 # Dials package requires column sampling (mtry) and subsampling (sample_size) to be expressed as raw numbers rather than intervals
@@ -315,8 +415,8 @@ grid <- grid %>%
 print(grid)
 ```
 
-## Update Model Specification
-``` {r eval = FALSE}
+### Specify Model
+``` {r eval = FALSE, echo = TRUE}
 sample_mods <- map2(grid$mtry, grid$sample_size, ~{
   xgb.cv(
     data = train_x,
@@ -328,6 +428,7 @@ sample_mods <- map2(grid$mtry, grid$sample_size, ~{
     verbose = 1,
     params = list( 
       eta = 0.1,
+      gamma = 12,
       max_depth = 6,
       min_child_weight = 10,
       colsample_bytree = .x,
@@ -339,12 +440,31 @@ sample_mods <- map2(grid$mtry, grid$sample_size, ~{
 ```
 
 
-## Stochastic Parameter Results
-
-``
-#### (Top 10 results shown)
+### Tuning Results
 ``` {r echo = FALSE, eval = TRUE}
-sample_mods <- readRDS("sample_mods.rds")
+sample_mods <- readRDS("sample_mods_gt.rds")
+
+sample_res <- map_df(sample_mods,
+                    ~.x$evaluation_log[.x$best_iteration, ])
+sample_params <- map_df(sample_mods,
+                       ~.x$params)
+
+mod_res <- cbind(sample_res, sample_params) %>% 
+  arrange(test_rmse_mean) %>%
+  select(-silent, -objective, -nthread, -eta, -max_depth, -min_child_weight)
+
+p <- plotly::plot_ly(mod_res, x = ~colsample_bytree, y = ~subsample, z = ~test_rmse_mean, marker = list(size = 5),
+                color = ~test_rmse_mean)
+print(p)
+
+print(head(round(mod_res, 4), 10))
+```
+
+Best values for `colsample_bytree` and `subsample` appear to be around values >.70. A narrower grid search was completed and is summarized below. Notably, gamma was mistakenly specified as 10 (instead of 12) during this tuning process. However, this wasn't expected to dramatically shift the tenable range of best stochastic parameter values during fine tuning.
+
+#### Fine Tuning Results
+``` {r echo = FALSE, eval = TRUE}
+sample_mods <- readRDS("sample_mods_gt_fine.rds")
 
 sample_res <- map_df(sample_mods,
                     ~.x$evaluation_log[.x$best_iteration, ])
@@ -358,12 +478,30 @@ mod_res <- cbind(sample_res, sample_params) %>%
 plotly::plot_ly(mod_res, x = ~colsample_bytree, y = ~subsample, z = ~test_rmse_mean, marker = list(size = 5),
                 color = ~test_rmse_mean)
 
-
-print(head(mod_res, 10), abbr = TRUE)
+print(head(round(mod_res, 4), 10))
 ```
 
+Best value of `colsample_bytree` = .892
+
+Best value of `subsample` = .927
+
+
+**Updated model summary:**
+
+* `gamma` = 12
+
+* `max_depth` = 6
+
+* `min_child_weight` = 10
+
+* `colsample_bytree` = .892
+
+* `subsample` = .927
+
+
 ## Retune Learning Rate
-``` {r eval = FALSE}
+### Specify Model
+``` {r eval = FALSE, echo = TRUE}
 r <- seq(0.0001, 0.1, length.out = 20)
 
 lr_mods <- map(lr, function(learn_rate) {
@@ -377,14 +515,103 @@ lr_mods <- map(lr, function(learn_rate) {
     verbose = 0,
     params = list(
       eta = learn_rate,
+      gamma = 12,
       max_depth = 6,
       min_child_weight = 10,
-      colsample_bytree = 
-      subsample =
+      colsample_bytree = 0.8918919,
+      subsample = 0.9270078,
       nthread = 24
     )
   )
 })
 ```
-## Final Fit Statistics
+
+
+The learning rate could not be re-tuned under the time constraints, so it was lowered to .04, which was identified to be the best learning rate during tuning of early models.
+
+# Tune Number of Trees
+``` {r eval = FALSE, echo = TRUE}
+bst <- xgb.cv(
+  data = train_x,
+  label = train_y,
+  nrounds = 10000,
+  objective = "reg:squarederror",
+  early_stopping_rounds = 50,
+  nfold = 10,
+  verbose = 1,
+  params = list(
+    eta = .04,
+  gamma = 12,
+  max_depth = 6,
+  min_child_weight = 10,
+  colsample_bytree = 0.8918919,
+  subsample = 0.9270078,
+  nthread = 24))
+```
+
+``` {r eval = TRUE, echo = FALSE}
+final_mod <- readRDS("model_submit_1207.rds")
+
+final_mod$evaluation_log[final_mod$best_iteration, ]
+```
+
+Best iteration was 1119. Only 1119 trees will be specified in final fit.
+
+# Final Fit Statistics
+
+### Generate Final Fit
+``` {r eval = FALSE, echo = TRUE}
+final_mod <- xgboost(
+  data = train_x,
+  label = train_y,
+  nrounds = 1119,
+  objective = "reg:squarederror",
+  verbose = 1,
+  params = list(
+    eta = .04,
+  gamma = 12,
+  max_depth = 6,
+  min_child_weight = 10,
+  colsample_bytree = 0.8918919,
+  subsample = 0.9270078,
+  nthread = 24))
+```
+
+### Fit to test set
+``` {r eval = FALSE, echo = TRUE}
+baked_test <- prep(rec) %>%
+  bake(test)
+
+test_x = data.matrix(baked_test[, -73])
+
+pred <- predict(final_mod, as.matrix(test_x))
+actual <- baked_test$score
+
+Metrics::rmse(actual, pred)
+```
+
+### Final Fit Results
+``` {r eval = TRUE, echo = FALSE}
+
+results <- read_csv("blog_predictions.csv")
+
+Metrics::rmse(results$Actual, results$Predicted)
+
+```
+
+
+After tuning hyperparameters, reducing the learning rate, and determining the number of trees, the final RMSE on the test split is **78.86593**. This was only slightly higher than the RMSE calculated during the final fit to the training data, which was **77.51970**.
+
+This model was submitted 20 minutes late to the Kaggle competition, but received a RMSE of **81.65183** on the 30% test set for the public leaderboard, and an RMSE of **82.07486** for the private leaderboard.
+
+### Feature Importance Plot of Final Model (Top 35)
+``` {r eval = TRUE, echo = FALSE}
+
+model <- readRDS("blog_model.Rds")
+importance <- xgboost::xgb.importance(model = model)
+importance <- importance[1:35,]
+xgboost::xgb.ggplot.importance(importance)
+
+```
+
 

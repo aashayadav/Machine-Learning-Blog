@@ -7,7 +7,7 @@ author:
     url:
     affiliation: University of Oregon
     affiliation_url:
-date: 11-28-2020
+date: 12-07-2020
 output:
   distill::distill_article:
     self_contained: false
@@ -24,15 +24,19 @@ library(tidyverse)
 library(tidymodels)
 
 options(scipen=999)
+
+theme_set(theme_minimal(base_size = 10))
 ```
 
-To complete this project, I chose to run a Random Forest model. I decided to go with the Out-of-bag (OOB) samples to conduct model fitting and model assessment due to its relatively low run time.
+To complete this project, I chose to run a Random Forest model. I decided to go with the Out-of-Bag (OOB) samples to conduct model fitting and model assessment due to its relatively lower run time, as compared to using cross-validation resamples.
 
-Initially I was only working locally on my computer with only 5% of the sample. Overall, my model tunning process was taking between 15 and 25 minutes each round of tunning, but unfortunately my R session froze several times and I could not finish the model tuning process. 
+Initially, I planned to work locally on my computer with only 5% of the data. Overall, my model tuning process was taking between 15 and 25 minutes each round of tuning, but unfortunately my R session froze several times and I could not finish the model tuning process. 
 
-At this point, Daniel suggested I use HPC via the Open On Demand interface. As always, I was too afraid to try something new, but Daniel patiently showed me how to work with the new interface and explained for the 97th time what was the difference between the train and test files we have been working with all term long. I think I finally got it! I'm glad it only took me ten weeks 😬 to understand this. 
+At this point, Daniel suggested I use HPC via the Open On Demand interface. As always, I was afraid to try something new, but Daniel patiently showed me how to work with the new interface and explained for the 97th time what was the difference between the train and test files we have been working with all term long. I think I finally got it! I'm glad it only took me ten weeks 😬 to understand this. 
 
-I followed the same steps we have been following all term long, reading in the data, sampling a fraction of the data (note that I used 50% of the data because I was working with HPC), and joining with other datasets. Here I joined a dataset we called "bonus" that inludes variables from different datasets. To learn more about this dataset and its variables, please go to <<<< link to page >>>>>.
+# Prep work
+
+I followed the same steps we have been following all term long, reading in the data, sampling a fraction of the data (note that I used 50% of the data because I was working with HPC), and joining with other datasets. Here I joined a dataset we called "bonus" that inlcudes variables from different datasets. To learn more about this dataset and its variables, please go to this [post](https://aashayadav.github.io/Machine-Learning-Blog/posts/11-28-20_datasets_AY/).
 
 A huge shout-out to [Chris Ives](https://github.com/cives93) for taking the time to find and process the bonus datasets we are using here. 
 
@@ -53,7 +57,7 @@ bonus <- import(here("data", "bonus_data.csv")) %>%
 data <- left_join(full_train, bonus)
 ```
 
-Here I created the initial split and the train and test objects for model fitting and assessment. Notice that I did not create a cross-validation resample because I will be using only the OOB samples. 
+Here I created the initial split and the train and test objects for model fitting and assessment. Notice that I did not create a cross-validation resample object because I was only using the OOB samples. 
 
 ```{r eval=FALSE, echo=TRUE}
 set.seed(3000)
@@ -68,7 +72,7 @@ I created a recipe following the recommended preprocessing steps for a Random Fo
 
 This recipe is pretty straightforward, the only thing that I think is worth highlighting is that we took the liberty to assume that most of the students' home language was English; that is why we specified this code `lang_cd = case_when(lang_cd == "S" ~ "S", TRUE ~ "E")`. I took extra care not to lose the Spanish speaking students in the `lang_cd` variable to the `step_nzv()` near-zero variance variable removal due to the role of language in academic achievement. 
 
-In this model, we had one outcome `score`, 77 predictors and XX Id variables. 
+In this model, we had one outcome `score`, 77 predictors and ten Id variables. 
 
 ```{r eval=FALSE, echo=TRUE}
 rec <- recipe(score ~ ., data_train) %>%
@@ -86,9 +90,7 @@ rec <- recipe(score ~ ., data_train) %>%
 
 # Let's dive in on the model fitting process!
 
-First, I wanted to develop a baseline model using the default hypermarameters. I focused only on three hyperparameters: predictors `mtry` = `floor(p/3)`, in this model, around 26 predictors; number of trees`trees` = 500, and minimun node size `min_n` = 5. 
-
-The rmse for the default model was 88.80 *Fitting the default model took less than 3 minutes!!*
+First, I wanted to develop a baseline model using the default hypermarameters. I focused only on three hyperparameters: predictors `mtry` = `floor(p/3)`, number of trees `trees` = 500, and minimun node size `min_n` = 5. In this model, `mtry` was around 26 predictors.
 
 ```{r eval=FALSE, echo=TRUE}
 
@@ -112,31 +114,38 @@ rf_def_fit <- fit(
 
 ```
 
+The rmse for the default model was 88.80. 
+
+*Fitting the default model with 50% of the data took less than 3 minutes using HPC!!*
+
 # First round of tuning
 
-Random forest models are know to have good out-of-the-box performance, however, I wanted to tune at least 2 hyperparameters to evaluate how much lower the rmse could be. 
+Random forest models are know to have very good out-of-the-box performance, however, I wanted to tune at least `mtry` and `min_n` to evaluate how much lower the rmse could be. 
 
-I decided not to spend time tuning for number number of trees as the literature suggests that growing p * 10 trees is pretty safe. The number of trees needs to be large enough to stabilize the error rate, for this model I could have used 770 trees, but I went for 1000 trees just to be extra safe.
+I decided not to spend time tuning for number of `trees` as the literature suggests that growing p * 10 trees is pretty safe. The number of `trees` needs to be large enough to stabilize the error rate; for this model I could have used 770 trees, but I went for 1000 trees just to be extra safe.
 
 To tune for `mtry` and `min_n`, I followed what Boehmke &  Greenwell (2020) suggest in the chapter focused on random forest models in the book [Hands-On Machine Learning with R](https://bradleyboehmke.github.io/HOML/random-forest.html)
 
-###### "Start with five evenly spaced values of mtry across the range 2 – p centered at the recommended default" (Boehmke &  Greenwell, 2020)
+*"Start with five evenly spaced values of mtry across the range 2 – p centered at the recommended default" (Boehmke &  Greenwell, 2020).*
 
-###### "When adjusting node size start with three values between 1–10 and adjust depending on impact to accuracy and run time."
+*"When adjusting node size start with three values between 1–10 and adjust depending on impact to accuracy and run time (Boehmke &  Greenwell, 2020)."*
+
+Here I created a regular grid with 20 different combinations of `mtry` and `min_n`
 
 ```{r eval=TRUE, echo=FALSE}
 mtry_search <- seq(2, 50, 12)
 min_n_search <- seq(1, 10, 3)
 
 grd <- expand.grid(mtry_search, min_n_search)
-grd
+
+DT::datatable(grd, colnames = c('mtry' = 'Var1', 'min_n' = 'Var2')) 
 ```
 
-
-Below is a function that Daniel helped me build. This is an all-in-one function that builds the model, updates the default model workflow with the new hyperparameters, fits the models with the selected hyperparameters, and outputs a table with the tuned hyperparaemters and the corresponding rmse value. It's pretty neat!
+Below is a function that Daniel helped me build. This is an all-in-one function that builds the model, updates the default model workflow with the new hyperparameters, fits the models with the selected hyperparameters, and outputs a table with the tuned hyperparameters and the corresponding rmse value. It's pretty neat!
 
 ```{r eval=FALSE, echo=TRUE}
 
+# All-in-one function
 hyp_rf_search <- function(mtry_val, min_n_val, wf) {
   mod <- rand_forest() %>% 
     set_engine("ranger",
@@ -157,80 +166,106 @@ hyp_rf_search <- function(mtry_val, min_n_val, wf) {
   tibble(mtry = mtry_val, min_n = min_n_val, rmse = rmse, workflow = list(wf))
 }
 
-
+# Applying the function
 mtry_results_1 <- map2_df(grd$Var1, grd$Var2, ~hyp_rf_search(.x, .y, rf_def_wkflw))
 
 ```
 
-Need to create a folder with Rds files.
 
 ```{r, include=FALSE}
-# mtry_results_1 <- readRDS("scripts/mtry_results_1.Rds")
+
+mtry_results_1 <- readRDS("files/mtry_results_1.Rds")
 
 ```
 
+The lowest rmse for this round of tuning was 88.54 with `mtry` = 14, `min_n` = 10, and `trees` = 1000. Running this first round of tuning took around an hour and forty minutes and the decrease on the rmse value relative to the default model was not substantial, only around three decimal points difference. 
 
-These are my results
-rmse = 88.5 (50% of data) with mtry = 14, min_n = 10, trees = 1000
+```{r eval=TRUE, echo=FALSE}
 
-```{r echo=FALSE}
+table1 <- mtry_results_1 %>%
+  select(-workflow) %>%
+  arrange(rmse)
 
-# mtry_results_1 %>%
-#   arrange(rmse) 
+DT::datatable(table1)
 
 ```
 
+By examining the plot, I could see that an `mtry = 14` was consistently producing lower rmse values, however, higher values of `min_n` appeared to produce slighty lower values of rmse.
 
-Running this first round of tuning took an hour and forty minutes and the increase relative to the default model was not substantial, only 3 decimal points. Nonetheless, I went for another round of tuning, just to see what could happen.
-
-Looking at the plot, I could see that...
-
-
-```{r echo=FALSE}
-# mtry_results_1 %>%
-#   ggplot(aes(mtry, rmse)) +
-#   geom_line() +
-#   geom_point() +
-#   facet_wrap(~min_n)
+```{r eval=TRUE, echo=FALSE}
+table1 %>%
+  ggplot(aes(mtry, rmse)) +
+  geom_line(color = "cornflowerblue", alpha = 0.3) +
+  geom_point(color = "cornflowerblue") +
+  facet_wrap(~min_n) +
+  labs(title = "Plot 1: First round of tuning",
+       x = "mtry values",
+       y = "rmse") +
+   theme(plot.title = element_text(family = "sans", size = 14, face = "bold", hjust = 0.5, margin = margin(20, 20, 20, 20)), 
+        axis.title.x = element_text(family = "sans", size = 12, margin = margin(20, 20, 10, 20)),
+        axis.title.y = element_text(family = "sans", size = 12, margin = margin(20, 20, 10, 10))) + geom_vline(xintercept = c(14), color = "black", linetype = 2, alpha = 0.3) +
+  annotate("label", label = "mtry = 14", x = 14.5, y = 92, color = "gray20", size = 4)
 ```
 
-So I went for the following values to tune... 
+# Second round of tuning
 
-I used the same all-in-one function shown above.
+On the second round of tuning I chose a range of numbers between the two `mtry` values that produced the lowest rmse values, 14 and 26 (the recommended default). In addition, I chose a range of numbers that included the best two `min_n` values, 7 and 10, but also a few more numbers higher than ten to check if, as I intuited, higher values of `min_n` increased the performance of the models. 
 
-```{r}
+For this round of tuning, I created a regular grid with 25 different combinations of `mtry` and `min_n`
+
+```{r eval=TRUE, echo=FALSE}
 mtry_search <- seq(14, 26, 3)
 min_n_search <- seq(7, 15, 2)
 
 grd <- expand.grid(mtry_search, min_n_search)
-grd
+
+DT::datatable(grd, colnames = c('mtry' = 'Var1', 'min_n' = 'Var2'))
 ```
 
+I used the same all-in-one function shown above to run these models. The lowest rmse for this second round of tuning was 88.17 with `mtry` = 14, `min_n` = 15, and `trees` = 1000. The model fitting process took a little less than two hours and the decrease on the rmse value relative to the previous model was again of only three decimal points. 
 
-
-
-```{r}
-# mtry_results_2 <- readRDS("scripts/mtry_results_2.Rds")
+```{r include=FALSE}
+mtry_results_2 <- readRDS("files/mtry_results_2.Rds")
 ```
 
+```{r eval=TRUE, echo=FALSE}
+table2 <- mtry_results_2 %>%
+  select(-workflow) %>%
+  arrange(rmse)
 
-
-```{r}
-# mtry_results_2 %>%
-#   arrange(rmse)
+DT::datatable(table2)
 ```
 
-```{r}
-# mtry_results_2 %>%
-#   ggplot(aes(mtry, rmse)) +
-#   geom_line() +
-#   geom_point() +
-#   facet_wrap(~min_n)
+By examining this plot, I confirmed what I intuited in the first round of tuning, that an `mtry = 14` consistently produced the lowest rmse values and that higher values of `min_n` continued to produce lower values of rmse. 
+
+I could have kept tuning for higher values of `min_n`, however, I thought that the cost in time was not worth the small gain in decrease of rmse values. 
+
+```{r eval=TRUE, echo=FALSE}
+table2 %>%
+  ggplot(aes(mtry, rmse)) +
+  geom_line(color = "#6E0D83", alpha = 0.3) +
+  geom_point(color = "#6E0D83") +
+  facet_wrap(~min_n) +
+  labs(title = "Plot 2: Second round of tuning",
+       x = "mtry values",
+       y = "rmse") +
+   theme(plot.title = element_text(family = "sans", size = 14, face = "bold", hjust = 0.5, margin = margin(20, 20, 20, 20)), 
+        axis.title.x = element_text(family = "sans", size = 12, margin = margin(20, 20, 10, 20)),
+        axis.title.y = element_text(family = "sans", size = 12, margin = margin(20, 20, 10, 10))) + geom_vline(xintercept = c(14), color = "black", linetype = 2, alpha = 0.3) +
+  annotate("label", label = "mtry = 14", x = 15.5, y = 89.5, color = "gray20", size = 3)
 ```
 
-After 2 additional hours, I was convinced that continue to tune was not worth it so I decided to stop and finalize the model with `mtry` = 14 and `min_n` = 15
+# Conclusion
+
+Taking it all together, the default model was without a doubt the one that had the higher cost/benefit return, it only took around three minutes to fit! Whereas each round of tuning took around two hours, with very little return (imo). I guess that the person who said that random forest models have great out-of-the-box performance was not joking! 
+
+## Final fit
+
+At this point I was convinced that continue to tune was not worth the time, however, I had already spent quite a bit of time in model tuning so I decided to use `mtry = 14` and a `min_n = 15`, the hyperparameters that produced the lowest rmse on my model tuning process.
 
 ```{r eval=FALSE, echo=TRUE}
+
+# final model with hard coded hyperparameters
 final_mod <- rand_forest() %>%
   set_engine("ranger",
              num.threads = 8,
@@ -241,9 +276,62 @@ final_mod <- rand_forest() %>%
            min_n = 15,
            trees = 1000)
 
+# workflow for final model
 final_wkfl <-  workflow() %>%
   add_model(final_mod) %>%
   add_recipe(rec)
+
+# final split on the initial split
+final_fit <- last_fit(final_wkfl,
+                      split = data_split)
 ```
 
-Not sure which one of the final fit models to include: the one that uses data_train or the one that uses data_split??
+*Fitting the final model took around 4 minutes and the resulting rmse was 88.3.* 
+
+# Kaggle submission
+
+The next step was to submit predictions to Kaggle to test how the model performed when compared against the true values. To do this I had to fit the model using the unsplit dataset called `data`, read in the test.csv file, join the bonus data, prep and bake the recipe and create a dataframe with the predicted `score` values.
+
+```{r eval=FALSE, echo=TRUE}
+
+# fit with the unsplit data
+check_fit <- final_wkfl %>%
+                 fit(data)
+
+# read in test.csv file
+full_test <- import("data/test.csv", setclass = "tbl_df") %>%
+  mutate_if(is.character, factor) %>%
+  mutate(ncessch = as.double(ncessch))
+
+## joining data
+all_test <- left_join(full_test, bonus)
+
+# baking the recipe
+processed_test <- rec %>%
+  prep() %>% 
+  bake(all_test)
+
+# make predictions
+preds <- predict(check_fit, all_test)
+
+# a tibble
+pred_frame <- tibble(Id = all_test$id, Predicted = preds$.pred)
+
+```
+
+This table shows only the first six rows of data:
+
+```{r include=FALSE}
+predictions <- read.csv("files/prelim_fit_2.csv")
+
+preds <- head(predictions)
+```
+
+```{r eval=TRUE, echo=FALSE}
+DT::datatable(preds)
+```
+
+![](files/fit_2_submit.png)
+
+I was gladly surprised to find that the model performed better than expected! 🥳
+
