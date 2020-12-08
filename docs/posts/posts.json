@@ -1,43 +1,61 @@
 [
   {
-    "path": "posts/11-29-20_data_prep_&_description_AY/",
-    "title": "Data preparation and description",
-    "description": "Now we got our datasets, let's see how to prepare (join) them for analysis.",
-    "author": [
-      {
-        "name": "Asha",
-        "url": {}
-      }
-    ],
-    "date": "2020-11-28",
-    "categories": [],
-    "preview": {},
-    "last_modified": "2020-11-30T16:58:32-08:00",
-    "input_file": {}
-  },
-  {
-    "path": "posts/11-29-20_ML_models_AY/",
-    "title": "Machine learning models",
+    "path": "posts/11-29-20_Alejandra/",
+    "title": "Random Forest",
     "description": "We will be fitting linear model, random forest, and gradient boosting.",
     "author": [
       {
-        "name": "Asha",
+        "name": "Alejandra",
         "url": {}
       }
     ],
     "date": "2020-11-28",
     "categories": [],
     "preview": {},
-    "last_modified": "2020-11-30T15:20:59-08:00",
+    "last_modified": "2020-12-04T18:07:18-08:00",
     "input_file": {}
   },
   {
-    "path": "posts/11-29-20_Alejandra/",
-    "title": "Random Forest Model",
-    "description": "This is how fitting a Random Forest model went for me!",
+    "path": "posts/11-29-20_Asha/",
+    "title": "Linear Regression and Penalized Regression Model (Lasso)",
+    "description": "Our aim is to predict the score on statewide testing assessment using other variables in the dataset. Let's see how linear and lasso regression perform.",
     "author": [
       {
-        "name": "Alejandra Garcia Isaza",
+        "name": "Asha",
+        "url": {}
+      }
+    ],
+    "date": "2020-11-28",
+    "categories": [],
+    "preview": "posts/11-29-20_Asha/Linear_model_files/figure-html5/unnamed-chunk-13-1.png",
+    "last_modified": "2020-12-07T13:48:40-08:00",
+    "input_file": {},
+    "preview_width": 1248,
+    "preview_height": 768
+  },
+  {
+    "path": "posts/11-29-20_Chris/",
+    "title": "XG Boost",
+    "description": "Here is our XG boost model!",
+    "author": [
+      {
+        "name": "Chris Ives",
+        "url": {}
+      }
+    ],
+    "date": "2020-11-28",
+    "categories": [],
+    "preview": {},
+    "last_modified": "2020-12-06T15:42:44-08:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/11-29-20_data_prep_&_description_AY/",
+    "title": "Data preparation and exploration",
+    "description": "Here we joined our datasets and explored through visualization.",
+    "author": [
+      {
+        "name": "Asha",
         "url": {}
       }
     ],
@@ -72,7 +90,7 @@
   {
     "path": "posts/11-28-20_datasets_AY/",
     "title": "Datasets",
-    "description": "Let's talk about the datasets used in the project",
+    "description": "Here is the preview of datasets used in our final project.",
     "author": [
       {
         "name": "Asha",
@@ -82,7 +100,7 @@
     "date": "2020-11-27",
     "categories": [],
     "preview": {},
-    "last_modified": "2020-11-29T01:02:37-08:00",
+    "last_modified": "2020-12-06T15:41:48-08:00",
     "input_file": {}
   },
   {

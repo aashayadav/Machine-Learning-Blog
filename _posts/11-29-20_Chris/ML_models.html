@@ -18,10 +18,77 @@
  <!--radix_placeholder_import_source-->
  <!--/radix_placeholder_import_source-->
 
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #20794d; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007ba5; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #007ba5; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #007ba5; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #20794d; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
   <!--radix_placeholder_meta_tags-->
-  <title>XC Boost</title>
+  <title>XG Boost</title>
   
-  <meta property="description" itemprop="description" content="We will be fitting linear model, random forest, and gradient boosting."/>
+  <meta property="description" itemprop="description" content="Here is our XG boost model!"/>
   
   
   <!--  https://schema.org/Article -->
@@ -30,26 +97,26 @@
   <meta name="article:author" content="Chris Ives"/>
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="XC Boost"/>
+  <meta property="og:title" content="XG Boost"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="We will be fitting linear model, random forest, and gradient boosting."/>
+  <meta property="og:description" content="Here is our XG boost model!"/>
   <meta property="og:locale" content="en_US"/>
   
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="XC Boost"/>
+  <meta property="twitter:title" content="XG Boost"/>
   <meta property="twitter:description" content="We will be fitting linear model, random forest, and gradient boosting."/>
   
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["XC Boost"]},{"type":"character","attributes":{},"value":["We will be fitting linear model, random forest, and gradient boosting.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Chris Ives"]},{"type":"NULL"},{"type":"character","attributes":{},"value":["University of Oregon"]},{"type":"NULL"}]}]},{"type":"character","attributes":{},"value":["11-28-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["XG Boost"]},{"type":"character","attributes":{},"value":["We will be fitting linear model, random forest, and gradient boosting.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Chris Ives"]},{"type":"NULL"},{"type":"character","attributes":{},"value":["University of Oregon"]},{"type":"NULL"}]}]},{"type":"character","attributes":{},"value":["11-28-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_float"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["ML_models_files/bowser-1.9.3/bowser.min.js","ML_models_files/distill-2.2.21/template.v2.js","ML_models_files/jquery-1.11.3/jquery.min.js","ML_models_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["data/bonus_data_v2.csv","data/disc_drop.csv","data/train.csv","ML_models_files/anchor-4.2.2/anchor.min.js","ML_models_files/bowser-1.9.3/bowser.min.js","ML_models_files/distill-2.2.21/template.v2.js","ML_models_files/figure-html5/unnamed-chunk-5-1.png","ML_models_files/figure-html5/unnamed-chunk-6-1.png","ML_models_files/jquery-1.11.3/jquery.min.js","ML_models_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -75,6 +142,51 @@
   
   .pagedtable-footer {
     font-size: 15px;
+  }
+  
+  d-byline .byline {
+    grid-template-columns: 2fr 2fr;
+  }
+  
+  d-byline .byline h3 {
+    margin-block-start: 1.5em;
+  }
+  
+  d-byline .byline .authors-affiliations h3 {
+    margin-block-start: 0.5em;
+  }
+  
+  .authors-affiliations .orcid-id {
+    width: 16px;
+    height:16px;
+    margin-left: 4px;
+    margin-right: 4px;
+    vertical-align: middle;
+    padding-bottom: 2px;
+  }
+  
+  d-title .dt-tags {
+    margin-top: 1em;
+    grid-column: text;
+  }
+  
+  .dt-tags .dt-tag {
+    text-decoration: none;
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0em 0.4em;
+    margin-right: 0.5em;
+    margin-bottom: 0.4em;
+    font-size: 70%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  
+  d-article table.gt_table td,
+  d-article table.gt_table th {
+    border-bottom: none;
   }
   
   .html-widget {
@@ -116,6 +228,7 @@
   }
   
   d-article {
+    padding-top: 2.5rem;
     padding-bottom: 30px;
   }
   
@@ -127,91 +240,48 @@
     width: 100%;
   }
   
+  d-article h2 {
+    margin: 1rem 0 1.5rem 0;
+  }
+  
+  d-article h3 {
+    margin-top: 1.5rem;
+  }
+  
   d-article iframe {
     border: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 2.0em;
     width: 100%;
   }
   
-  figure img.external {
-    background: white;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
-    padding: 18px;
-    box-sizing: border-box;
+  /* Tweak code blocks */
+  
+  d-article div.sourceCode code,
+  d-article pre code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   }
   
-  /* CSS for table of contents */
-  
-  .d-toc {
-    color: rgba(0,0,0,0.8);
-    font-size: 0.8em;
-    line-height: 1em;
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: auto;
   }
   
-  .d-toc-header {
-    font-size: 0.6rem;
-    font-weight: 400;
-    color: rgba(0, 0, 0, 0.5);
-    text-transform: uppercase;
-    margin-top: 0;
-    margin-bottom: 1.3em;
+  d-article div.sourceCode {
+    background-color: white;
   }
   
-  .d-toc a {
-    border-bottom: none;
-  }
-  
-  .d-toc ul {
-    padding-left: 0;
-  }
-  
-  .d-toc li>ul {
-    padding-top: 0.8em;
-    padding-left: 16px;
-    margin-bottom: 0.6em;
-  }
-  
-  .d-toc ul,
-  .d-toc li {
-    list-style-type: none;
-  }
-  
-  .d-toc li {
-    margin-bottom: 0.9em;
-  }
-  
-  .d-toc-separator {
-    margin-top: 20px;
-    margin-bottom: 2em;
-  }
-  
-  .d-article-with-toc {
-    border-top: none;
-    padding-top: 0;
-  }
-  
-  
-  
-  /* Tweak code blocks (note that this CSS is repeated above in an injection
-     into the d-code shadow dom) */
-  
-  d-code {
-    overflow-x: auto !important;
-  }
-  
-  pre.d-code code.d-code {
+  d-article div.sourceCode pre {
     padding-left: 10px;
     font-size: 12px;
     border-left: 2px solid rgba(0,0,0,0.1);
   }
   
-  pre.text-output {
-  
+  d-article pre {
     font-size: 12px;
     color: black;
     background: none;
-    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    margin-top: 0;
     text-align: left;
     white-space: pre;
     word-spacing: normal;
@@ -229,20 +299,123 @@
     hyphens: none;
   }
   
+  d-article pre a {
+    border-bottom: none;
+  }
+  
+  d-article pre a:hover {
+    border-bottom: none;
+    text-decoration: underline;
+  }
+  
   @media(min-width: 768px) {
   
-  d-code {
-    overflow-x: visible !important;
+  d-article pre,
+  d-article div.sourceCode,
+  d-article div.sourceCode pre {
+    overflow: visible !important;
   }
   
-  pre.d-code code.d-code  {
-      padding-left: 18px;
-      font-size: 14px;
-  }
-  pre.text-output {
+  d-article div.sourceCode pre {
+    padding-left: 18px;
     font-size: 14px;
   }
+  
+  d-article pre {
+    font-size: 14px;
   }
+  
+  }
+  
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+  
+  /* CSS for d-contents */
+  
+  .d-contents {
+    grid-column: text;
+    color: rgba(0,0,0,0.8);
+    font-size: 0.9em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    padding-left: 0.25em;
+    justify-self: start;
+  }
+  
+  @media(min-width: 1000px) {
+    .d-contents.d-contents-float {
+      height: 0;
+      grid-column-start: 1;
+      grid-column-end: 4;
+      justify-self: center;
+      padding-right: 3em;
+      padding-left: 2em;
+    }
+  }
+  
+  .d-contents nav h3 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+  
+  .d-contents li {
+    list-style-type: none
+  }
+  
+  .d-contents nav > ul {
+    padding-left: 0;
+  }
+  
+  .d-contents ul {
+    padding-left: 1em
+  }
+  
+  .d-contents nav ul li {
+    margin-top: 0.6em;
+    margin-bottom: 0.2em;
+  }
+  
+  .d-contents nav a {
+    font-size: 13px;
+    border-bottom: none;
+    text-decoration: none
+    color: rgba(0, 0, 0, 0.8);
+  }
+  
+  .d-contents nav a:hover {
+    text-decoration: underline solid rgba(0, 0, 0, 0.6)
+  }
+  
+  .d-contents nav > ul > li > a {
+    font-weight: 600;
+  }
+  
+  .d-contents nav > ul > li > ul {
+    font-weight: inherit;
+  }
+  
+  .d-contents nav > ul > li > ul > li {
+    margin-top: 0.2em;
+  }
+  
+  
+  .d-contents nav ul {
+    margin-top: 0;
+    margin-bottom: 0.25em;
+  }
+  
+  .d-article-with-toc h2:nth-child(2) {
+    margin-top: 0;
+  }
+  
   
   /* Figure */
   
@@ -280,6 +453,16 @@
     color: rgba(0, 0, 0, 1.0);
   }
   
+  /* Citations */
+  
+  d-article .citation {
+    color: inherit;
+    cursor: inherit;
+  }
+  
+  div.hanging-indent{
+    margin-left: 1em; text-indent: -1em;
+  }
   
   
   /* Tweak 1000px media break to show more text */
@@ -355,6 +538,91 @@
     word-wrap: break-word;
   }
   
+  /* Include appendix styles here so they can be overridden */
+  
+  d-appendix {
+    contain: layout style;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-top: 60px;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0,0,0,0.5);
+    padding-top: 60px;
+    padding-bottom: 48px;
+  }
+  
+  d-appendix h3 {
+    grid-column: page-start / text-start;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.65);
+  }
+  
+  d-appendix h3 + * {
+    margin-top: 1em;
+  }
+  
+  d-appendix ol {
+    padding: 0 0 0 15px;
+  }
+  
+  @media (min-width: 768px) {
+    d-appendix ol {
+      padding: 0 0 0 30px;
+      margin-left: -30px;
+    }
+  }
+  
+  d-appendix li {
+    margin-bottom: 1em;
+  }
+  
+  d-appendix a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  d-appendix > * {
+    grid-column: text;
+  }
+  
+  d-appendix > d-footnote-list,
+  d-appendix > d-citation-list,
+  d-appendix > distill-appendix {
+    grid-column: screen;
+  }
+  
+  /* Include footnote styles here so they can be overridden */
+  
+  d-footnote-list {
+    contain: layout style;
+  }
+  
+  d-footnote-list > * {
+    grid-column: text;
+  }
+  
+  d-footnote-list a.footnote-backlink {
+    color: rgba(0,0,0,0.3);
+    padding-left: 0.5em;
+  }
+  
+  
+  
+  /* Anchor.js */
+  
+  .anchorjs-link {
+    /*transition: all .25s linear; */
+    text-decoration: none;
+    border-bottom: none;
+  }
+  *:hover > .anchorjs-link {
+    margin-left: -1.125em !important;
+    text-decoration: none;
+    border-bottom: none;
+  }
   
   /* Social footer */
   
@@ -399,6 +667,221 @@
   .article-footer .subscribe {
     font-size: 15px;
     margin-top: 45px;
+  }
+  
+  
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+  
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+  
+  /* Styles for listing layout (hide title) */
+  .layout-listing d-title, .layout-listing .d-title {
+    display: none;
+  }
+  
+  /* Styles for posts lists (not auto-injected) */
+  
+  
+  .posts-with-sidebar {
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+  
+  .posts-list .description h2,
+  .posts-list .description p {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+  
+  .posts-list .description h2 {
+    font-weight: 700;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  
+  .posts-list h2.post-tag {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 12px;
+  }
+  .posts-list {
+    margin-top: 60px;
+    margin-bottom: 24px;
+  }
+  
+  .posts-list .post-preview {
+    text-decoration: none;
+    overflow: hidden;
+    display: block;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 24px 0;
+  }
+  
+  .post-preview-last {
+    border-bottom: none !important;
+  }
+  
+  .posts-list .posts-list-caption {
+    grid-column: screen;
+    font-weight: 400;
+  }
+  
+  .posts-list .post-preview h2 {
+    margin: 0 0 6px 0;
+    line-height: 1.2em;
+    font-style: normal;
+    font-size: 24px;
+  }
+  
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.4em;
+    font-size: 16px;
+  }
+  
+  .posts-list .post-preview .thumbnail {
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    position: relative;
+    max-width: 500px;
+  }
+  .posts-list .post-preview img {
+    width: 100%;
+    display: block;
+  }
+  
+  .posts-list .metadata {
+    font-size: 12px;
+    line-height: 1.4em;
+    margin-bottom: 18px;
+  }
+  
+  .posts-list .metadata > * {
+    display: inline-block;
+  }
+  
+  .posts-list .metadata .publishedDate {
+    margin-right: 2em;
+  }
+  
+  .posts-list .metadata .dt-authors {
+    display: block;
+    margin-top: 0.3em;
+    margin-right: 2em;
+  }
+  
+  .posts-list .dt-tags {
+    display: block;
+    line-height: 1em;
+  }
+  
+  .posts-list .dt-tags .dt-tag {
+    display: inline-block;
+    color: rgba(0,0,0,0.6);
+    padding: 0.3em 0.4em;
+    margin-right: 0.2em;
+    margin-bottom: 0.4em;
+    font-size: 60%;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  
+  .posts-list img {
+    opacity: 1;
+  }
+  
+  .posts-list img[data-src] {
+    opacity: 0;
+  }
+  
+  .posts-more {
+    clear: both;
+  }
+  
+  
+  .posts-sidebar {
+    font-size: 16px;
+  }
+  
+  .posts-sidebar h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+  
+  .sidebar-section {
+    margin-bottom: 30px;
+  }
+  
+  .categories ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .categories li {
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 0;
+  }
+  
+  .categories li>a {
+    border-bottom: none;
+  }
+  
+  .categories li>a:hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  }
+  
+  .categories .active {
+    font-weight: 600;
+  }
+  
+  .categories .category-count {
+    color: rgba(0, 0, 0, 0.4);
+  }
+  
+  
+  @media(min-width: 768px) {
+    .posts-list .post-preview h2 {
+      font-size: 26px;
+    }
+    .posts-list .post-preview .thumbnail {
+      float: right;
+      width: 30%;
+      margin-bottom: 0;
+    }
+    .posts-list .post-preview .description {
+      float: left;
+      width: 45%;
+    }
+    .posts-list .post-preview .metadata {
+      float: left;
+      width: 20%;
+      margin-top: 8px;
+    }
+    .posts-list .post-preview p {
+      margin: 0 0 12px 0;
+      line-height: 1.5em;
+      font-size: 16px;
+    }
+    .posts-with-sidebar .posts-list {
+      float: left;
+      width: 75%;
+    }
+    .posts-with-sidebar .posts-sidebar {
+      float: right;
+      width: 20%;
+      margin-top: 60px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
   }
   
   
@@ -530,6 +1013,12 @@
     hyphens: none;
   }
   
+  .downlevel .posts-list .post-preview {
+    color: inherit;
+  }
+  
+  
+  
   </style>
   
   <script type="application/javascript">
@@ -545,6 +1034,13 @@
   
   // show body when load is complete
   function on_load_complete() {
+  
+    // add anchors
+    if (window.anchors) {
+      window.anchors.options.placement = 'left';
+      window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+    }
+  
   
     // set body to visible
     document.body.style.visibility = 'visible';
@@ -591,23 +1087,8 @@
     // create d-appendix
     $('.d-appendix').changeElementType('d-appendix');
   
-    // create d-bibliography
-    var bibliography = $('<d-bibliography></d-bibliography>');
-    $('#distill-bibliography').wrap(bibliography);
-  
     // flag indicating that we have appendix items
     var appendix = $('.appendix-bottom').children('h3').length > 0;
-  
-    // replace citations with <d-cite>
-    $('.citation').each(function(i, val) {
-      appendix = true;
-      var cites = $(this).attr('data-cites').split(" ");
-      var dt_cite = $('<d-cite></d-cite>');
-      dt_cite.attr('key', cites.join());
-      $(this).replaceWith(dt_cite);
-    });
-    // remove refs
-    $('#refs').remove();
   
     // replace footnotes with <d-footnote>
     $('.footnote-ref').each(function(i, val) {
@@ -625,39 +1106,21 @@
     // remove footnotes
     $('.footnotes').remove();
   
+    // move refs into #references-listing
+    $('#references-listing').replaceWith($('#refs'));
+  
     $('h1.appendix, h2.appendix').each(function(i, val) {
       $(this).changeElementType('h3');
     });
     $('h3.appendix').each(function(i, val) {
       var id = $(this).attr('id');
-      $('.d-toc a[href="#' + id + '"]').parent().remove();
+      $('.d-contents a[href="#' + id + '"]').parent().remove();
       appendix = true;
       $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
     });
   
     // show d-appendix if we have appendix content
     $("d-appendix").css('display', appendix ? 'grid' : 'none');
-  
-    // replace code blocks with d-code
-    $('pre>code').each(function(i, val) {
-      var code = $(this);
-      var pre = code.parent();
-      var clz = "";
-      var language = pre.attr('class');
-      if (language) {
-        // map unknown languages to "clike" (without this they just dissapear)
-        if ($.inArray(language, ["bash", "clike", "css", "go", "html",
-                                 "javascript", "js", "julia", "lua", "markdown",
-                                 "markup", "mathml", "python", "svg", "xml"]) == -1)
-          language = "clike";
-        language = ' language="' + language + '"';
-        var dt_code = $('<d-code block' + language + clz + '></d-code>');
-        dt_code.text(code.text());
-        pre.replaceWith(dt_code);
-      } else {
-        code.addClass('text-output').unwrap().changeElementType('pre');
-      }
-    });
   
     // localize layout chunks to just output
     $('.layout-chunk').each(function(i, val) {
@@ -666,7 +1129,7 @@
       var layout = $(this).attr('data-layout');
   
       // apply layout to markdown level block elements
-      var elements = $(this).children().not('d-code, pre.text-output, script');
+      var elements = $(this).children().not('div.sourceCode, pre, script');
       elements.each(function(i, el) {
         var layout_div = $('<div class="' + layout + '"></div>');
         if (layout_div.hasClass('shaded')) {
@@ -683,6 +1146,13 @@
       $(this).children().unwrap();
     });
   
+    // remove code block used to force  highlighting css
+    $('.distill-force-highlighting-css').parent().remove();
+  
+    // remove empty line numbers inserted by pandoc when using a
+    // custom syntax highlighting theme
+    $('code.sourceCode a:empty').remove();
+  
     // load distill framework
     load_distill_framework();
   
@@ -698,12 +1168,26 @@
       if (!have_authors)
         $('d-byline').addClass('hidden');
   
-      // table of contents
-      if (have_authors) // adjust border if we are in authors
-        $('.d-toc').parent().addClass('d-article-with-toc');
+      // article with toc class
+      $('.d-contents').parent().addClass('d-article-with-toc');
   
       // strip links that point to #
       $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+  
+      // add orcid ids
+      $('.authors-affiliations').find('.author').each(function(i, el) {
+        var orcid_id = front_matter.authors[i].orcidID;
+        if (orcid_id) {
+          var a = $('<a></a>');
+          a.attr('href', 'https://orcid.org/' + orcid_id);
+          var img = $('<img></img>');
+          img.addClass('orcid-id');
+          img.attr('alt', 'ORCID ID');
+          img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+          a.append(img);
+          $(this).append(a);
+        }
+      });
   
       // hide elements of author/affiliations grid that have no value
       function hide_byline_column(caption) {
@@ -753,14 +1237,9 @@
         grid.children('h3:contains("Affiliations")').text('Affiliation');
       }
   
-      // inject pre code styles (can't do this with a global stylesheet b/c a shadow root is used)
-      $('d-code').each(function(i, val) {
-        var style = document.createElement('style');
-        style.innerHTML = 'pre code { padding-left: 10px; font-size: 12px; border-left: 2px solid rgba(0,0,0,0.1); } ' +
-                          '@media(min-width: 768px) { pre code { padding-left: 18px; font-size: 14px; } }';
-        if (this.shadowRoot)
-          this.shadowRoot.appendChild(style);
-      });
+      // remove d-appendix and d-footnote-list local styles
+      $('d-appendix > style:first-child').remove();
+      $('d-footnote-list > style:first-child').remove();
   
       // move appendix-bottom entries to the bottom
       $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
@@ -796,9 +1275,7 @@
     $('.d-byline a').remove();
   
     // remove toc
-    $('.d-toc-header').remove();
-    $('.d-toc').remove();
-    $('.d-toc-separator').remove();
+    $('.d-contents').remove();
   
     // move appendix elements
     $('h1.appendix, h2.appendix').each(function(i, val) {
@@ -927,7 +1404,15 @@
   </script>
   
   <!--/radix_placeholder_distill-->
+  <script src="ML_models_files/htmlwidgets-1.5.2/htmlwidgets.js"></script>
+  <script src="ML_models_files/plotly-binding-4.9.2.1/plotly.js"></script>
+  <script src="ML_models_files/typedarray-0.1/typedarray.min.js"></script>
   <script src="ML_models_files/jquery-1.11.3/jquery.min.js"></script>
+  <link href="ML_models_files/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+  <script src="ML_models_files/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+  <link href="ML_models_files/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+  <script src="ML_models_files/plotly-main-1.52.2/plotly-latest.min.js"></script>
+  <script src="ML_models_files/anchor-4.2.2/anchor.min.js"></script>
   <script src="ML_models_files/bowser-1.9.3/bowser.min.js"></script>
   <script src="ML_models_files/webcomponents-2.0.0/webcomponents.js"></script>
   <script src="ML_models_files/distill-2.2.21/template.v2.js"></script>
@@ -942,7 +1427,7 @@
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"XC Boost","description":"We will be fitting linear model, random forest, and gradient boosting.","authors":[{"author":"Chris Ives","authorURL":"#","affiliation":"University of Oregon","affiliationURL":"#"}],"publishedDate":"2020-11-28T00:00:00.000-08:00","citationText":"Ives, 2020"}
+{"title":"XG Boost","description":"We will be fitting linear model, random forest, and gradient boosting.","authors":[{"author":"Chris Ives","authorURL":"#","affiliation":"University of Oregon","affiliationURL":"#","orcidID":""}],"publishedDate":"2020-11-28T00:00:00.000+00:00","citationText":"Ives, 2020"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -952,7 +1437,9 @@
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>XC Boost</h1>
+<h1>XG Boost</h1>
+<!--radix_placeholder_categories-->
+<!--/radix_placeholder_categories-->
 <p><p>We will be fitting linear model, random forest, and gradient boosting.</p></p>
 </div>
 
@@ -963,7 +1450,435 @@
 </div>
 
 <div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#data-import">Data Import</a></li>
+<li><a href="#recipe">Recipe</a><ul>
+<li><a href="#recipe-notes">Recipe Notes</a></li>
+</ul></li>
+<li><a href="#tuning-hyperparameters">Tuning Hyperparameters</a><ul>
+<li><a href="#tuning-gamma-first">Tuning Gamma First</a><ul>
+<li><a href="#tuning-results">Tuning Results</a></li>
+</ul></li>
+<li><a href="#follow-up-tree-parameter-tuning">Follow-up Tree-Parameter Tuning</a><ul>
+<li><a href="#create-grid">Create Grid</a></li>
+<li><a href="#update-model-specification">Update Model Specification</a></li>
+<li><a href="#tuning-results-1">Tuning Results</a></li>
+</ul></li>
+<li><a href="#tuning-tree-parameters-first">Tuning Tree Parameters First</a><ul>
+<li><a href="#update-model-specification-1">Update Model Specification</a></li>
+</ul></li>
+<li><a href="#tune-stochastic-parameters">Tune Stochastic Parameters</a></li>
+<li><a href="#update-model-specification-2">Update Model Specification</a></li>
+<li><a href="#stochastic-parameter-results">Stochastic Parameter Results</a></li>
+<li><a href="#retune-learning-rate">Retune Learning Rate</a></li>
+<li><a href="#final-fit-statistics">Final Fit Statistics</a></li>
+</ul></li>
+</ul>
+</nav>
+</div>
+<h2 id="data-import">Data Import</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='st'>"data/train.csv"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>select</span><span class='op'>(</span><span class='op'>-</span><span class='va'>classification</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate_if</span><span class='op'>(</span><span class='va'>is.character</span>, <span class='va'>factor</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>ncessch <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>ncessch</span><span class='op'>)</span><span class='op'>)</span>
 
+<span class='va'>bonus</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='st'>"data/bonus_data_v2.csv"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>ncessch <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>ncessch</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>locale <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>gsub</a></span><span class='op'>(</span><span class='st'>"^.{0,3}"</span>, <span class='st'>""</span>, <span class='va'>locale</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>separate</span><span class='op'>(</span>col <span class='op'>=</span> <span class='va'>locale</span>, into <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"locale"</span>, <span class='st'>"sublocale"</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>": "</span><span class='op'>)</span>
+
+<span class='va'>disc</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"data/disc_drop.csv"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>attnd_dist_inst_id <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/double.html'>as.double</a></span><span class='op'>(</span><span class='va'>attnd_dist_inst_id</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'>## join data</span>
+<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>data</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>left_join</span><span class='op'>(</span><span class='va'>bonus</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>left_join</span><span class='op'>(</span><span class='va'>disc</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Data was merged from three files:</p>
+<ul>
+<li><p>Original Competition Training Dataset</p></li>
+<li><p>“Bonus Dataset” with additional variables collected by zip code, NCES school IDs, state school IDs, and county levels</p></li>
+<li><p>Supplemental small dataset of high school dropout rates and out-of-school suspension rates by state district IDs</p>
+<ul>
+<li>Dropout Rate Data Source: <a href="https://www.oregon.gov/ode/reports-and-data/students/Pages/Dropout-Rates.aspx" class="uri">https://www.oregon.gov/ode/reports-and-data/students/Pages/Dropout-Rates.aspx</a></li>
+<li>Suspension Rate Data Source: <a href="https://www.oregon.gov/ode/students-and-family/healthsafety/Pages/School-Discipline,-Bullying,-Restraint-and-Seclusion.aspx" class="uri">https://www.oregon.gov/ode/students-and-family/healthsafety/Pages/School-Discipline,-Bullying,-Restraint-and-Seclusion.aspx</a></li>
+</ul></li>
+</ul>
+<p>Importantly, the bonus data includes the variables described in the original data description page, as well as the following:</p>
+<ul>
+<li>2016-2017 District Finance Data:
+<ul>
+<li>Total revenue (<code>rev_total</code>)</li>
+<li>Total local revenue (<code>rev_local_total</code>)</li>
+<li>Total state revenue (<code>rev_state_total</code>)</li>
+<li>Total federal revenue (<code>rev_fed_total</code>)</li>
+<li>Total expenditures (<code>exp_total</code>)</li>
+<li>Total current expenditures for elementary and secondary education (<code>exp_current_elsec_total</code>)</li>
+<li>Total current expenditures for instruction (<code>exp_current_instruction_total</code>)</li>
+<li>Total current expenditures for support services (<code>exp_current_supp_serve_total</code>)</li>
+<li>Total capital outlay expenditures (<code>outlay_capital_total</code>)</li>
+<li>Total salary amount (<code>salaries_total</code>)</li>
+<li>Total employee benefits in dollars (<code>benefits_employee_total</code>)</li>
+<li>Number of students for which the reporting local education agency is financially responsible (<code>enrollment_fall_responsible</code>)</li>
+</ul></li>
+</ul>
+<p>District financial data was obtained using the <code>educationdata</code> R package.</p>
+<p>Lastly, district finance data was included in both its raw form, and transformed by dividing each revenue and expenditure value by the number of students the LEA was financially responsible for (e.g., <code>exp_total</code>/<code>enrollment_fall_responsible</code>)</p>
+<h1 id="recipe">Recipe</h1>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='va'>rec</span> <span class='op'>&lt;-</span> <span class='fu'>recipe</span><span class='op'>(</span><span class='va'>score</span> <span class='op'>~</span> <span class='va'>.</span>, <span class='va'>train</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>step_mutate</span><span class='op'>(</span>tst_dt <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'>lubridate</span><span class='fu'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/ymd_hms.html'>mdy_hms</a></span><span class='op'>(</span><span class='va'>tst_dt</span><span class='op'>)</span><span class='op'>)</span>,
+              lang_cd <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span><span class='va'>lang_cd</span> <span class='op'>==</span> <span class='st'>"S"</span> <span class='op'>~</span> <span class='st'>"S"</span>, <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='st'>"E"</span><span class='op'>)</span>,
+              pupil_tch_ratio <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>pupil_tch_ratio</span><span class='op'>)</span>,
+              pupil_tch_ratio <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>pupil_tch_ratio</span><span class='op'>)</span>,
+              pupil_tch_rate <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span><span class='va'>pupil_tch_ratio</span> <span class='op'>&lt;</span> <span class='fl'>18</span> <span class='op'>~</span> <span class='fl'>1</span>,
+                                         <span class='va'>pupil_tch_ratio</span> <span class='op'>&lt;</span> <span class='fl'>25</span> <span class='op'>~</span> <span class='fl'>2</span>,
+                                         <span class='va'>pupil_tch_ratio</span> <span class='op'>&lt;</span> <span class='fl'>30</span> <span class='op'>~</span> <span class='fl'>3</span>, 
+                                         <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fl'>4</span><span class='op'>)</span>,
+              pupil_tch_rate <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>pupil_tch_rate</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>step_rm</span><span class='op'>(</span><span class='fu'>contains</span><span class='op'>(</span><span class='st'>"id"</span><span class='op'>)</span>, <span class='va'>ncessch</span>, <span class='va'>ncesag</span>, <span class='va'>lea_name</span>, <span class='va'>sch_name</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>step_mutate</span><span class='op'>(</span>hpi <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>hpi</span><span class='op'>)</span>,
+              lat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>lat</span>, <span class='fl'>2</span><span class='op'>)</span>,
+              lon <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>lon</span>, <span class='fl'>2</span><span class='op'>)</span>,
+              median_income <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>median_income</span><span class='op'>)</span>,
+              frl_prop <span class='op'>=</span> <span class='va'>fr_lnch_prop</span> <span class='op'>+</span> <span class='va'>red_lnch_prop</span>,
+              schl_perf <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span><span class='va'>sch_percent_level_1</span> <span class='op'>+</span> <span class='va'>sch_percent_level_2</span> <span class='op'>&gt;</span> <span class='va'>sch_percent_level_3</span> <span class='op'>+</span> <span class='va'>sch_percent_level_4</span> <span class='op'>~</span> <span class='fl'>1</span>,
+                                    <span class='cn'>TRUE</span> <span class='op'>~</span> <span class='fl'>0</span><span class='op'>)</span>,
+              over_100 <span class='op'>=</span> <span class='va'>under_200</span> <span class='op'>+</span> <span class='va'>over_200</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>step_interact</span><span class='op'>(</span>terms <span class='op'>=</span> <span class='op'>~</span> <span class='va'>lat</span><span class='op'>:</span><span class='va'>lon</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>step_rm</span><span class='op'>(</span><span class='va'>fr_lnch_prop</span>, <span class='va'>red_lnch_prop</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>step_string2factor</span><span class='op'>(</span><span class='fu'>all_nominal</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>step_zv</span><span class='op'>(</span><span class='fu'>all_predictors</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>step_unknown</span><span class='op'>(</span><span class='fu'>all_nominal</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>step_medianimpute</span><span class='op'>(</span><span class='fu'>all_numeric</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>step_dummy</span><span class='op'>(</span><span class='fu'>all_nominal</span><span class='op'>(</span><span class='op'>)</span>, one_hot <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>step_interact</span><span class='op'>(</span><span class='op'>~</span> <span class='va'>exp_current_supp_serve_total.x</span><span class='op'>:</span><span class='va'>sp_ed_fg_Y</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>step_interact</span><span class='op'>(</span><span class='op'>~</span> <span class='va'>lang_cd_S</span><span class='op'>:</span><span class='va'>p_hispanic_latino</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>step_nzv</span><span class='op'>(</span><span class='fu'>all_predictors</span><span class='op'>(</span><span class='op'>)</span>, freq_cut <span class='op'>=</span> <span class='fl'>995</span><span class='op'>/</span><span class='fl'>5</span><span class='op'>)</span>
+
+<span class='va'>baked_train</span> <span class='op'>&lt;-</span> <span class='fu'>prep</span><span class='op'>(</span><span class='va'>rec</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>bake</span><span class='op'>(</span><span class='va'>train</span><span class='op'>)</span>
+
+<span class='va'>train_x</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.matrix.html'>data.matrix</a></span><span class='op'>(</span><span class='va'>baked_train</span><span class='op'>[</span>, <span class='op'>-</span><span class='fl'>73</span><span class='op'>]</span><span class='op'>)</span>
+<span class='va'>train_y</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.matrix.html'>data.matrix</a></span><span class='op'>(</span><span class='va'>baked_train</span><span class='op'>[</span>, <span class='fl'>73</span><span class='op'>]</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h2 id="recipe-notes">Recipe Notes</h2>
+<ul>
+<li>Pupil/Teacher ratio (<code>pupil_tch_ratio</code>) is binned and treated as a factor to remove noise (<code>pupil_tch_rate</code>). Both ratio and binned version of the variable remain in the data.</li>
+<li>ID variables are removed</li>
+<li>Latitude (<code>lat</code>) and longitude (<code>lon</code>) are rounded to two decimal places to reduce noise and limit precision to within 2/3 of a mile.</li>
+<li>Median income is log transformed, as the variations in income level are expected to have greater effect near the poverty threshold and less effect in higher income brackets.</li>
+<li>Free lunch proportions and reduced lunch proportions are collapsed into a single variable <code>frl_prop</code> given their expected similar effects.
+<ul>
+<li>Free lunch proportions (<code>fr_lnch_prop</code>) and reduced lunch proportions (<code>red_lnch_prop</code>) are removed from the data set in lieu of their combined proportion.</li>
+</ul></li>
+<li>A dummy coded school-level variable (<code>schl_perf</code>) is created that denotes whether the percentage of students reaching proficiency on the EOY state test exceeds the percentage of students that fall below proficiency standards.</li>
+<li>Zero variance predictors are removed</li>
+<li>Missing data is median imputed</li>
+<li>Explicit interaction is specified between the student-level special education flag and the per-student district expenditures for special services. Th effect of special education status is expected to vary depending on the funding available and potential quality of the district’s special services.</li>
+<li>Explicit interaction is specified for the effect of Spanish language code (<code>lang_cd</code>) and percentage of Hispanic/Latino students at the school (<code>p_hispanic_latino</code>). The justification is that Spanish-speaking students are expected to receive less effective supports in schools in which they are a greater minority.</li>
+<li>Near-zero variance predictors are removed</li>
+</ul>
+<h1 id="tuning-hyperparameters">Tuning Hyperparameters</h1>
+<p>Because the loss reduction (gamma) and maximum tree depth are highly dependent on one another, two approaches were taken to tune the initial model. One approach involved first tuning loss reduction, followed by tree depth and hessian weights. The other involved tuning tree complexity and hessian weights without any severe loss reduction regularization, and then pruning it back by tuning gamma.</p>
+<h2 id="tuning-gamma-first">Tuning Gamma First</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='va'>baked_train</span> <span class='op'>&lt;-</span> <span class='fu'>prep</span><span class='op'>(</span><span class='va'>rec</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>bake</span><span class='op'>(</span><span class='va'>train</span><span class='op'>)</span>
+
+<span class='va'>train_x</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.matrix.html'>data.matrix</a></span><span class='op'>(</span><span class='va'>baked_train</span><span class='op'>[</span>, <span class='op'>-</span><span class='fl'>73</span><span class='op'>]</span><span class='op'>)</span>
+<span class='va'>train_y</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.matrix.html'>data.matrix</a></span><span class='op'>(</span><span class='va'>baked_train</span><span class='op'>[</span>, <span class='fl'>73</span><span class='op'>]</span><span class='op'>)</span>
+
+<span class='va'>grid</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/expand.grid.html'>expand.grid</a></span><span class='op'>(</span>loss_reduction <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>80</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>gamma_mods</span> <span class='op'>&lt;-</span> <span class='fu'>map</span><span class='op'>(</span><span class='va'>grid</span><span class='op'>$</span><span class='va'>loss_reduction</span>, <span class='op'>~</span><span class='op'>{</span>
+  <span class='fu'>xgb.cv</span><span class='op'>(</span>
+    data <span class='op'>=</span> <span class='va'>train_x</span>,
+    label <span class='op'>=</span> <span class='va'>train_y</span>,
+    nrounds <span class='op'>=</span> <span class='fl'>10000</span>,
+    objective <span class='op'>=</span> <span class='st'>"reg:squarederror"</span>,
+    early_stopping_rounds <span class='op'>=</span> <span class='fl'>50</span>,
+    nfold <span class='op'>=</span> <span class='fl'>10</span>,
+    verbose <span class='op'>=</span> <span class='fl'>1</span>,
+    params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+      eta <span class='op'>=</span> <span class='fl'>0.1</span>,
+      gamma <span class='op'>=</span> <span class='va'>.x</span>,
+      nthread <span class='op'>=</span> <span class='fl'>24</span>
+    <span class='op'>)</span>
+  <span class='op'>)</span>
+<span class='op'>}</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h3 id="tuning-results">Tuning Results</h3>
+<div class="layout-chunk" data-layout="l-body">
+<pre><code>    iter train_rmse_mean train_rmse_std test_rmse_mean test_rmse_std
+ 1:  452         77.0087         0.0983        82.6056        0.6781
+ 2:  448         77.0472         0.0837        82.6143        0.4099
+ 3:  445         77.0877         0.0555        82.6204        0.5452
+ 4:  524         76.3820         0.1016        82.6213        0.5638
+ 5:  436         77.1400         0.0551        82.6243        0.3445
+ 6:  452         77.0063         0.0802        82.6287        0.5083
+ 7:  416         77.3305         0.0714        82.6291        0.7941
+ 8:  447         77.0524         0.0613        82.6352        0.5932
+ 9:  424         77.2553         0.0888        82.6371        0.8803
+10:  465         76.9038         0.0983        82.6379        0.5911
+11:  451         77.0375         0.0940        82.6454        0.4721
+12:  451         76.9870         0.0605        82.6509        0.7167
+13:  422         77.2655         0.0899        82.6538        0.6109
+14:  467         76.8912         0.0458        82.6568        0.2768
+15:  453         76.9979         0.0672        82.6589        0.5673
+16:  415         77.3378         0.1053        82.6646        0.7068
+17:  426         77.2260         0.0745        82.6721        0.5258
+    eta gamma
+ 1: 0.1    10
+ 2: 0.1    50
+ 3: 0.1    30
+ 4: 0.1    55
+ 5: 0.1    70
+ 6: 0.1    80
+ 7: 0.1    45
+ 8: 0.1    15
+ 9: 0.1    20
+10: 0.1    40
+11: 0.1    25
+12: 0.1    35
+13: 0.1    60
+14: 0.1     5
+15: 0.1    65
+16: 0.1     0
+17: 0.1    75</code></pre>
+<p><img src="ML_models_files/figure-html5/unnamed-chunk-5-1.png" width="768" /></p>
+</div>
+<p>As indicated in the results, a gamma of 10 produced the best fit the to test folds. A gamma of 50 was considered as a potential alternative given its lower RMSE SD; however, 50 was considered too extreme of a regularization setting.</p>
+<p>A follow-up gamma tuning process was conducted with a narrowed range of 5 to 15 and is reported below.</p>
+<p><code>grid &lt;- expand.grid(loss_reduction = seq(5, 15, 1))</code></p>
+<div class="layout-chunk" data-layout="l-body">
+<pre><code>    iter train_rmse_mean train_rmse_std test_rmse_mean test_rmse_std
+ 1:  426         77.1033         0.0673        82.6085        0.5934
+ 2:  440         76.9364         0.0804        82.6233        0.6727
+ 3:  411         77.2343         0.0918        82.6301        0.5782
+ 4:  470         76.7071         0.0412        82.6407        0.4116
+ 5:  452         76.8494         0.0946        82.6417        0.5207
+ 6:  497         76.4667         0.0793        82.6423        0.3931
+ 7:  478         76.6126         0.0703        82.6454        0.3906
+ 8:  427         77.0770         0.0583        82.6646        0.5045
+ 9:  389         77.4035         0.1140        82.6658        0.6899
+10:  381         77.5321         0.0441        82.6747        0.4971
+11:  394         77.3753         0.0697        82.6947        0.5472
+    eta gamma
+ 1: 0.1    12
+ 2: 0.1    13
+ 3: 0.1    15
+ 4: 0.1    14
+ 5: 0.1    11
+ 6: 0.1     9
+ 7: 0.1     6
+ 8: 0.1     8
+ 9: 0.1     7
+10: 0.1     5
+11: 0.1    10</code></pre>
+<p><img src="ML_models_files/figure-html5/unnamed-chunk-6-1.png" width="768" /></p>
+</div>
+<p>After second round of tuning, a gamma value of 12 produced the best fit.</p>
+<p><strong>Best <code>gamma</code> value = 12</strong></p>
+<p><strong>RMSE/SD to beat = 82.6085/0.5934</strong></p>
+<h2 id="follow-up-tree-parameter-tuning">Follow-up Tree-Parameter Tuning</h2>
+<h3 id="create-grid">Create Grid</h3>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='co'># Set learning rate, tune tree specific parameters</span>
+<span class='va'>grid</span> <span class='op'>&lt;-</span> <span class='fu'>grid_max_entropy</span><span class='op'>(</span><span class='fu'>min_n</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4</span>, <span class='fl'>12</span><span class='op'>)</span><span class='op'>)</span>, <span class='co'># min_child_weight</span>
+                         <span class='fu'>tree_depth</span><span class='op'>(</span><span class='op'>)</span>, <span class='co'># max_depth</span>
+                         size <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>grid</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 6 x 2
+  min_n tree_depth
+  &lt;int&gt;      &lt;int&gt;
+1     8         10
+2     7         10
+3     7         15
+4    10          5
+5    12          9
+6    10         11</code></pre>
+</div>
+<h3 id="update-model-specification">Update Model Specification</h3>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='va'>tree_mods</span> <span class='op'>&lt;-</span> <span class='fu'>map2</span><span class='op'>(</span><span class='va'>grid</span><span class='op'>$</span><span class='va'>min_n</span>, <span class='va'>grid</span><span class='op'>$</span><span class='va'>tree_depth</span>, <span class='op'>~</span><span class='op'>{</span>
+  <span class='fu'>xgb.cv</span><span class='op'>(</span>
+    data <span class='op'>=</span> <span class='va'>train_x</span>,
+    label <span class='op'>=</span> <span class='va'>train_y</span>,
+    nrounds <span class='op'>=</span> <span class='fl'>5000</span>,
+    objective <span class='op'>=</span> <span class='st'>"reg:squarederror"</span>,
+    early_stopping_rounds <span class='op'>=</span> <span class='fl'>50</span>, 
+    nfold <span class='op'>=</span> <span class='fl'>10</span>,
+    verbose <span class='op'>=</span> <span class='fl'>1</span>,
+    params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span> 
+      eta <span class='op'>=</span> <span class='fl'>0.1</span>,
+      gamma <span class='op'>=</span> <span class='fl'>12</span>, 
+      min_child_weight <span class='op'>=</span> <span class='va'>.x</span>,
+      max_depth <span class='op'>=</span> <span class='va'>.y</span>,
+      nthread <span class='op'>=</span> <span class='fl'>24</span>
+    <span class='op'>)</span> 
+  <span class='op'>)</span>  
+<span class='op'>}</span><span class='op'>)</span> 
+</code></pre>
+</div>
+</div>
+<h3 id="tuning-results-1">Tuning Results</h3>
+<div class="layout-chunk" data-layout="l-body">
+<div id="htmlwidget-3107cbb73a86a59bb1c3" style="width:768px;height:384px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3107cbb73a86a59bb1c3">{"x":{"visdat":{"5dc46d906bfc":["function () ","plotlyVisDat"]},"cur_data":"5dc46d906bfc","attrs":{"5dc46d906bfc":{"x":{},"y":{},"z":{},"marker":{"size":5},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"min_child_weight"},"yaxis":{"title":"max_depth"},"zaxis":{"title":"test_rmse_mean"}},"hovermode":"closest","showlegend":false,"legend":{"yanchor":"top","y":0.5}},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[15,10,12,2,7,4,7,4,9,14,10,5,12,15,1,3,7,9,13,14,13,7,9,5,6,7,2,2,2,2],"y":[7,6,6,5,4,3,12,12,15,17,21,18,23,25,17,19,22,26,34,38,46,28,40,27,35,49,27,33,43,49],"z":[82.5138854,82.5260468,82.5867472,82.6038711,82.6386328,82.6866509,82.9198134,83.0705093,83.2934946,83.3909638,84.0744431,84.1086517,84.2383599,84.273793,84.5543496,84.6911759,84.732769,84.98723,85.0051866,85.0241614,85.364856,85.6355408,85.8088257,86.0549699,86.6076196,86.7726464,87.6313399,88.7169029,89.294117,89.3834976],"marker":{"colorbar":{"title":"test_rmse_mean","ticklen":2},"cmin":82.5138854,"cmax":89.3834976,"colorscale":[["0","rgba(68,1,84,1)"],["0.0416666666666674","rgba(70,19,97,1)"],["0.0833333333333326","rgba(72,32,111,1)"],["0.125","rgba(71,45,122,1)"],["0.166666666666667","rgba(68,58,128,1)"],["0.208333333333333","rgba(64,70,135,1)"],["0.25","rgba(60,82,138,1)"],["0.291666666666667","rgba(56,93,140,1)"],["0.333333333333333","rgba(49,104,142,1)"],["0.375","rgba(46,114,142,1)"],["0.416666666666667","rgba(42,123,142,1)"],["0.458333333333333","rgba(38,133,141,1)"],["0.5","rgba(37,144,140,1)"],["0.541666666666667","rgba(33,154,138,1)"],["0.583333333333333","rgba(39,164,133,1)"],["0.625","rgba(47,174,127,1)"],["0.666666666666667","rgba(53,183,121,1)"],["0.708333333333333","rgba(79,191,110,1)"],["0.75","rgba(98,199,98,1)"],["0.791666666666667","rgba(119,207,85,1)"],["0.833333333333333","rgba(147,214,70,1)"],["0.875","rgba(172,220,52,1)"],["0.916666666666667","rgba(199,225,42,1)"],["0.958333333333333","rgba(226,228,40,1)"],["1","rgba(253,231,37,1)"]],"showscale":false,"color":[82.5138854,82.5260468,82.5867472,82.6038711,82.6386328,82.6866509,82.9198134,83.0705093,83.2934946,83.3909638,84.0744431,84.1086517,84.2383599,84.273793,84.5543496,84.6911759,84.732769,84.98723,85.0051866,85.0241614,85.364856,85.6355408,85.8088257,86.0549699,86.6076196,86.7726464,87.6313399,88.7169029,89.294117,89.3834976],"size":5,"line":{"colorbar":{"title":"","ticklen":2},"cmin":82.5138854,"cmax":89.3834976,"colorscale":[["0","rgba(68,1,84,1)"],["0.0416666666666674","rgba(70,19,97,1)"],["0.0833333333333326","rgba(72,32,111,1)"],["0.125","rgba(71,45,122,1)"],["0.166666666666667","rgba(68,58,128,1)"],["0.208333333333333","rgba(64,70,135,1)"],["0.25","rgba(60,82,138,1)"],["0.291666666666667","rgba(56,93,140,1)"],["0.333333333333333","rgba(49,104,142,1)"],["0.375","rgba(46,114,142,1)"],["0.416666666666667","rgba(42,123,142,1)"],["0.458333333333333","rgba(38,133,141,1)"],["0.5","rgba(37,144,140,1)"],["0.541666666666667","rgba(33,154,138,1)"],["0.583333333333333","rgba(39,164,133,1)"],["0.625","rgba(47,174,127,1)"],["0.666666666666667","rgba(53,183,121,1)"],["0.708333333333333","rgba(79,191,110,1)"],["0.75","rgba(98,199,98,1)"],["0.791666666666667","rgba(119,207,85,1)"],["0.833333333333333","rgba(147,214,70,1)"],["0.875","rgba(172,220,52,1)"],["0.916666666666667","rgba(199,225,42,1)"],["0.958333333333333","rgba(226,228,40,1)"],["1","rgba(253,231,37,1)"]],"showscale":false,"color":[82.5138854,82.5260468,82.5867472,82.6038711,82.6386328,82.6866509,82.9198134,83.0705093,83.2934946,83.3909638,84.0744431,84.1086517,84.2383599,84.273793,84.5543496,84.6911759,84.732769,84.98723,85.0051866,85.0241614,85.364856,85.6355408,85.8088257,86.0549699,86.6076196,86.7726464,87.6313399,88.7169029,89.294117,89.3834976]}},"type":"scatter3d","mode":"markers","frame":null},{"x":[1,15],"y":[3,49],"type":"scatter3d","mode":"markers","opacity":0,"hoverinfo":"none","showlegend":false,"marker":{"colorbar":{"title":"test_rmse_mean","ticklen":2,"len":0.5,"lenmode":"fraction","y":1,"yanchor":"top"},"cmin":82.5138854,"cmax":89.3834976,"colorscale":[["0","rgba(68,1,84,1)"],["0.0416666666666674","rgba(70,19,97,1)"],["0.0833333333333326","rgba(72,32,111,1)"],["0.125","rgba(71,45,122,1)"],["0.166666666666667","rgba(68,58,128,1)"],["0.208333333333333","rgba(64,70,135,1)"],["0.25","rgba(60,82,138,1)"],["0.291666666666667","rgba(56,93,140,1)"],["0.333333333333333","rgba(49,104,142,1)"],["0.375","rgba(46,114,142,1)"],["0.416666666666667","rgba(42,123,142,1)"],["0.458333333333333","rgba(38,133,141,1)"],["0.5","rgba(37,144,140,1)"],["0.541666666666667","rgba(33,154,138,1)"],["0.583333333333333","rgba(39,164,133,1)"],["0.625","rgba(47,174,127,1)"],["0.666666666666667","rgba(53,183,121,1)"],["0.708333333333333","rgba(79,191,110,1)"],["0.75","rgba(98,199,98,1)"],["0.791666666666667","rgba(119,207,85,1)"],["0.833333333333333","rgba(147,214,70,1)"],["0.875","rgba(172,220,52,1)"],["0.916666666666667","rgba(199,225,42,1)"],["0.958333333333333","rgba(226,228,40,1)"],["1","rgba(253,231,37,1)"]],"showscale":true,"color":[82.5138854,89.3834976],"line":{"color":"rgba(255,127,14,1)"}},"z":[82.5138854,89.3834976],"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<pre><code>    iter train_rmse_mean train_rmse_std test_rmse_mean test_rmse_std
+ 1:  308         77.0365         0.1108        82.5139        0.7964
+ 2:  515         76.9397         0.0765        82.5260        0.5813
+ 3:  495         77.1831         0.0865        82.5867        0.6627
+ 4:  726         77.7906         0.0600        82.6039        0.5953
+ 5: 1093         79.1339         0.0857        82.6386        0.6009
+ 6: 2829         79.4049         0.0475        82.6867        0.5113
+ 7:   79         73.8231         0.2118        82.9198        0.7814
+ 8:   78         73.2449         0.1283        83.0705        0.5636
+ 9:   66         71.2054         0.0958        83.2935        0.5143
+10:   62         70.7752         0.1706        83.3910        0.8272
+11:   59         66.7113         0.2891        84.0744        0.4707
+12:   59         67.0320         0.3218        84.1087        0.4410
+13:   59         66.1274         0.2683        84.2384        0.7169
+14:   58         66.5946         0.2077        84.2738        0.5163
+15:   60         65.3824         0.3601        84.5543        0.8896
+16:   57         64.7440         0.2680        84.6912        0.7897
+17:   57         64.5327         0.2807        84.7328        0.7071
+18:   56         63.5798         0.1836        84.9872        0.5934
+19:   56         63.7438         0.1620        85.0052        0.7152
+20:   55         64.1426         0.1506        85.0242        0.9364
+21:   54         63.6017         0.1720        85.3649        0.8097
+22:   55         61.3615         0.2887        85.6355        0.6014
+23:   54         61.0720         0.0906        85.8088        0.4201
+24:   54         60.1531         0.0897        86.0550        0.6940
+25:   53         59.2248         0.1364        86.6076        1.0046
+26:   53         59.2394         0.1181        86.7726        0.6098
+27:   52         56.6917         0.3274        87.6313        0.4278
+28:   51         54.1861         0.1396        88.7169        0.5957
+29:   50         53.9775         0.0640        89.2941        0.5904
+30:   50         53.8405         0.0552        89.3835        0.3106
+    iter train_rmse_mean train_rmse_std test_rmse_mean test_rmse_std
+    max_depth min_child_weight
+ 1:         7               15
+ 2:         6               10
+ 3:         6               12
+ 4:         5                2
+ 5:         4                7
+ 6:         3                4
+ 7:        12                7
+ 8:        12                4
+ 9:        15                9
+10:        17               14
+11:        21               10
+12:        18                5
+13:        23               12
+14:        25               15
+15:        17                1
+16:        19                3
+17:        22                7
+18:        26                9
+19:        34               13
+20:        38               14
+21:        46               13
+22:        28                7
+23:        40                9
+24:        27                5
+25:        35                6
+26:        49                7
+27:        27                2
+28:        33                2
+29:        43                2
+30:        49                2
+    max_depth min_child_weight</code></pre>
+</div>
+<h2 id="tuning-tree-parameters-first">Tuning Tree Parameters First</h2>
+<h3 id="update-model-specification-1">Update Model Specification</h3>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre><code><span class='va'>tree_mods</span> <span class='op'>&lt;-</span> <span class='fu'>map2</span><span class='op'>(</span><span class='va'>grid</span><span class='op'>$</span><span class='va'>min_n</span>, <span class='va'>grid</span><span class='op'>$</span><span class='va'>tree_depth</span>, <span class='op'>~</span><span class='op'>{</span>
+  <span class='fu'>xgb.cv</span><span class='op'>(</span>
+    data <span class='op'>=</span> <span class='va'>train_x</span>,
+    label <span class='op'>=</span> <span class='va'>train_y</span>,
+    nrounds <span class='op'>=</span> <span class='fl'>5000</span>,
+    objective <span class='op'>=</span> <span class='st'>"reg:squarederror"</span>,
+    early_stopping_rounds <span class='op'>=</span> <span class='fl'>50</span>, 
+    nfold <span class='op'>=</span> <span class='fl'>10</span>,
+    verbose <span class='op'>=</span> <span class='fl'>1</span>,
+    params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span> 
+      eta <span class='op'>=</span> <span class='fl'>0.1</span>,
+      gamma <span class='op'>=</span> <span class='fl'>12</span>,
+      min_child_weight <span class='op'>=</span> <span class='va'>.x</span>,
+      max_depth <span class='op'>=</span> <span class='va'>.y</span>,
+      nthread <span class='op'>=</span> <span class='fl'>24</span>
+    <span class='op'>)</span> 
+  <span class='op'>)</span>  
+<span class='op'>}</span><span class='op'>)</span> 
+</code></pre>
+</div>
+</div>
+<h2 id="tune-stochastic-parameters">Tune Stochastic Parameters</h2>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<h2 id="update-model-specification-2">Update Model Specification</h2>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<h2 id="stochastic-parameter-results">Stochastic Parameter Results</h2>
+`` #### (Top 10 results shown)
+<div class="layout-chunk" data-layout="l-body">
+<div id="htmlwidget-0d62defcb74540ecd600" style="width:624px;height:384px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0d62defcb74540ecd600">{"x":{"visdat":{"5dc4362341b3":["function () ","plotlyVisDat"]},"cur_data":"5dc4362341b3","attrs":{"5dc4362341b3":{"x":{},"y":{},"z":{},"marker":{"size":5},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"colsample_bytree"},"yaxis":{"title":"subsample"},"zaxis":{"title":"test_rmse_mean"}},"hovermode":"closest","showlegend":false,"legend":{"yanchor":"top","y":0.5}},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[0.643243243243243,0.886486486486487,0.356756756756757,0.751351351351351,0.421621621621622,0.756756756756757,0.454054054054054,0.891891891891892,0.805405405405405,0.891891891891892,0.567567567567568,0.691891891891892,0.864864864864865,0.556756756756757,0.421621621621622,0.313513513513514,0.67027027027027,0.508108108108108,0.794594594594595,0.513513513513513,0.762162162162162,0.664864864864865,0.324324324324324,0.886486486486487,0.4,0.67027027027027,0.740540540540541,0.556756756756757,0.827027027027027,0.335135135135135],"y":[0.98505666220877,0.91243049201098,0.917512493841064,0.868226930386429,0.942289012458647,0.974153586260294,0.872830294925037,0.851671711128317,0.771908214260576,0.804406278595059,0.956120222425565,0.798514816639685,0.716815654254945,0.852016611529528,0.801266981065672,0.841106496797353,0.690722883085803,0.64112057436475,0.626106848736538,0.73756598859717,0.70436404589287,0.644907439994369,0.729935947068347,0.592320686985289,0.646653058351517,0.52976701625959,0.568508481734356,0.554332371366228,0.514704019145492,0.51115647216161],"z":[82.5534562,82.5561036,82.5606972,82.5677865,82.5727196,82.5801781,82.5874306,82.5982963,82.6037588,82.6083703,82.6088395,82.6315796,82.6377098,82.6384231,82.6609697,82.676905,82.689785,82.6956908,82.6972443,82.6985976,82.7052276,82.7057792,82.7076554,82.7604758,82.7659401,82.798848,82.7992514,82.8034859,82.8283028,82.8689894],"marker":{"colorbar":{"title":"test_rmse_mean","ticklen":2},"cmin":82.5534562,"cmax":82.8689894,"colorscale":[["0","rgba(68,1,84,1)"],["0.0416666666666667","rgba(70,19,97,1)"],["0.0833333333333333","rgba(72,32,111,1)"],["0.125","rgba(71,45,122,1)"],["0.166666666666667","rgba(68,58,128,1)"],["0.208333333333333","rgba(64,70,135,1)"],["0.25","rgba(60,82,138,1)"],["0.291666666666667","rgba(56,93,140,1)"],["0.333333333333333","rgba(49,104,142,1)"],["0.375","rgba(46,114,142,1)"],["0.416666666666667","rgba(42,123,142,1)"],["0.458333333333333","rgba(38,133,141,1)"],["0.5","rgba(37,144,140,1)"],["0.541666666666667","rgba(33,154,138,1)"],["0.583333333333333","rgba(39,164,133,1)"],["0.625","rgba(47,174,127,1)"],["0.666666666666667","rgba(53,183,121,1)"],["0.708333333333333","rgba(79,191,110,1)"],["0.75","rgba(98,199,98,1)"],["0.791666666666667","rgba(119,207,85,1)"],["0.833333333333333","rgba(147,214,70,1)"],["0.875","rgba(172,220,52,1)"],["0.916666666666667","rgba(199,225,42,1)"],["0.958333333333333","rgba(226,228,40,1)"],["1","rgba(253,231,37,1)"]],"showscale":false,"color":[82.5534562,82.5561036,82.5606972,82.5677865,82.5727196,82.5801781,82.5874306,82.5982963,82.6037588,82.6083703,82.6088395,82.6315796,82.6377098,82.6384231,82.6609697,82.676905,82.689785,82.6956908,82.6972443,82.6985976,82.7052276,82.7057792,82.7076554,82.7604758,82.7659401,82.798848,82.7992514,82.8034859,82.8283028,82.8689894],"size":5,"line":{"colorbar":{"title":"","ticklen":2},"cmin":82.5534562,"cmax":82.8689894,"colorscale":[["0","rgba(68,1,84,1)"],["0.0416666666666667","rgba(70,19,97,1)"],["0.0833333333333333","rgba(72,32,111,1)"],["0.125","rgba(71,45,122,1)"],["0.166666666666667","rgba(68,58,128,1)"],["0.208333333333333","rgba(64,70,135,1)"],["0.25","rgba(60,82,138,1)"],["0.291666666666667","rgba(56,93,140,1)"],["0.333333333333333","rgba(49,104,142,1)"],["0.375","rgba(46,114,142,1)"],["0.416666666666667","rgba(42,123,142,1)"],["0.458333333333333","rgba(38,133,141,1)"],["0.5","rgba(37,144,140,1)"],["0.541666666666667","rgba(33,154,138,1)"],["0.583333333333333","rgba(39,164,133,1)"],["0.625","rgba(47,174,127,1)"],["0.666666666666667","rgba(53,183,121,1)"],["0.708333333333333","rgba(79,191,110,1)"],["0.75","rgba(98,199,98,1)"],["0.791666666666667","rgba(119,207,85,1)"],["0.833333333333333","rgba(147,214,70,1)"],["0.875","rgba(172,220,52,1)"],["0.916666666666667","rgba(199,225,42,1)"],["0.958333333333333","rgba(226,228,40,1)"],["1","rgba(253,231,37,1)"]],"showscale":false,"color":[82.5534562,82.5561036,82.5606972,82.5677865,82.5727196,82.5801781,82.5874306,82.5982963,82.6037588,82.6083703,82.6088395,82.6315796,82.6377098,82.6384231,82.6609697,82.676905,82.689785,82.6956908,82.6972443,82.6985976,82.7052276,82.7057792,82.7076554,82.7604758,82.7659401,82.798848,82.7992514,82.8034859,82.8283028,82.8689894]}},"type":"scatter3d","mode":"markers","frame":null},{"x":[0.313513513513514,0.891891891891892],"y":[0.51115647216161,0.98505666220877],"type":"scatter3d","mode":"markers","opacity":0,"hoverinfo":"none","showlegend":false,"marker":{"colorbar":{"title":"test_rmse_mean","ticklen":2,"len":0.5,"lenmode":"fraction","y":1,"yanchor":"top"},"cmin":82.5534562,"cmax":82.8689894,"colorscale":[["0","rgba(68,1,84,1)"],["0.0416666666666667","rgba(70,19,97,1)"],["0.0833333333333333","rgba(72,32,111,1)"],["0.125","rgba(71,45,122,1)"],["0.166666666666667","rgba(68,58,128,1)"],["0.208333333333333","rgba(64,70,135,1)"],["0.25","rgba(60,82,138,1)"],["0.291666666666667","rgba(56,93,140,1)"],["0.333333333333333","rgba(49,104,142,1)"],["0.375","rgba(46,114,142,1)"],["0.416666666666667","rgba(42,123,142,1)"],["0.458333333333333","rgba(38,133,141,1)"],["0.5","rgba(37,144,140,1)"],["0.541666666666667","rgba(33,154,138,1)"],["0.583333333333333","rgba(39,164,133,1)"],["0.625","rgba(47,174,127,1)"],["0.666666666666667","rgba(53,183,121,1)"],["0.708333333333333","rgba(79,191,110,1)"],["0.75","rgba(98,199,98,1)"],["0.791666666666667","rgba(119,207,85,1)"],["0.833333333333333","rgba(147,214,70,1)"],["0.875","rgba(172,220,52,1)"],["0.916666666666667","rgba(199,225,42,1)"],["0.958333333333333","rgba(226,228,40,1)"],["1","rgba(253,231,37,1)"]],"showscale":true,"color":[82.5534562,82.8689894],"line":{"color":"rgba(255,127,14,1)"}},"z":[82.5534562,82.8689894],"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<pre><code>    iter train_rmse_mean train_rmse_std test_rmse_mean test_rmse_std
+ 1:  477        77.34670     0.09624726       82.55346     0.5357044
+ 2:  409        77.59206     0.09019289       82.55610     0.5839695
+ 3:  511        77.50587     0.07439461       82.56070     0.5872140
+ 4:  435        77.50257     0.06786992       82.56779     0.6541752
+ 5:  432        77.93361     0.07199536       82.57272     0.5910682
+ 6:  451        77.41958     0.07225770       82.58018     0.5463407
+ 7:  438        77.86621     0.09569565       82.58743     0.4851545
+ 8:  409        77.62566     0.06778519       82.59830     0.5790606
+ 9:  395        77.90076     0.09472367       82.60376     0.6282980
+10:  354        78.12057     0.07055603       82.60837     0.5912351
+    colsample_bytree subsample
+ 1:        0.6432432 0.9850567
+ 2:        0.8864865 0.9124305
+ 3:        0.3567568 0.9175125
+ 4:        0.7513514 0.8682269
+ 5:        0.4216216 0.9422890
+ 6:        0.7567568 0.9741536
+ 7:        0.4540541 0.8728303
+ 8:        0.8918919 0.8516717
+ 9:        0.8054054 0.7719082
+10:        0.8918919 0.8044063</code></pre>
+</div>
+<h2 id="retune-learning-rate">Retune Learning Rate</h2>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<h2 id="final-fit-statistics">Final Fit Statistics</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
