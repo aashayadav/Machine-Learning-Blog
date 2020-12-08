@@ -36,7 +36,7 @@ At this point, Daniel suggested I use HPC via the Open On Demand interface. As a
 
 # Prep work
 
-I followed the same steps we have been following all term long, reading in the data, sampling a fraction of the data (note that I used 50% of the data because I was working with HPC), and joining with other datasets. Here I joined a dataset we called "bonus" that inlcudes variables from different datasets. To learn more about this dataset and its variables, please go [here](https://aashayadav.github.io/Machine-Learning-Blog/posts/11-28-20_datasets_AY/)
+I followed the same steps we have been following all term long, reading in the data, sampling a fraction of the data (note that I used 50% of the data because I was working with HPC), and joining with other datasets. Here I joined a dataset we called "bonus" that inlcudes variables from different datasets. To learn more about this dataset and its variables, please go [here](https://aashayadav.github.io/Machine-Learning-Blog/posts/11-28-20_datasets_AY/).
 
 A huge shout-out to [Chris Ives](https://github.com/cives93) for taking the time to find and process the bonus datasets we are using here. 
 
