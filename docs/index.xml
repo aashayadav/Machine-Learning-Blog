@@ -7,14 +7,14 @@
     <description>Machine Learning for Educational Data Science Blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 28 Nov 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 07 Dec 2020 00:00:00 +0000</lastBuildDate>
     <item>
-      <title>Random Forest</title>
-      <dc:creator>Alejandra</dc:creator>
+      <title>Random Forest Model</title>
+      <dc:creator>Alejandra Garcia Isaza</dc:creator>
       <link>https://github.com/aashayadav/posts/11-29-20_Alejandra</link>
-      <description>We will be fitting linear model, random forest, and gradient boosting.</description>
+      <description>This is how fitting a Random Forest model went for me!</description>
       <guid>https://github.com/aashayadav/posts/11-29-20_Alejandra</guid>
-      <pubDate>Sat, 28 Nov 2020 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
     </item>
     <item>
       <title>Linear Regression and Penalized Regression Model (Lasso)</title>
