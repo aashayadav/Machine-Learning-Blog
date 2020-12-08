@@ -114,7 +114,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["ML_models.html","ML_models_files/bowser-1.9.3/bowser.min.js","ML_models_files/distill-2.2.21/template.v2.js","ML_models_files/jquery-1.11.3/jquery.min.js","ML_models_files/webcomponents-2.0.0/webcomponents.js","rf_models_files/anchor-4.2.2/anchor.min.js","rf_models_files/bowser-1.9.3/bowser.min.js","rf_models_files/distill-2.2.21/template.v2.js","rf_models_files/jquery-1.11.3/jquery.min.js","rf_models_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["files/mtry_results_1.Rds","files/mtry_results_2.Rds","ML_models.html","ML_models_files/bowser-1.9.3/bowser.min.js","ML_models_files/distill-2.2.21/template.v2.js","ML_models_files/jquery-1.11.3/jquery.min.js","ML_models_files/webcomponents-2.0.0/webcomponents.js","rf_models_files/anchor-4.2.2/anchor.min.js","rf_models_files/bowser-1.9.3/bowser.min.js","rf_models_files/crosstalk-1.1.0.1/css/crosstalk.css","rf_models_files/crosstalk-1.1.0.1/js/crosstalk.js","rf_models_files/crosstalk-1.1.0.1/js/crosstalk.js.map","rf_models_files/crosstalk-1.1.0.1/js/crosstalk.min.js","rf_models_files/crosstalk-1.1.0.1/js/crosstalk.min.js.map","rf_models_files/datatables-binding-0.16/datatables.js","rf_models_files/datatables-css-0.0.0/datatables-crosstalk.css","rf_models_files/distill-2.2.21/template.v2.js","rf_models_files/dt-core-1.10.20/css/jquery.dataTables.extra.css","rf_models_files/dt-core-1.10.20/css/jquery.dataTables.min.css","rf_models_files/dt-core-1.10.20/js/jquery.dataTables.min.js","rf_models_files/figure-html5/unnamed-chunk-9-1.png","rf_models_files/htmlwidgets-1.5.2/htmlwidgets.js","rf_models_files/jquery-1.11.3/jquery.min.js","rf_models_files/jquery-1.12.4/jquery.min.js","rf_models_files/jquery-1.12.4/LICENSE.txt","rf_models_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1402,7 +1402,15 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
   
   <!--/radix_placeholder_distill-->
-  <script src="rf_models_files/jquery-1.11.3/jquery.min.js"></script>
+  <script src="rf_models_files/htmlwidgets-1.5.2/htmlwidgets.js"></script>
+  <script src="rf_models_files/jquery-1.12.4/jquery.min.js"></script>
+  <link href="rf_models_files/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+  <script src="rf_models_files/datatables-binding-0.16/datatables.js"></script>
+  <link href="rf_models_files/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+  <link href="rf_models_files/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+  <script src="rf_models_files/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+  <link href="rf_models_files/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+  <script src="rf_models_files/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
   <script src="rf_models_files/anchor-4.2.2/anchor.min.js"></script>
   <script src="rf_models_files/bowser-1.9.3/bowser.min.js"></script>
   <script src="rf_models_files/webcomponents-2.0.0/webcomponents.js"></script>
@@ -1537,27 +1545,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <h6 id="start-with-five-evenly-spaced-values-of-mtry-across-the-range-2-p-centered-at-the-recommended-default-boehmke-greenwell-2020">“Start with five evenly spaced values of mtry across the range 2 – p centered at the recommended default” (Boehmke &amp; Greenwell, 2020)</h6>
 <h6 id="when-adjusting-node-size-start-with-three-values-between-110-and-adjust-depending-on-impact-to-accuracy-and-run-time.">“When adjusting node size start with three values between 1–10 and adjust depending on impact to accuracy and run time.”</h6>
 <div class="layout-chunk" data-layout="l-body">
-<pre><code>   Var1 Var2
-1     2    1
-2    14    1
-3    26    1
-4    38    1
-5    50    1
-6     2    4
-7    14    4
-8    26    4
-9    38    4
-10   50    4
-11    2    7
-12   14    7
-13   26    7
-14   38    7
-15   50    7
-16    2   10
-17   14   10
-18   26   10
-19   38   10
-20   50   10</code></pre>
+<div id="htmlwidget-53efac8404ce9ab92815" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-53efac8404ce9ab92815">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"],[2,14,26,38,50,2,14,26,38,50,2,14,26,38,50,2,14,26,38,50],[1,1,1,1,1,4,4,4,4,4,7,7,7,7,7,10,10,10,10,10]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>mtry<\/th>\n      <th>min_n<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <p>Below is a function that Daniel helped me build. This is an all-in-one function that builds the model, updates the default model workflow with the new hyperparameters, fits the models with the selected hyperparameters, and outputs a table with the tuned hyperparaemters and the corresponding rmse value. It’s pretty neat!</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1590,42 +1579,19 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>Need to create a folder with Rds files.</p>
 <p>These are my results rmse = 88.5 (50% of data) with mtry = 14, min_n = 10, trees = 1000</p>
 <div class="layout-chunk" data-layout="l-body">
-
+<div id="htmlwidget-b28e49a7b17dc59bf522" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b28e49a7b17dc59bf522">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"],[14,14,26,14,38,14,26,50,38,26,50,26,38,50,38,50,2,2,2,2],[10,7,10,4,10,1,7,10,7,4,7,1,4,4,1,1,7,1,10,4],[88.5422609601283,88.9375105622991,89.2748002583518,89.3467365378118,89.6531075854499,89.7182599041209,89.7944994293632,89.9400737655761,90.3377558734669,90.5156819860458,90.6806244642205,91.1849421483674,91.2063236506577,91.742655109802,92.1480079640799,92.7881197919246,93.312497707138,93.3501092283632,93.3760153020166,93.3817847358467]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>mtry<\/th>\n      <th>min_n<\/th>\n      <th>rmse<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <p>Running this first round of tuning took an hour and forty minutes and the increase relative to the default model was not substantial, only 3 decimal points. Nonetheless, I went for another round of tuning, just to see what could happen.</p>
 <p>Looking at the plot, I could see that…</p>
 <div class="layout-chunk" data-layout="l-body">
-
+<p><img src="rf_models_files/figure-html5/unnamed-chunk-9-1.png" width="624" /></p>
 </div>
 <p>So I went for the following values to tune…</p>
 <p>I used the same all-in-one function shown above.</p>
 <div class="layout-chunk" data-layout="l-body">
-<pre><code>   Var1 Var2
-1    14    7
-2    17    7
-3    20    7
-4    23    7
-5    26    7
-6    14    9
-7    17    9
-8    20    9
-9    23    9
-10   26    9
-11   14   11
-12   17   11
-13   20   11
-14   23   11
-15   26   11
-16   14   13
-17   17   13
-18   20   13
-19   23   13
-20   26   13
-21   14   15
-22   17   15
-23   20   15
-24   23   15
-25   26   15</code></pre>
+<div id="htmlwidget-290119fe5577fae07a93" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-290119fe5577fae07a93">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25"],[14,17,20,23,26,14,17,20,23,26,14,17,20,23,26,14,17,20,23,26,14,17,20,23,26],[7,7,7,7,7,9,9,9,9,9,11,11,11,11,11,13,13,13,13,13,15,15,15,15,15]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>mtry<\/th>\n      <th>min_n<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 
@@ -1656,7 +1622,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 </div>
 <p>Not sure which one of the final fit models to include: the one that uses data_train or the one that uses data_split??</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

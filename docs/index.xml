@@ -29,9 +29,10 @@
       <title>XG Boost</title>
       <dc:creator>Chris Ives</dc:creator>
       <link>https://github.com/aashayadav/posts/11-29-20_Chris</link>
-      <description>Here is our XG boost model!</description>
+      <description>We will be fitting linear model, random forest, and gradient boosting.</description>
       <guid>https://github.com/aashayadav/posts/11-29-20_Chris</guid>
       <pubDate>Sat, 28 Nov 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://github.com/aashayadav/posts/11-29-20_Chris/ML_models_files/figure-html5/unnamed-chunk-5-1.png" medium="image" type="image/png" width="1536" height="768"/>
     </item>
     <item>
       <title>Data preparation and exploration</title>
@@ -42,13 +43,12 @@
       <pubDate>Sat, 28 Nov 2020 00:00:00 +0000</pubDate>
     </item>
     <item>
-      <title>XG Boost</title>
-      <dc:creator>Chris Ives</dc:creator>
-      <link>https://github.com/aashayadav/posts/11-29-20_Chris</link>
-      <description>We will be fitting linear model, random forest, and gradient boosting.</description>
-      <guid>https://github.com/aashayadav/posts/11-29-20_Chris</guid>
+      <title>Linear Regression and Penalized Regression Model (Lasso)</title>
+      <dc:creator>Asha</dc:creator>
+      <link>https://github.com/aashayadav/posts/11-29-20_ML_models_AY</link>
+      <description>Our aim is to predict the score on statewide testing assessment using other variables in the dataset. Let's see how linear and lasso regression perform.</description>
+      <guid>https://github.com/aashayadav/posts/11-29-20_ML_models_AY</guid>
       <pubDate>Sat, 28 Nov 2020 00:00:00 +0000</pubDate>
-      <media:content url="https://github.com/aashayadav/posts/11-29-20_Alejandra/rf_models_files/figure-html5/unnamed-chunk-9-1.png" medium="image" type="image/png" width="1248" height="768"/>
     </item>
     <item>
       <title>Datasets</title>
