@@ -11,10 +11,11 @@
     <item>
       <title>Data preparation and description</title>
       <dc:creator>Asha</dc:creator>
-      <link>https://github.com/aashayadav/posts/11-29-20_data_prep_&amp;_description_AY</link>
-      <description>Now we got our datasets, let's see how to prepare (join) them for analysis.</description>
-      <guid>https://github.com/aashayadav/posts/11-29-20_data_prep_&amp;_description_AY</guid>
+      <link>https://github.com/aashayadav/posts/11-29-20_Asha</link>
+      <description>Our aim is to predict the score on statewide testing assessment using other variables in the dataset. Let's see how linear and lasso regression perform.</description>
+      <guid>https://github.com/aashayadav/posts/11-29-20_Asha</guid>
       <pubDate>Sat, 28 Nov 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://github.com/aashayadav/posts/11-29-20_Asha/Linear_model_files/figure-html5/unnamed-chunk-13-1.png" medium="image" type="image/png" width="1248" height="768"/>
     </item>
     <item>
       <title>Machine learning models</title>
@@ -31,6 +32,7 @@
       <description>This is how fitting a Random Forest model went for me!</description>
       <guid>https://github.com/aashayadav/posts/11-29-20_Alejandra</guid>
       <pubDate>Sat, 28 Nov 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://github.com/aashayadav/posts/11-29-20_Alejandra/rf_models_files/figure-html5/unnamed-chunk-9-1.png" medium="image" type="image/png" width="1248" height="768"/>
     </item>
     <item>
       <title>Datasets</title>

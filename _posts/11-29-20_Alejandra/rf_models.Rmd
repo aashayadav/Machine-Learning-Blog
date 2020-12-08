@@ -24,6 +24,8 @@ library(tidyverse)
 library(tidymodels)
 
 options(scipen=999)
+
+theme_set(theme_minimal(base_size = 10))
 ```
 
 To complete this project, I chose to run a Random Forest model. I decided to go with the Out-of-bag (OOB) samples to conduct model fitting and model assessment due to its relatively low run time.
@@ -129,7 +131,8 @@ mtry_search <- seq(2, 50, 12)
 min_n_search <- seq(1, 10, 3)
 
 grd <- expand.grid(mtry_search, min_n_search)
-grd
+
+DT::datatable(grd, colnames = c('mtry' = 'Var1', 'min_n' = 'Var2')) 
 ```
 
 
@@ -165,7 +168,8 @@ mtry_results_1 <- map2_df(grd$Var1, grd$Var2, ~hyp_rf_search(.x, .y, rf_def_wkfl
 Need to create a folder with Rds files.
 
 ```{r, include=FALSE}
-# mtry_results_1 <- readRDS("scripts/mtry_results_1.Rds")
+
+mtry_results_1 <- readRDS("files/mtry_results_1.Rds")
 
 ```
 
@@ -175,8 +179,11 @@ rmse = 88.5 (50% of data) with mtry = 14, min_n = 10, trees = 1000
 
 ```{r echo=FALSE}
 
-# mtry_results_1 %>%
-#   arrange(rmse) 
+table1 <- mtry_results_1 %>%
+  select(-workflow) %>%
+  arrange(rmse)
+
+DT::datatable(table1)
 
 ```
 
@@ -187,11 +194,14 @@ Looking at the plot, I could see that...
 
 
 ```{r echo=FALSE}
-# mtry_results_1 %>%
-#   ggplot(aes(mtry, rmse)) +
-#   geom_line() +
-#   geom_point() +
-#   facet_wrap(~min_n)
+table1 %>%
+  ggplot(aes(mtry, rmse)) +
+  geom_line(color = "#6E0D83") +
+  geom_point(color = "cornflowerblue") +
+  facet_wrap(~min_n) +
+  labs(title = "Plot 1: First round of tuning",
+       x = "mtry values",
+       y = "rmse") 
 ```
 
 So I went for the following values to tune... 
@@ -203,7 +213,8 @@ mtry_search <- seq(14, 26, 3)
 min_n_search <- seq(7, 15, 2)
 
 grd <- expand.grid(mtry_search, min_n_search)
-grd
+
+DT::datatable(grd, colnames = c('mtry' = 'Var1', 'min_n' = 'Var2'))
 ```
 
 

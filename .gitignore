@@ -34,3 +34,11 @@ vignettes/*.pdf
 # Temporary files created by R markdown
 *.utf8.md
 *.knit.md
+
+_posts/11-29-20_Alejandra/files/mtry_results_1.Rds
+
+_posts/11-29-20_Alejandra/files/mtry_results_2.Rds
+
+docs/posts/11-29-20_Alejandra/files/mtry_results_1.Rds
+
+docs/posts/11-29-20_Alejandra/files/mtry_results_2.Rds
