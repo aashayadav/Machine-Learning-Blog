@@ -529,7 +529,8 @@ lr_mods <- map(lr, function(learn_rate) {
 ```
 
 
-The results of 
+The learning rate could not be re-tuned under the time constraints, so it was lowered to .04, which was identified to be the best learning rate during tuning of early models.
+
 # Tune Number of Trees
 ``` {r eval = FALSE, echo = TRUE}
 bst <- xgb.cv(
