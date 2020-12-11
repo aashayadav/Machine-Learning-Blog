@@ -21,13 +21,13 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```
 
-This blog was created as part of the final project for the EDLD 654 [Applied Machine Learning for Educational Data Science](https://uo-datasci-specialization.github.io/c4-ml-fall-2020/), taught by [Prof. Daniel Anderson](https://github.com/datalorax) and [Prof. Joseph Nese](https://education.uoregon.edu/people/faculty/jnese) at the University of Oregon. The blog contains application of Machine Learning models to educational data for predictive analysis. Following models were presented in the final project:
+This blog was created as part of the final project for the EDLD 654 [Applied Machine Learning for Educational Data Science](https://uo-datasci-specialization.github.io/c4-ml-fall-2020/), taught by [Prof. Daniel Anderson](https://github.com/datalorax) and [Prof. Joseph Nese](https://education.uoregon.edu/people/faculty/jnese) at the University of Oregon. The blog contains application of Machine Learning models to educational data for predictive analysis. Following models are presented in the final project:
 
-1. Linear regression (add link to my post, if posting separate.)
+1. [Linear regression & Penalized regression](https://aashayadav.github.io/Machine-Learning-Blog/posts/11-29-20_Asha/) by Asha
 
-2. Random Forest (add link Ale's post if posting separate)
+2. [Random Forest](https://aashayadav.github.io/Machine-Learning-Blog/posts/11-29-20_Alejandra/) by Alejandra
 
-3. Gradient Boosting (add link Chris's post, if posting separete)
+3. [XG Boost](https://aashayadav.github.io/Machine-Learning-Blog/posts/11-29-20_Chris/) by Chris
 
 The contributors of the blog are:
 
